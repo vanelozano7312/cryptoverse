@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>CRYPTOVERSE</h1>
+<ul>
+    {% for x in object_list %}
+        {% if x.name %}
+            <li><a href='/{{x.name}}/'>{{x.name}} cipher</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endblock content %}
+
