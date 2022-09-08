@@ -6,6 +6,7 @@ from cryptosystem.models import Cryptosystem
 def home_view(request, *args, **kwargs):
 
     cryptosystem_qs = Cryptosystem.objects.all()
+    
 
     context = {
         "object_list" : cryptosystem_qs,
