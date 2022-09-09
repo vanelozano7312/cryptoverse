@@ -7,21 +7,26 @@
 <p>{{description}} </p>
 
 <h2>Encrypt</h2>
-<div style='margin-top:30px;'>
+
+<div >
     <form action="." method="post">
         {% csrf_token %}
-        <div style='margin-top:10px;'>
+        <div>
             <label for="key">Key (between 1 and 25):</label>
-            <input type="number" id="key" name="key" min="1" max="25">
+            <input type="number" id="key" name="key">
         </div>
-        <div style='margin-top:10px;'>
+        <div >
             <label for="cleartext">Text to encrypt:</label><br>
             <textarea name="cleartext"></textarea>
-            <!--<input type="text" id="cleartext" name="cleartext"><br>-->
         </div>
         <input type="submit" value="Encrypt">
     </form>
 </div>
+
+{% if encrypted %}
+    <p>{{encodedtext}}</p>
+
+{% endif %}
 
 <h2>Decrypt</h2>
 <div style='margin-top:30px;'>
