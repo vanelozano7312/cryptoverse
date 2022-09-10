@@ -3,13 +3,35 @@
 {% load static %}
 
 {% block content %}
-<h1>CRYPTOVERSE</h1>
-<ul>
-    {% for x in object_list %}
-        {% if x.name %}
-            <li><a href='/{{x.name}}/'>{{x.name}} cipher</a></li>
-        {% endif %}
-    {% endfor %}
-</ul>
+<!-- Banner -->
+<section id="banner" class="major">
+    <div class="inner">
+        <header class="major">
+            <h1>CRYPTOVERSE</h1>
+        </header>
+        <div class="content">
+            <!-- <p>A responsive site template designed by HTML5 UP<br />
+            and released under the Creative Commons.</p> -->
+            <ul class="actions">
+                <li><a href="#one" class="button next scrolly">Get Started</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<div id="main">
+    <section id="one" class="titles">
+        <ul>
+            {% for x in object_list %}
+                {% if x.name %}
+                <header class="major">
+                    <h3><a href='/CS/{{x.name}}/'>{{x.name}} cipher</a></h3>
+                </header>
+                    <!-- <li><a href='/{{x.name}}/'>{{x.name}} cipher</a></li> -->
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </section>
+</div>
 {% endblock content %}
 

@@ -20,17 +20,23 @@ def cryptosystem_view(request, name=None):
             if request.method == "POST":
                 count_falla = 0
                 while not encrypted:
-                    key = int(request.POST.get("key"))
+                    key = request.POST.get("key")
                     cleartext = request.POST.get("cleartext")
                     print(key, cleartext)
-                    encode = encode_despla(cleartext, key, count_falla)
-                    if encode == -1:
-                        count_falla=count_falla+1
-                    else:
-                        encrypted=True
-                        context['encrypted']=True
-                        print(encode)
-                        context['encodedtext']=encode
+                    try:
+                        key=int(key)
+                        encode = encode_despla(cleartext, key, count_falla)
+                        
+                        if encode == -1:
+                            count_falla=count_falla+1
+                        else:
+                            encrypted=True
+                            context['encrypted']=True
+                            print(encode)
+                            context['encodedtext']=encode
+                    except:
+                        
+                        break
 
 
     return render(request, view, context=context)

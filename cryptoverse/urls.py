@@ -20,6 +20,6 @@ from .views import home_view
 
 urlpatterns = [
     path('', home_view), #home 
-    path('<str:name>/', views.cryptosystem_view),
+    path('CS/<str:name>/', views.cryptosystem_view),
     path('admin/', admin.site.urls),
 ]

@@ -7,21 +7,31 @@
 <p>{{description}} </p>
 
 <h2>Encrypt</h2>
-
-<div >
-    <form action="." method="post">
-        {% csrf_token %}
-        <div>
-            <label for="key">Key (between 1 and 25):</label>
-            <input type="number" id="key" name="key">
-        </div>
-        <div >
-            <label for="cleartext">Text to encrypt:</label><br>
-            <textarea name="cleartext"></textarea>
-        </div>
-        <input type="submit" value="Encrypt">
-    </form>
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-secondary">Encrypt</button>
+    <button type="button" class="btn btn-secondary">Decrypt</button>
 </div>
+<section id="encrypt">
+    <div class ="inner">
+        <form action="." method="post">
+            {% csrf_token %}
+            <div class="fields">
+                <div class="field half">
+                    <label for="key">Key (between 1 and 25):</label>
+                    <input type="number" id="key" name="key">
+                </div>
+                <div class="field half" >
+                    <label for="cleartext">Text to encrypt:</label><br>
+                    <textarea name="cleartext"></textarea>
+                </div>
+            </div>
+            <ul class="actions">
+                <li><input type="submit" value="Encrypt" class="primary" /></li>
+                <li><input type="reset" value="Clear" /></li>
+            </ul>
+        </form>
+    </div>
+</section>
 
 {% if encrypted %}
     <p>{{encodedtext}}</p>
