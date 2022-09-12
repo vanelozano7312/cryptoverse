@@ -34,7 +34,6 @@ def unify(palabra):
   palabra = palabra.lower()
   regex = re.compile('[^a-z]')
   palabra = regex.sub('', palabra)
-  print(palabra)
   for i in range(len(palabra)):
     palabralist.append(palabra[i])
   return palabralist
@@ -68,20 +67,30 @@ def deconvert(list):
 
 ####LIMPIO
 def encode_despla(palabrast,key,count_falla):
+  """
+This codification method receives a message, and a key
+From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+The key is required to be between 1 and 25.
+If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+The codification method adds the key value to each number and transforms the result back to an alphabetical value.
+Then returns the message encrypted
+  """
   palabrals = unify(palabrast)
-  if count_falla > 2:
-    key = ran.randint(1,26)
-    palabrals = convert(palabrals)
-    for i in range(len(palabrals)):
-      palabrals[i] = (palabrals[i] + key)%26
-    palabrast = deconvert(palabrals)
-    return palabrast
   if 1 <= key <= 26:
       palabrals = convert(palabrals)
       for i in range(len(palabrals)):
         palabrals[i] = (palabrals[i] + key)%26
       palabrast = deconvert(palabrals)
-      return palabrast
+      print(palabrast)
+      return palabrast, key
+  elif count_falla == 2:
+    key = ran.randint(1,26)
+    palabrals = convert(palabrals)
+    for i in range(len(palabrals)):
+      palabrals[i] = (palabrals[i] + key)%26
+    palabrast = deconvert(palabrals)
+    print(palabrast)
+    return palabrast, key
   else:
-    return -1
-  
+    return -1, -1

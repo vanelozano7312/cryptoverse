@@ -1,0 +1,14 @@
+/*--------------------------------------------------------------
+# Sections General
+--------------------------------------------------------------*/
+cypher {
+  vertical-align: middle;
+}
+
+.cypher-title {
+  vertical-align: middle;
+  text-align: center;
+  background-color: #72b8d1;
+}
+
+

@@ -3,53 +3,83 @@
 {% load static %}
 
 {% block content %}
-<h1> {{name}} chiper </h1>
-<p>{{description}} </p>
 
-<h2>Encrypt</h2>
-<div class="btn-group" role="group">
-    <button type="button" class="btn btn-secondary">Encrypt</button>
-    <button type="button" class="btn btn-secondary">Decrypt</button>
+<div class="cypher-title">
+    <h1>SHIFT CYPHER</h1>
 </div>
-<section id="encrypt">
-    <div class ="inner">
-        <form action="." method="post">
-            {% csrf_token %}
-            <div class="fields">
-                <div class="field half">
-                    <label for="key">Key (between 1 and 25):</label>
-                    <input type="number" id="key" name="key">
+
+<section id="ende">
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt</h2>
+                {% csrf_token %}
+                {% if not encrypted %}
+                    
+                {% if mistake%}
+                <label> {{countfail}} mistakes</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label for="key">Key (between 1 and 25):</label>
+                        <input type="text" id="key" name="key">
+                    </div>
+                    <div class="field" >
+                        <label for="cleartext">Text to encrypt:</label><br>
+                        <textarea name="cleartext"></textarea>
+                    </div>
                 </div>
-                <div class="field half" >
-                    <label for="cleartext">Text to encrypt:</label><br>
-                    <textarea name="cleartext"></textarea>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>          
+                {% if encrypted %}
+                <div >
+                    <label>Used key:  </label>
+                    <p>{{key}}</p>
                 </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p>{{encodedtext}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
             </div>
-            <ul class="actions">
-                <li><input type="submit" value="Encrypt" class="primary" /></li>
-                <li><input type="reset" value="Clear" /></li>
-            </ul>
-        </form>
+        </section>
+       
+        <section id="decrypt">
+            <form action="." method="post">
+                <h2>Decrypt</h2>
+                {% csrf_token %}
+                <div class="fields">
+                    <div class="field ">
+                        <label for="key">Key (between 1 and 25):</label>
+                        <input type="text" id="key" name="key">
+                    </div>
+                    <div class="field" >
+                        <label for="ciphertext">Text to decrypt:</label><br>
+                        <textarea name="ciphertext"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <li><input type="submit" value="I don't know the key" class="primary" /></li>
+                </ul>
+            </form>
+        </section>
     </div>
 </section>
 
-{% if encrypted %}
-    <p>{{encodedtext}}</p>
-
-{% endif %}
-
-<h2>Decrypt</h2>
-<div style='margin-top:30px;'>
-    <form>
-        <div style='margin-top:10px;'>
-            <label for="key">Key (between 1 and 25):</label>
-            <input type="number" id="key" name="key" min="1" max="25">
-        </div>
-        <div style='margin-top:10px;'>
-            <label for="ciphertext">Text to decrypt:</label><br>
-            <textarea name="ciphertext"></textarea>
-        </div>
-        <input type="submit" value="Decrypt">
-    </form>
-</div>
 {% endblock content %}
