@@ -94,3 +94,27 @@ Then returns the message encrypted
     return palabrast, key
   else:
     return -1, -1
+
+
+    
+#///////////////////////////////////////////////////////////////
+#//////////////////////METODOS DE DECODIFICACION///////////////////
+#////////////////////////////////////////////////////////////////
+#### LIMPIO
+####mbwjebftnvzmjoeb
+####xmhupmqegzmoaeufmxuzpm (12)
+def decode_despla(string, key, count_fallas):
+  if 1<= key<=26:
+    lista = unify(string)
+    lista = convert(lista)
+    for j in range(len(lista)):
+      lista[j] = (lista[j]-key)%26
+    string = deconvert(lista)
+    return string
+  for i in range(25):
+    lista = unify(string)
+    lista = convert(lista)
+    for j in range(len(lista)):
+      lista[j] = (lista[j]+1)%26
+    string = deconvert(lista)
+  return string
