@@ -127,6 +127,78 @@ Then returns the message encrypted
   else:
     return -1,-1
 
+
+
+###### LIMPIO
+def encode_sust(palabrast,key,count_falla):
+  """
+This codification method receives a message, and a key
+From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+The key is a list of letters that, in order, replace one of the characters in the message. non alphabet characters and duplicates are not allowed
+If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+The codification method substitutes each letter by its replacement as stated in the key.
+Then returns the message encrypted
+  """
+
+  dic = {'a':"", 'b':"", 'c':"", 'd':"", 'e':"", 'f':"", 'g':"", 'h':"", 'i':"", 'j':"", 'k':"", 'l':"",'m':"", 'n':"", 'o':"", 'p':"", 'q':"", 'r':"", 's':"", 't':"", 'u':"", 'v':"", 'w':"", 'x':"", 'y':"", 'z':""}
+  lista = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  palabrals = unify(palabrast)
+  count = 0
+  for item in key:
+    if item not in lista:
+      return -1, -1
+    else:
+      if item not in dic.values():
+        dic[lista[count]] = item
+        count = count + 1
+      else:
+        return -1, -1 
+  if count_falla == 2:
+    listaran = lista[:]
+    ran.shuffle(listaran)
+    for item in listaran:
+      if item not in dic.values():
+        dic[lista[count]] = item
+  string = ""
+  for i in range(len(palabrals)):
+    palabrals[i] = dic[palabrals[i]]
+    string = string + palabrals[i]
+  return string, key
+
+
+
+####LIMPIO
+def encode_afin(palabrast, a, b, count_falla):
+  """
+This codification method receives a message, and a key
+From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+The key is composed by a and b, for a it needs to be in the list of relative primes of 26 and b requires it to be between 1 and 25.
+If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+The codification method multiplies a and ads b to each number and transforms the result back to an alphabetical value.
+Then returns the message encrypted
+  """
+
+  palabrals = unify(palabrast)
+  claves_validas = rela_primes()
+  if a in claves_validas:
+    if 1 <= b <= 25:
+      palabrals = convert(palabrals)
+      for i in range(len(palabrals)):
+        palabrals[i] = (((palabrals[i] * a)%26)+b)%26
+      palabrast = deconvert(palabrals)
+      return palabrast, a, b
+  elif count_falla >= 2:
+    a = claves_validas[ran.randint(1,len(claves_validas))]
+    b = ran.randint(1,25)
+    palabrals = convert(palabrals)
+    for i in range(len(palabrals)):
+      palabrals[i] = (((palabrals[i] * a)%26)+b)%26
+    palabrast = deconvert(palabrals)
+    return palabrast, a, b
+  else:
+    return -1,-1, -1
+  
     
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////

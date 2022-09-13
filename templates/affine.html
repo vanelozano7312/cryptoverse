@@ -21,13 +21,18 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="key_encrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_encrypt" name="key_encrypt">
+                        <label for="a_key_encrypt">A key (relative prime of 26 between 1 and 25):</label>
+                        <input type="text" id="a_key_encrypt" name="a_key_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="b_key_encrypt">B key (between 1 and 25):</label>
+                        <input type="text" id="b_key_encrypt" name="b_key_encrypt">
                     </div>
                     <div class="field" >
                         <label for="cleartext">Text to encrypt:</label><br>
                         <textarea name="cleartext"></textarea>
                     </div>
+                    
                 </div>
                 <ul class="actions">
                     <li><input type="submit" value="Encrypt" class="primary" /></li>
@@ -43,7 +48,7 @@
                     <label>A key has been chosen for you</label>
                     {% endif %}
                     <label>Used key:  </label>
-                    <p>{{key_encrypt}}</p>
+                    <p>a: {{a_key_encrypt}}     b: {{a_key_encrypt}}</p>
                 </div>
                 <div >
                     <label>Your text:</label>
@@ -76,9 +81,13 @@
                 {% endif %}
                 
                 <div class="fields">
-                    <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_decrypt" name="key_decrypt">
+                    <div class="field">
+                        <label for="a_key_encrypt">A key (relative prime of 26 between 1 and 25):</label>
+                        <input type="text" id="a_key_encrypt" name="a_key_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="b_key_encrypt">B key (between 1 and 25):</label>
+                        <input type="text" id="b_key_encrypt" name="b_key_encrypt">
                     </div>
                     <div class="field" >
                         <label for="codedtext">Text to decrypt:</label><br>
@@ -89,7 +98,7 @@
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <li><input type="submit" value="I don't know the key" class="primary" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
