@@ -60,7 +60,7 @@ def deconvert(list):
   return string
 
 def strtomat(string, m):
-  if len(string)%m != 0:
+  if len(string)%m != 0 or len(string)==m:
     return -1
   else:
     temp = [string[index: index + m] for index in range(0, len(string), m)]

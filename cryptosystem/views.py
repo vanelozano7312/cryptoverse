@@ -277,10 +277,64 @@ def cryptosystem_view(request, name=None):
         elif name == "Hill":
             view = "hill.html"
             if request.method == "POST":
-                #encrypt
+                #encrypt text 
+                m_encrypt_text = request.POST.get("m_encrypt_text")
+                key_encrypt_text = request.POST.get("key_encrypt_text")
+                cleartext_text = request.POST.get("cleartext_text")
+                try:
+                    m_encrypt_text=int(m_encrypt_text)
+                    key_encrypt_text_list = key_encrypt_text.split()
+                    print(key_encrypt_text_list)
+                    key_encrypt_text_list=strtomat(key_encrypt_text_list, m_encrypt_text)
+                    print(key_encrypt_text_list)
+                    if key_encrypt_text_list == -1:
+                        context['mistake_encrypt_text']=True
+                    else:
+                        encode_text = encode_hill_text(key_encrypt_text_list, cleartext_text)
+                        print(encode_text)
+
+                    if encode_text == -1:
+                        context['mistake_encrypt_text']=True
+                    else:
+                        context['m_encrypt_text']=m_encrypt_text
+                        context['key_encrypt_text']=key_encrypt_text_list
+                        context['encrypted_text']=True
+                        context['cleartext_text']=cleartext_text
+                        context['encodedtext_text']=encode_text
+                        count_falla=0
+                except:
+                    pass
+
+                #decrypt text 
+                m_decrypt_text = request.POST.get("m_decrypt_text")
+                key_decrypt_text = request.POST.get("key_decrypt_text")
+                codedtext_text = request.POST.get("codedtext_text")
+                try:
+                    m_decrypt_text=int(m_decrypt_text)
+                    key_decrypt_text_list = key_decrypt_text.split()
+                    key_decrypt_text_list=strtomat(key_decrypt_text_list, m_decrypt_text)
+                    if key_decrypt_text_list == -1:
+                        context['mistake_decrypt_text']=True
+
+                    else:
+                        decode_text = decode_hill_text(key_decrypt_text_list, codedtext_text)
+
+                    if decode_text == -1:
+                        context['mistake_decrypt_text']=True
+                    else:
+                        context['m_decrypt_text']=m_decrypt_text
+                        context['key_decrypt_text']=key_decrypt_text_list
+                        context['decrypted_text']=True
+                        context['cleartext_text']=decode_text
+                        context['encodedtext_text']=codedtext_text
+                except:
+                    pass
+
+                
+                #encrypt image 
                 m_encrypt = request.POST.get("m_encrypt")
                 key_encrypt = request.POST.get("key_encrypt")
-                cleartext = request.POST.get("cleartext")
+                url = request.POST.get("urltext")
                 try:
                     m_encrypt=int(m_encrypt)
                     key_encrypt_list = key_encrypt.split()
@@ -289,8 +343,7 @@ def cryptosystem_view(request, name=None):
                     if key_encrypt_list == -1:
                         context['mistake_encrypt']=True
                     else:
-                        encode = encode_hill_text(key_encrypt_list, cleartext)
-                        print(encode)
+                        encode = encode_hill_image(key_encrypt_list, url)
 
                     if encode == -1:
                         context['mistake_encrypt']=True
@@ -299,12 +352,11 @@ def cryptosystem_view(request, name=None):
                         context['key_encrypt']=key_encrypt_list
                         context['encrypted']=True
                         context['cleartext']=cleartext
-                        context['encodedtext']=encode
                         count_falla=0
                 except:
                     pass
 
-                #decrypt
+                #decrypt image
                 m_decrypt = request.POST.get("m_decrypt")
                 key_decrypt = request.POST.get("key_decrypt")
                 codedtext = request.POST.get("codedtext")

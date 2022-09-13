@@ -4,7 +4,7 @@ import numpy as np
 from BackendReady.Utils import utils
 from BackendReady.CryptoanalysisHill import ComputeInverseKey
 
-def EncryptImage(key, url):
+def encode_hill_image(key, url):
     """
     Description
     -----------
@@ -58,7 +58,7 @@ def EncryptImage(key, url):
     encryptedImg.show()
     encryptedImg.save("result.pgm")
 
-def DecryptImage(decryptKey, imgPath):
+def decode_hill_image(decryptKey, imgPath):
     """
     Description
     -----------
