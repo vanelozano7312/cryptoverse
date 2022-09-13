@@ -1,8 +1,8 @@
-
+from IPython.display import display
 import urllib.request
 import numpy as np
-from Utils import utils
-from CryptoanalysisHill import ComputeInverseKey
+from BackendReady.Utils import utils
+from BackendReady.CryptoanalysisHill import ComputeInverseKey
 
 def EncryptImage(key, url):
     """
@@ -232,3 +232,14 @@ https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/306102097_2868887480087696_
 https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg
 https://www3.gobiernodecanarias.org/medusa/ecoescuela/sa/files/formidable/6/mondrian-1504681_960_720.png
 """
+
+# # Example 2
+# m = 2
+# n = 26
+# key = [[11, 8], [3, 7]]
+# text = "july"
+
+# encryptedText = encode_hill_text(key, text)
+# print(encryptedText)
+# # decryptedText = DecryptText(inverseKey, encryptedText)
+# # print(decryptedText)

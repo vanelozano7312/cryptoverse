@@ -59,6 +59,17 @@ def deconvert(list):
     string = string + list[i]
   return string
 
+def strtomat(string, m):
+  if len(string)%m != 0:
+    return -1
+  else:
+    temp = [string[index: index + m] for index in range(0, len(string), m)]
+    result = [list(element) for element in temp]
+    for i in range(0, m):
+        for j in range(0, m):
+            result[i][j]=int(result[i][j])
+    return result
+
 
 
 #///////////////////////////////////////////////////////////////

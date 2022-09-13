@@ -12,14 +12,18 @@
     <div class="inner">
         <section id="encrypt">
             <form action="." method="post">
-                <h2>Encrypt</h2>
+                <h2>Encrypt text</h2>
                 {% csrf_token %}
                 {% if not encrypted %}
                     
                 {% if mistake_encrypt%}
-                <label> invalid key</label>
+                <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
                 <div class="fields">
+                    <div class="field" >
+                        <label for="m_encrypt">Size m of the mxm matrix: </label>
+                        <input type="text" id="m_encrypt" name="m_encrypt">
+                    </div>
                     <div class="field">
                         <label>Key (square matrix):</label>
                         <label for="key_encrypt">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
@@ -40,10 +44,7 @@
             <div>          
                 {% if encrypted %}
                 <div >
-                    {% if failed_encrypt %}
-                    <label>A key has been chosen for you</label>
-                    {% endif %}
-                    <label>Used key:  </label>
+                    <label>Used matrix:  </label>
                     <p>{{key_encrypt}}</p>
                 </div>
                 <div >
@@ -68,17 +69,22 @@
        
         <section id="decrypt">
             <form action="." method="post">
-                <h2>Decrypt</h2>
+                <h2>Decrypt text</h2>
                 {% csrf_token %}
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label> {{countfail}} mistakes</label>
+                <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
                 
                 <div class="fields">
+                    <div class="field" >
+                        <label for="m_decrypt">Size m of the mxm matrix: </label>
+                        <input type="text" id="m_decrypt" name="m_decrypt">
+                    </div>
                     <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
+                        <label>Key (square matrix):</label>
+                        <label for="key_decrypt">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
                         <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >

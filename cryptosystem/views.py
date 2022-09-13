@@ -17,6 +17,9 @@ def change_page(name):
         page=name
         count_falla=0
 
+
+
+
 #views for every cryptosystem
 def cryptosystem_view(request, name=None):
     cryptosystem_obj = None
@@ -273,6 +276,58 @@ def cryptosystem_view(request, name=None):
         ##HILL CYPHER
         elif name == "Hill":
             view = "hill.html"
+            if request.method == "POST":
+                #encrypt
+                m_encrypt = request.POST.get("m_encrypt")
+                key_encrypt = request.POST.get("key_encrypt")
+                cleartext = request.POST.get("cleartext")
+                try:
+                    m_encrypt=int(m_encrypt)
+                    key_encrypt_list = key_encrypt.split()
+                    key_encrypt_list=strtomat(key_encrypt_list, m_encrypt)
+                    print(key_encrypt_list)
+                    if key_encrypt_list == -1:
+                        context['mistake_encrypt']=True
+                    else:
+                        encode = encode_hill_text(key_encrypt_list, cleartext)
+                        print(encode)
+
+                    if encode == -1:
+                        context['mistake_encrypt']=True
+                    else:
+                        context['m_encrypt']=m_encrypt
+                        context['key_encrypt']=key_encrypt_list
+                        context['encrypted']=True
+                        context['cleartext']=cleartext
+                        context['encodedtext']=encode
+                        count_falla=0
+                except:
+                    pass
+
+                #decrypt
+                m_decrypt = request.POST.get("m_decrypt")
+                key_decrypt = request.POST.get("key_decrypt")
+                codedtext = request.POST.get("codedtext")
+                try:
+                    m_decrypt=int(m_decrypt)
+                    key_decrypt_list = key_decrypt.split()
+                    key_decrypt_list=strtomat(key_decrypt_list, m_decrypt)
+                    if key_decrypt_list == -1:
+                        context['mistake_decrypt']=True
+
+                    else:
+                        decode = decode_hill_text(key_decrypt_list, codedtext)
+
+                    if decode == -1:
+                        context['mistake_decrypt']=True
+                    else:
+                        context['m_decrypt']=m_decrypt
+                        context['key_decrypt']=key_decrypt_list
+                        context['decrypted']=True
+                        context['cleartext']=decode
+                        context['encodedtext']=codedtext
+                except:
+                    pass
 
         ##VIGENERE CYPHER
         elif name == "Vigenere":
