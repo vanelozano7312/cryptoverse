@@ -218,6 +218,56 @@ def cryptosystem_view(request, name=None):
         ##PERMUTATION CYPHER
         elif name == "Permutation":
             view = "permutation.html"
+            if request.method == "POST":
+
+                #encrypt
+                size_encrypt = request.POST.get("size_encrypt")
+                key_encrypt = request.POST.get("key_encrypt")
+                cleartext = request.POST.get("cleartext")
+                try:
+                    size_encrypt=int(size_encrypt)
+                    key_encrypt=int(key_encrypt)
+                    print(size_encrypt, key_encrypt, cleartext)
+                    encode, size_encrypt, key_encrypt = encode_permu(cleartext, size_encrypt, key_encrypt, count_falla)
+                    print(encode)
+                    if encode == -1:
+                        count_falla=count_falla+1
+                        context['mistake_encrypt']=True
+                        context['countfail']=count_falla
+                    else:
+                        if count_falla==2:
+                            context['failed_encrypt']=True
+                        context['size_encrypt']=size_encrypt
+                        context['key_encrypt']=key_encrypt
+                        context['encrypted']=True
+                        context['cleartext']=cleartext
+                        context['encodedtext']=encode
+                        count_falla=0
+                except:
+                    pass
+
+                #decrypt
+                size_decrypt = request.POST.get("size_decrypt")
+                key_decrypt = request.POST.get("key_decrypt")
+                codedtext = request.POST.get("codedtext")
+                try:
+                    size_decrypt=int(size_decrypt)
+                    key_decrypt=int(key_decrypt)
+                    decode= decode_permu(codedtext, size_decrypt, key_decrypt, count_falla)
+                    if decode == -1:
+                        context['mistake_decrypt']=True
+                    else:
+                        if count_falla==2:
+                            context['failed_decrypt']=True
+                        count_falla=0
+                        context['size_decrypt']=size_decrypt
+                        context['key_decrypt']=key_decrypt
+                        context['decrypted']=True
+                        context['cleartext']=decode
+                        context['encodedtext']=codedtext
+                except:
+                    pass
+
         ##HILL CYPHER
         elif name == "Hill":
             view = "hill.html"

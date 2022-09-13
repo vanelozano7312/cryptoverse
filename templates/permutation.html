@@ -21,7 +21,11 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="key_encrypt">Key (between 1 and 25):</label>
+                        <label for="size_encrypt">Size (lower than the length of the processed text):</label>
+                        <input type="text" id="size_encrypt" name="size_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="key_encrypt">Key (between 1 and size):</label>
                         <input type="text" id="key_encrypt" name="key_encrypt">
                     </div>
                     <div class="field" >
@@ -43,7 +47,7 @@
                     <label>A key has been chosen for you</label>
                     {% endif %}
                     <label>Used key:  </label>
-                    <p>{{key_encrypt}}</p>
+                    <p>size: {{size_encrypt}}   key: {{key_encrypt}}</p>
                 </div>
                 <div >
                     <label>Your text:</label>
@@ -76,8 +80,12 @@
                 {% endif %}
                 
                 <div class="fields">
+                    <div class="field">
+                        <label for="size_encrypt">Size (lower than the length of the processed text):</label>
+                        <input type="text" id="size_encrypt" name="size_encrypt">
+                    </div>
                     <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
+                        <label for="key_decrypt">Key (between 1 and size):</label>
                         <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >
@@ -89,7 +97,7 @@
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <li><input type="submit" value="I don't know the key" class="primary" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
@@ -101,7 +109,7 @@
                 {% else %}
                 <div >
                     <label>Used key:  </label>
-                    <p>{{key_decrypt}}</p>
+                    <p>size: {{size_encrypt}}   key: {{key_encrypt}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>

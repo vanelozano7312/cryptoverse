@@ -129,42 +129,6 @@ Then returns the message encrypted
 
 
 
-###### LIMPIO
-def encode_sust(palabrast,key,count_falla):
-  """
-This codification method receives a message, and a key
-From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-The key is a list of letters that, in order, replace one of the characters in the message. non alphabet characters and duplicates are not allowed
-If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-The codification method substitutes each letter by its replacement as stated in the key.
-Then returns the message encrypted
-  """
-
-  dic = {'a':"", 'b':"", 'c':"", 'd':"", 'e':"", 'f':"", 'g':"", 'h':"", 'i':"", 'j':"", 'k':"", 'l':"",'m':"", 'n':"", 'o':"", 'p':"", 'q':"", 'r':"", 's':"", 't':"", 'u':"", 'v':"", 'w':"", 'x':"", 'y':"", 'z':""}
-  lista = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-  palabrals = unify(palabrast)
-  count = 0
-  for item in key:
-    if item not in lista:
-      return -1, -1
-    else:
-      if item not in dic.values():
-        dic[lista[count]] = item
-        count = count + 1
-      else:
-        return -1, -1 
-  if count_falla == 2:
-    listaran = lista[:]
-    ran.shuffle(listaran)
-    for item in listaran:
-      if item not in dic.values():
-        dic[lista[count]] = item
-  string = ""
-  for i in range(len(palabrals)):
-    palabrals[i] = dic[palabrals[i]]
-    string = string + palabrals[i]
-  return string, key
-
 
 
 ####LIMPIO
@@ -198,6 +162,43 @@ Then returns the message encrypted
     return palabrast, a, b
   else:
     return -1,-1, -1
+
+
+
+####LIMPIO
+def encode_permu(string, tama, key, count_falla):
+  """
+This codification method receives a message, and a key
+From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+The key is composed by a and b, a needs to bea positive number lower than the length of the processed text, b requires to be between 1 and a.
+If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+The codification method takes chunks of size a and moves each letter b spaces to the right, if the letter is in the last position of the chunk, it goes back to the first.
+Then returns the message encrypted
+  """
+
+  palabrals = unify(string)
+  while True:
+    if 1 <= tama <=len(palabrals):
+      break
+    return -1, -1, -1
+  while True:
+    if 1<= key < tama:
+      break
+    return -1, -1, -1
+  chunks = [palabrals[x:x+tama] for x in range(0, len(palabrals), tama)]
+  final=[]
+  for x in chunks:
+    test = []
+    for i in range(key):
+      test.append(x[(len(x)-(key-i))%len(x)])
+      if(i>=len(x)-1):
+        break
+    for i in range(len(x)-key):
+      test.append(x[i])
+    final.extend(test)
+  final = convert(final)
+  final = deconvert(final)
+  return final, tama, key
   
     
 #///////////////////////////////////////////////////////////////
@@ -246,3 +247,37 @@ def decode_mult(string, key, count_fallas):
       lista[j] = int((lista[j]*i)%26)
     res = deconvert(lista)
   return res
+
+  #### LIMPIO
+def permufiesta(palabra,m,l):
+  chunks = [palabra[x:x+m] for x in range(0, len(palabra), m)]
+  final=[]
+  for x in chunks:
+    test = []
+    for i in range(l,len(x)):
+      test.append(x[i])
+    for i in range(l):
+      test.append(x[i])
+      if(i>=len(x)-1):
+        break
+    final.extend(test)
+  final = convert(final)
+  final = deconvert(final)
+  return final
+
+#### LIMPIO
+def decode_permu(string, tama, key, count_falla):
+  palabra = unify(string)
+  if count_falla > 2:
+    final = []
+    for i in range(1,len(palabra)+1):
+      final.append(permufiesta(palabra,i))
+    
+    return final
+  if 1 <= tama <= len(palabra):
+    if 1 <= key < tama:
+      return permufiesta(palabra,tama,key)
+    else:
+      return -1
+  else:
+    return -1
