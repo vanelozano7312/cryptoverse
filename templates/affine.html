@@ -77,17 +77,17 @@
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label> {{countfail}} mistakes</label>
+                <label>Invalid key</label>
                 {% endif %}
                 
                 <div class="fields">
                     <div class="field">
-                        <label for="a_key_encrypt">A key (relative prime of 26 between 1 and 25):</label>
-                        <input type="text" id="a_key_encrypt" name="a_key_encrypt">
+                        <label for="a_key_decrypt">A key (relative prime of 26 between 1 and 25):</label>
+                        <input type="text" id="a_key_decrypt" name="a_key_decrypt">
                     </div>
                     <div class="field">
-                        <label for="b_key_encrypt">B key (between 1 and 25):</label>
-                        <input type="text" id="b_key_encrypt" name="b_key_encrypt">
+                        <label for="b_key_decrypt">B key (between 1 and 25):</label>
+                        <input type="text" id="b_key_decrypt" name="b_key_decrypt">
                     </div>
                     <div class="field" >
                         <label for="codedtext">Text to decrypt:</label><br>

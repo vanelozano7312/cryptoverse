@@ -76,13 +76,13 @@
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label> {{countfail}} mistakes</label>
+                <label>Invalid key</label>
                 {% endif %}
                 
                 <div class="fields">
                     <div class="field">
-                        <label for="size_encrypt">Size (lower than the length of the processed text):</label>
-                        <input type="text" id="size_encrypt" name="size_encrypt">
+                        <label for="size_decrypt">Size (lower than the length of the processed text):</label>
+                        <input type="text" id="size_decrypt" name="size_decrypt">
                     </div>
                     <div class="field ">
                         <label for="key_decrypt">Key (between 1 and size):</label>

@@ -164,8 +164,6 @@ Then returns the message encrypted
     return -1,-1, -1
 
 
-
-####LIMPIO
 def encode_permu(string, tama, key, count_falla):
   """
 This codification method receives a message, and a key
@@ -175,8 +173,11 @@ If the user fails 3 times providing a valid key, the program chooses randomly a 
 The codification method takes chunks of size a and moves each letter b spaces to the right, if the letter is in the last position of the chunk, it goes back to the first.
 Then returns the message encrypted
   """
-
+  
   palabrals = unify(string)
+  if count_falla == 2:
+    tama = ran.randint(1,len(palabrals))
+    key = ran.randint(1,tama)
   while True:
     if 1 <= tama <=len(palabrals):
       break
@@ -199,7 +200,7 @@ Then returns the message encrypted
   final = convert(final)
   final = deconvert(final)
   return final, tama, key
-  
+
     
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////
@@ -249,6 +250,31 @@ def decode_mult(string, key, count_fallas):
   return res
 
   #### LIMPIO
+
+def decode_afin(string, a, b, count_fallas):
+  alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  lista = unify(string)
+  claves_validas = rela_primes()
+  inversas_validas = inver_primes()
+  for i in range(len(claves_validas)):
+    if claves_validas[i] == a:
+      ai = inversas_validas[i]
+    else:
+      return -1,-1,-1
+  if a in claves_validas:
+    if 1 <= b <= 25:
+      palabrals = convert(lista)
+      for i in range(len(palabrals)):
+        palabrals[i] = (((palabrals[i] - b)%26)*ai)%26
+      palabrast = deconvert(palabrals)
+      print(palabrast)
+      return palabrast, a, b
+    else:
+      return -1,-1,-1
+  else:
+    return -1,-1,-1
+
+
 def permufiesta(palabra,m,l):
   chunks = [palabra[x:x+m] for x in range(0, len(palabra), m)]
   final=[]
@@ -265,10 +291,11 @@ def permufiesta(palabra,m,l):
   final = deconvert(final)
   return final
 
+
 #### LIMPIO
 def decode_permu(string, tama, key, count_falla):
   palabra = unify(string)
-  if count_falla > 2:
+  if count_falla == 2:
     final = []
     for i in range(1,len(palabra)+1):
       final.append(permufiesta(palabra,i))

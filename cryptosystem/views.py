@@ -194,21 +194,22 @@ def cryptosystem_view(request, name=None):
                     pass
 
                 #decrypt
-                a_key_encrypt = request.POST.get("a_key_encrypt")
-                b_key_encrypt = request.POST.get("b_key_encrypt")
+                a_key_decrypt = request.POST.get("a_key_decrypt")
+                b_key_decrypt = request.POST.get("b_key_decrypt")
                 codedtext = request.POST.get("codedtext")
                 try:
-                    a_key_encrypt=int(a_key_encrypt)
-                    b_key_encrypt=int(b_key_encrypt)
-                    decode= decode_despla(codedtext, key_decrypt, count_falla)
+                    a_key_decrypt=int(a_key_decrypt)
+                    b_key_decrypt=int(b_key_decrypt)
+                    decode, a_key_decrypt, b_key_decrypt= decode_afin(codedtext, a_key_decrypt, b_key_decrypt, count_falla)
+                    print(decode)
                     if decode == -1:
                         context['mistake_decrypt']=True
                     else:
                         if count_falla==2:
                             context['failed_decrypt']=True
                         count_falla=0
-                        context['a_key_encrypt']=a_key_encrypt
-                        context['b_key_encrypt']=b_key_encrypt
+                        context['a_key_decrypt']=a_key_decrypt
+                        context['b_key_decrypt']=b_key_decrypt
                         context['decrypted']=True
                         context['cleartext']=decode
                         context['encodedtext']=codedtext
@@ -235,7 +236,7 @@ def cryptosystem_view(request, name=None):
                         context['mistake_encrypt']=True
                         context['countfail']=count_falla
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_encrypt']=True
                         context['size_encrypt']=size_encrypt
                         context['key_encrypt']=key_encrypt
