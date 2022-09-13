@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Cryptosystem 
 from main import *
 from BackendReady.Vigenere import *
+from BackendReady.CryptoanalysisVigenere import *
 from BackendReady.Hill import *
 
 #Global variables and function to count the user mistakes and restart 
@@ -49,7 +50,7 @@ def cryptosystem_view(request, name=None):
                         context['mistake_encrypt']=True
                         context['countfail']=count_falla
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_encrypt']=True
                         context['key_encrypt']=key_encrypt
                         context['encrypted']=True
@@ -67,9 +68,11 @@ def cryptosystem_view(request, name=None):
                     decode= decode_despla(codedtext, key_decrypt, count_falla)
                     print(decode)
                     if decode == -1:
+                        count_falla=count_falla+1
+                        context['countfail']=count_falla
                         context['mistake_decrypt']=True
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_decrypt']=True
                         count_falla=0
                         context['key_decrypt']=key_decrypt
@@ -78,6 +81,8 @@ def cryptosystem_view(request, name=None):
                         context['encodedtext']=codedtext
                 except:
                     pass
+
+            
 
         ##MULTIPLICATION CYPHER
         elif name == "Multiplication":
@@ -427,6 +432,23 @@ def cryptosystem_view(request, name=None):
                 except:
                     pass
 
+                # #ca
+                # key_ca = request.POST.get("key_decrypt")
+                # codedtextca = request.POST.get("codedtext")
+                # try:
+                #     key_ca=int(key_ca)
+                #     decodeca= GuessKeywordLength(key_ca, codedtextca)
+                #     decodeca=GuessKeyword(decodeca, codedtextca)
+                #     if decodeca == -1:
+                #         context['mistake_decrypt']=True
+                #     else:
+                #         count_falla=0
+                #         context['key_ca']=key_ca
+                #         context['ca']=True
+                #         context['cleartextca']=decodeca
+                #         context['encodedtextca']=codedtextca
+                # except:
+                #     pass
 
     return render(request, view, context=context)
 

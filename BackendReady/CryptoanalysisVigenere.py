@@ -1,4 +1,4 @@
-from Utils import utils
+from BackendReady.Utils import utils
 def CreateSubstrings(m, text):
     """
     Description
@@ -115,7 +115,7 @@ def GetAverage(l):
     """
     return sum(l) / len(l)
 
-def GuessKeywordLegth(k, text):
+def GuessKeywordLength(k, text):
     """
     Description
     -----------

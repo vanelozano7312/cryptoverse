@@ -125,6 +125,53 @@
     </div>
     
 </section>
+<!-- 
+<section>
+    <form action="." method="post">
+        <h2>Cryptoanalisis</h2>
+        {% csrf_token %}
+        {% if not ca %}
+            
+        <div class="fields">
+            <div class="field">
+                <label for="key_ca">Possible keyword lenght:</label>
+                <input type="text" id="key_ca" name="key_ca">
+            </div>
+            <div class="field" >
+                <label for="codedtextca">Text to analize:</label><br>
+                <textarea name="codedtextca"></textarea>
+            </div>
+        </div>
+        <ul class="actions">
+            <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
+            <li><input type="reset" value="Clear" /></li>
+        </ul>
 
+        {% endif %}
+    </form>
+    <div>          
+        {% if ca %}
+        <div >
+            <label>Used keyword:  </label>
+            <p>{{key_decrypt}}</p>
+        </div>
+        <div >
+            <label>Clear text:  </label>
+            <p>{{cleartext}}</p>
+        </div>
+        <div >
+            <label>Encoded text:</label>
+            <p>{{encodedtext}}</p>
+        </div>
+        
+        <ul class="actions">
+            <form action="." method="get">
+                <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+            </form>
+
+        </ul>
+        {% endif %}
+    </div>
+</section> -->
 
 {% endblock content %}

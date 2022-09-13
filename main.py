@@ -76,7 +76,7 @@ def strtomat(string, m):
 #//////////////////////METODOS DE CODIFICACION///////////////////
 #////////////////////////////////////////////////////////////////
 
-####LIMPIO
+###LIMPIO
 def encode_despla(palabrast,key,count_falla):
   """
 This codification method receives a message, and a key
@@ -105,8 +105,6 @@ Then returns the message encrypted
     return palabrast, key
   else:
     return -1, -1
-
-
 
 ####LIMPIO
 def encode_mult(palabrast,key,count_falla):
@@ -254,6 +252,23 @@ Then returns the message encrypted
 #//////////////////////METODOS DE DECODIFICACION///////////////////
 #////////////////////////////////////////////////////////////////
 #### LIMPIO
+# def decode_despla(string, key, count_fallas):
+#   if 1<= key<=26:
+#     lista = unify(string)
+#     lista = convert(lista)
+#     for j in range(len(lista)):
+#       lista[j] = (lista[j]-key)%26
+#     string = deconvert(lista)
+#     return string
+#   else:
+#     return -1
+#   for i in range(25):
+#     lista = unify(string)
+#     lista = convert(lista)
+#     for j in range(len(lista)):
+#       lista[j] = (lista[j]+1)%26
+#     string = deconvert(lista)
+#   return string
 def decode_despla(string, key, count_fallas):
   if 1<= key<=26:
     lista = unify(string)
@@ -262,15 +277,19 @@ def decode_despla(string, key, count_fallas):
       lista[j] = (lista[j]-key)%26
     string = deconvert(lista)
     return string
+  elif count_fallas>=2:
+    all=[]
+    for i in range(25):
+      lista = unify(string)
+      lista = convert(lista)
+      for j in range(len(lista)):
+        lista[j] = (lista[j]+1)%26
+      string = deconvert(lista)
+      all.append(string)
+
+    return all
   else:
     return -1
-  for i in range(25):
-    lista = unify(string)
-    lista = convert(lista)
-    for j in range(len(lista)):
-      lista[j] = (lista[j]+1)%26
-    string = deconvert(lista)
-  return string
 
 
 ##### LIMPIO
