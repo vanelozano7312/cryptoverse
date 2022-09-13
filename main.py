@@ -292,10 +292,34 @@ def decode_despla(string, key, count_fallas):
     return -1
 
 
-##### LIMPIO
+# ##### LIMPIO
+# def decode_mult(string, key, count_fallas):
+#   inver_validas = inver_primes()
+#   keys = rela_primes()
+#   if key in keys:
+#     lista = unify(string)
+#     lista = convert(lista)
+#     for i in range(len(keys)):
+#       if keys[i] == key:
+#         key = inver_validas[i]
+#     for j in range(len(lista)):  
+#       lista[j] = int((lista[j]*key)%26)
+#     string = deconvert(lista)
+#     return string
+#   else:
+#     return -1
+#   for i in inver_validas:
+#     lista = unify(string)
+#     lista = convert(lista)
+#     for j in range(len(lista)):
+#       lista[j] = int((lista[j]*i)%26)
+#     res = deconvert(lista)
+#   return res
+
 def decode_mult(string, key, count_fallas):
   inver_validas = inver_primes()
   keys = rela_primes()
+  results = []
   if key in keys:
     lista = unify(string)
     lista = convert(lista)
@@ -305,18 +329,18 @@ def decode_mult(string, key, count_fallas):
     for j in range(len(lista)):  
       lista[j] = int((lista[j]*key)%26)
     string = deconvert(lista)
-    return string
+    return string, key
+  elif count_fallas >= 2:
+    for i in inver_validas:
+      lista = unify(string)
+      lista = convert(lista)
+      for j in range(len(lista)):
+        lista[j] = int((lista[j]*i)%26)
+        res = deconvert(lista)
+        results.append(res)
+    return results, key
   else:
-    return -1
-  for i in inver_validas:
-    lista = unify(string)
-    lista = convert(lista)
-    for j in range(len(lista)):
-      lista[j] = int((lista[j]*i)%26)
-    res = deconvert(lista)
-  return res
-
-  #### LIMPIO
+    return -1,-1
 
 
 #LIMPIO

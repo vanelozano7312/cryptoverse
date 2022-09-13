@@ -82,8 +82,6 @@ def cryptosystem_view(request, name=None):
                 except:
                     pass
 
-            
-
         ##MULTIPLICATION CYPHER
         elif name == "Multiplication":
             view = "multiplication.html"
@@ -114,12 +112,13 @@ def cryptosystem_view(request, name=None):
                 codedtext = request.POST.get("codedtext")
                 try:
                     key_decrypt=int(key_decrypt)
-                    decode= decode_mult(codedtext, key_decrypt, count_falla)
-                    print(decode)
+                    decode, key_decrypt= decode_mult(codedtext, key_decrypt, count_falla)
                     if decode == -1:
+                        count_falla=count_falla+1
+                        context['countfail']=count_falla
                         context['mistake_decrypt']=True
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_decrypt']=True
                         count_falla=0
                         context['key_decrypt']=key_decrypt

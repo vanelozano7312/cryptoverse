@@ -72,7 +72,7 @@
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label>Invalid key</label>
+                <label>{{countfail}} mistakes</label>
                 {% endif %}
                 
                 <div class="fields">
@@ -98,6 +98,16 @@
                 {% if decrypted %}
                 {% if failed_decrypt %}
                 <label>This are all the posible text:</label>
+                <div >
+                    <label>Clear texts:  </label>
+                    <p>{{cleartext}}</p>
+                </div>
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
                 {% else %}
                 <div >
                     <label>Used key:  </label>
