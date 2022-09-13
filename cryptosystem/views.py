@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Cryptosystem 
 from main import *
 from BackendReady.Vigenere import *
+from BackendReady.Hill import *
 
 #Global variables and function to count the user mistakes and restart 
 #that count every time the user goes into another page
@@ -128,14 +129,13 @@ def cryptosystem_view(request, name=None):
                 key_encrypt = request.POST.get("key_encrypt")
                 cleartext = request.POST.get("cleartext")
                 try:
-                    key_encrypt=int(key_encrypt)
-                    encode, key_encrypt = encode_mult(cleartext, key_encrypt, count_falla)
+                    encode, key_encrypt = encode_sust(cleartext, key_encrypt, count_falla)
                     if encode == -1:
                         count_falla=count_falla+1
                         context['mistake_encrypt']=True
                         context['countfail']=count_falla
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_encrypt']=True
                         context['key_encrypt']=key_encrypt
                         context['encrypted']=True
@@ -149,13 +149,13 @@ def cryptosystem_view(request, name=None):
                 key_decrypt = request.POST.get("key_decrypt")
                 codedtext = request.POST.get("codedtext")
                 try:
-                    key_decrypt=int(key_decrypt)
-                    decode= decode_mult(codedtext, key_decrypt, count_falla)
-                    print(decode)
+                    decode, key_decrypt= decode_sust(codedtext, key_decrypt, count_falla)
                     if decode == -1:
+                        count_falla=count_falla+1
+                        context['countfail']=count_falla
                         context['mistake_decrypt']=True
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_decrypt']=True
                         count_falla=0
                         context['key_decrypt']=key_decrypt

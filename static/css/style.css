@@ -12,3 +12,90 @@ cipher {
 }
 
 
+/* Encrypt and Decrypt */
+
+#subs {
+  border-bottom: solid 1px rgba(212, 212, 255, 0.1);
+  overflow-x: hidden;
+}
+
+  #subs > .inner {
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    padding: 0 ;
+  }
+    #subs > .innert > :nth-child(3n - 1) {
+      border-right: solid 1px rgba(212, 212, 255, 0.1);
+      width: 33%;
+    }
+
+    #subs > .innert > :nth-child(3n - 2) {
+      border-right: solid 1px rgba(212, 212, 255, 0.1);
+      width: 33%;
+    }
+
+    #subs > .innert > :nth-child(3n ) {
+      border-right: solid 1px rgba(212, 212, 255, 0.1);
+      width: 33%;
+    }
+
+    #subs > .inner > :nth-child(2n - 1) {
+      border-right: solid 1px rgba(212, 212, 255, 0.1);
+      width: 50%;
+    }
+
+    #subs > .inner > :nth-child(2n) {
+      width: 50%;
+    }
+
+    #subs > .inner > .split {
+      padding: 0;
+    }
+
+      #subs > .inner > .split > * {
+        position: relative;
+      }
+
+        #subs > .inner > .split > *:before {
+          border-top: solid 1px rgba(212, 212, 255, 0.1);
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          width: calc(100vw + 3em);
+        }
+
+      #subs > .inner > .split > :first-child:before {
+        display: none;
+      }
+
+  @media screen and (max-width: 980px) {
+
+    #subs > .inner {
+      display: block;
+    }
+
+      #subs > .inner > :nth-child(2n - 1) {
+        border-right: 0;
+        width: 100%;
+      }
+
+      #subs > .inner > :nth-child(2n) {
+        padding-left: 0;
+        width: 100%;
+      }
+
+      #subs > .inner > .split > * {
+      }
+
+
+  }
+
+  @media screen and (max-width: 736px) {
+
+    #subs > .inner > :nth-child(2n - 1) {
+    }
+
+  }

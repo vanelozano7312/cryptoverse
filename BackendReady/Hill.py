@@ -1,7 +1,4 @@
-from PIL import Image
-import requests
-from PIL import ImageOps
-from IPython.display import display
+
 import urllib.request
 import numpy as np
 from Utils import utils
@@ -106,7 +103,7 @@ def DecryptImage(decryptKey, imgPath):
     #decryptedImg.show()
     decryptedImg.save("out.png")
 
-def EncryptText(key, text):
+def encode_hill_text(key, text):
     """
     Description
     -----------
@@ -157,7 +154,7 @@ def EncryptText(key, text):
     # Return the encrypted text
     return encryptedText
 
-def DecryptText(decryptKey, text):
+def decode_hill_text(decryptKey, text):
     """
     Description
     -----------

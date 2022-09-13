@@ -21,8 +21,9 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="key_encrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_encrypt" name="key_encrypt">
+                        <label>Key (list of letters that, in order, replace each one of the letters in the alfabet)  </label>
+                        <label for="key_encrypt">ABCDEFGHIJKLMNOPQRSTUVWXYZ</label>
+                        <input type="text" maxlength="26" id="key_encrypt" name="key_encrypt">
                     </div>
                     <div class="field" >
                         <label for="cleartext">Text to encrypt:</label><br>
@@ -43,6 +44,7 @@
                     <label>A key has been chosen for you</label>
                     {% endif %}
                     <label>Used key:  </label>
+                    <label>ABCDEFGHIJKLMNOPQRSTUVWXYZ</label>
                     <p>{{key_encrypt}}</p>
                 </div>
                 <div >
@@ -72,13 +74,14 @@
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label> {{countfail}} mistakes</label>
+                <label>{{countfail}} mistakes</label>
                 {% endif %}
                 
                 <div class="fields">
                     <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_decrypt" name="key_decrypt">
+                        <label>Key (list of letters that, in order, replace each one of the letters in the alfabet)  </label>
+                        <label for="key_encrypt">ABCDEFGHIJKLMNOPQRSTUVWXYZ</label>
+                        <input type="text" maxlength="26" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >
                         <label for="codedtext">Text to decrypt:</label><br>
@@ -89,7 +92,7 @@
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <li><input type="submit" value="I don't know the key" class="primary" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
@@ -97,10 +100,11 @@
             <div>          
                 {% if decrypted %}
                 {% if failed_decrypt %}
-                <label>This are all the posible text:</label>
-                {% else %}
+                <label>A random key was chosen</label>
+                {% endif %}
                 <div >
                     <label>Used key:  </label>
+                    <label>ABCDEFGHIJKLMNOPQRSTUVWXYZ</label>
                     <p>{{key_decrypt}}</p>
                 </div>
                 <div >
@@ -116,9 +120,7 @@
                     <form action="." method="get">
                         <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
                     </form>
-
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>
