@@ -96,13 +96,42 @@ Then returns the message encrypted
     return -1, -1
 
 
+
+####LIMPIO
+def encode_mult(palabrast,key,count_falla):
+  """
+This codification method receives a message, and a key
+From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+The key is required to be in the list of relative prime numbers with 26.
+If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+The codification method adds the key value to each number and transforms the result back to an alphabetical value.
+Then returns the message encrypted
+  """
+
+  palabrals = unify(palabrast)
+  claves_validas = rela_primes()
+  if key in claves_validas:
+      palabrals = convert(palabrals)
+      for i in range(len(palabrals)):
+        palabrals[i] = (palabrals[i] * key)%26
+      palabrast = deconvert(palabrals)
+      return palabrast, key
+  if count_falla == 2:
+    key = claves_validas[ran.randint(1,len(claves_validas))]
+    palabrals = convert(palabrals)
+    for i in range(len(palabrals)):
+      palabrals[i] = (palabrals[i] * key)%26
+    palabrast = deconvert(palabrals)
+    return palabrast, key
+  else:
+    return -1,-1
+
     
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////
 #////////////////////////////////////////////////////////////////
 #### LIMPIO
-####mbwjebftnvzmjoeb
-####xmhupmqegzmoaeufmxuzpm (12)
 def decode_despla(string, key, count_fallas):
   if 1<= key<=26:
     lista = unify(string)
@@ -111,6 +140,8 @@ def decode_despla(string, key, count_fallas):
       lista[j] = (lista[j]-key)%26
     string = deconvert(lista)
     return string
+  else:
+    return -1
   for i in range(25):
     lista = unify(string)
     lista = convert(lista)
@@ -118,3 +149,28 @@ def decode_despla(string, key, count_fallas):
       lista[j] = (lista[j]+1)%26
     string = deconvert(lista)
   return string
+
+
+##### LIMPIO
+def decode_mult(string, key, count_fallas):
+  inver_validas = inver_primes()
+  keys = rela_primes()
+  if key in keys:
+    lista = unify(string)
+    lista = convert(lista)
+    for i in range(len(keys)):
+      if keys[i] == key:
+        key = inver_validas[i]
+    for j in range(len(lista)):  
+      lista[j] = int((lista[j]*key)%26)
+    string = deconvert(lista)
+    return string
+  else:
+    return -1
+  for i in inver_validas:
+    lista = unify(string)
+    lista = convert(lista)
+    for j in range(len(lista)):
+      lista[j] = int((lista[j]*i)%26)
+    res = deconvert(lista)
+  return res
