@@ -1,4 +1,4 @@
-from Utils import utils
+from BackendReady.Utils import utils
 
 def GetKey(keyword):
     """
@@ -29,7 +29,7 @@ def GetKey(keyword):
         
         return key
 
-def Encrypt(keyword, text, failures):
+def encode_vigenere(keyword, text, failures):
     """
     Description
     -----------
@@ -51,23 +51,35 @@ def Encrypt(keyword, text, failures):
     string, string : The first string is the text encrypted and the second one
     is the keyword used
     """
-    if failures == 3:
+    if len(utils.preProcessText(keyword)) != 0:
+            
+        text = utils.preProcessText(text)
+        keyword = utils.preProcessText(keyword)
+        key = GetKey(keyword)
+        m = len(key)
+
+        encryptedText = ""
+        for i in range(0, len(text)):
+            encryptedText += utils.GetLetter((utils.GetCode(text[i]) + (key[i % m])) % 26)
+        return encryptedText, keyword
+
+    elif failures >= 2:
         keyword = utils.GetRandomString(utils.GetRandomInteger(len(text)))
-    elif len(utils.preProcessText(keyword)) == 0:
-        return -1
-    
-    text = utils.preProcessText(text)
-    keyword = utils.preProcessText(keyword)
-    key = GetKey(keyword)
-    m = len(key)
+        
+        text = utils.preProcessText(text)
+        keyword = utils.preProcessText(keyword)
+        key = GetKey(keyword)
+        m = len(key)
 
-    encryptedText = ""
-    for i in range(0, len(text)):
-        encryptedText += utils.GetLetter((utils.GetCode(text[i]) + (key[i % m])) % 26)
-    
-    return encryptedText, keyword
+        encryptedText = ""
+        for i in range(0, len(text)):
+            encryptedText += utils.GetLetter((utils.GetCode(text[i]) + (key[i % m])) % 26)
+        
+        return encryptedText, keyword
+    else:
+        return -1, -1
 
-def Decrypt(keyword, text):
+def decode_vigenere(keyword, text):
     """
     Description
     -----------

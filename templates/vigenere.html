@@ -21,7 +21,7 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="key_encrypt">Key (between 1 and 25):</label>
+                        <label for="key_encrypt">Keyword:</label>
                         <input type="text" id="key_encrypt" name="key_encrypt">
                     </div>
                     <div class="field" >
@@ -40,9 +40,9 @@
                 {% if encrypted %}
                 <div >
                     {% if failed_encrypt %}
-                    <label>A key has been chosen for you</label>
+                    <label>A keyword has been chosen for you</label>
                     {% endif %}
-                    <label>Used key:  </label>
+                    <label>Used keyword:  </label>
                     <p>{{key_encrypt}}</p>
                 </div>
                 <div >
@@ -72,12 +72,12 @@
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label> {{countfail}} mistakes</label>
+                <label> Invalid key</label>
                 {% endif %}
                 
                 <div class="fields">
                     <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
+                        <label for="key_decrypt">Keyword:</label>
                         <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >
@@ -89,7 +89,7 @@
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <li><input type="submit" value="I don't know the key" class="primary" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
@@ -100,7 +100,7 @@
                 <label>This are all the posible text:</label>
                 {% else %}
                 <div >
-                    <label>Used key:  </label>
+                    <label>Used keyword:  </label>
                     <p>{{key_decrypt}}</p>
                 </div>
                 <div >

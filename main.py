@@ -251,17 +251,16 @@ def decode_mult(string, key, count_fallas):
 
   #### LIMPIO
 
+
 def decode_afin(string, a, b, count_fallas):
   alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
   lista = unify(string)
   claves_validas = rela_primes()
   inversas_validas = inver_primes()
-  for i in range(len(claves_validas)):
-    if claves_validas[i] == a:
-      ai = inversas_validas[i]
-    else:
-      return -1,-1,-1
   if a in claves_validas:
+    for i in range(len(claves_validas)):
+      if claves_validas[i] == a:
+        ai = inversas_validas[i]
     if 1 <= b <= 25:
       palabrals = convert(lista)
       for i in range(len(palabrals)):
@@ -273,7 +272,6 @@ def decode_afin(string, a, b, count_fallas):
       return -1,-1,-1
   else:
     return -1,-1,-1
-
 
 def permufiesta(palabra,m,l):
   chunks = [palabra[x:x+m] for x in range(0, len(palabra), m)]
