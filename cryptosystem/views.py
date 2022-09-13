@@ -334,7 +334,7 @@ def cryptosystem_view(request, name=None):
                 #encrypt image 
                 m_encrypt = request.POST.get("m_encrypt")
                 key_encrypt = request.POST.get("key_encrypt")
-                url = request.POST.get("urltext")
+                url = request.POST.get("url")
                 try:
                     m_encrypt=int(m_encrypt)
                     key_encrypt_list = key_encrypt.split()
@@ -343,7 +343,9 @@ def cryptosystem_view(request, name=None):
                     if key_encrypt_list == -1:
                         context['mistake_encrypt']=True
                     else:
+                        print(key_encrypt_list, url)
                         encode = encode_hill_image(key_encrypt_list, url)
+                        print("a")
 
                     if encode == -1:
                         context['mistake_encrypt']=True
@@ -351,7 +353,6 @@ def cryptosystem_view(request, name=None):
                         context['m_encrypt']=m_encrypt
                         context['key_encrypt']=key_encrypt_list
                         context['encrypted']=True
-                        context['cleartext']=cleartext
                         count_falla=0
                 except:
                     pass
@@ -359,7 +360,8 @@ def cryptosystem_view(request, name=None):
                 #decrypt image
                 m_decrypt = request.POST.get("m_decrypt")
                 key_decrypt = request.POST.get("key_decrypt")
-                codedtext = request.POST.get("codedtext")
+                image = request.POST.get("image")
+                print(image)
                 try:
                     m_decrypt=int(m_decrypt)
                     key_decrypt_list = key_decrypt.split()

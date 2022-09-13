@@ -1,3 +1,6 @@
+from PIL import Image
+import requests
+from PIL import ImageOps
 from IPython.display import display
 import urllib.request
 import numpy as np
@@ -28,7 +31,7 @@ def encode_hill_image(key, url):
 
     m = len(key)
     response = requests.get(url)
-    urllib.request.urlretrieve(url,"image.jpg")
+    urllib.request.urlretrieve(url,"static/images/image.jpg")
     img = Image.open("image.jpg")
     encryptedImg = img.convert("L")
 
@@ -56,7 +59,7 @@ def encode_hill_image(key, url):
     
     # Show the image and save it in a .pgm file
     encryptedImg.show()
-    encryptedImg.save("result.pgm")
+    encryptedImg.save("static/images/result.pgm")
 
 def decode_hill_image(decryptKey, imgPath):
     """
@@ -101,7 +104,7 @@ def decode_hill_image(decryptKey, imgPath):
             rowPixels.append(decryptedImg.getpixel((x,y)))
     
     #decryptedImg.show()
-    decryptedImg.save("out.png")
+    decryptedImg.save("static/images/out.png")
 
 def encode_hill_text(key, text):
     """
@@ -243,3 +246,13 @@ https://www3.gobiernodecanarias.org/medusa/ecoescuela/sa/files/formidable/6/mond
 # print(encryptedText)
 # # decryptedText = DecryptText(inverseKey, encryptedText)
 # # print(decryptedText)
+
+
+# # Example 1
+# m = 3
+# n = 255
+# key = [[10,4,12],[3,14,4],[8,9,0]]
+# inverseKey = ComputeInverseKey(n, key)
+
+# encode_hill_image(key, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/600px-Cat03.jpg")
+# decode_hill_image(inverseKey, "result.pgm")

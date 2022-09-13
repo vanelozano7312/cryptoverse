@@ -16,7 +16,7 @@
                 <h2>Encrypt text</h2>
                 {% csrf_token %}
                 {% if not encrypted_text %}
-                    
+
                 {% if mistake_encrypt_text%}
                 <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
@@ -42,7 +42,7 @@
 
                 {% endif %}
             </form>
-            <div>          
+            <div>
                 {% if encrypted_text %}
                 <div >
                     <label>Used matrix:  </label>
@@ -56,7 +56,7 @@
                     <label>Encoded text:</label>
                     <p>{{encodedtext_text}}</p>
                 </div>
-                
+
                 <ul class="actions">
                     <form action="." method="get">
                         <button  type="submit" name="encrypt_again" value="encrypt_text">Encrypt again</button>
@@ -67,17 +67,17 @@
                 {% endif %}
             </div>
         </section>
-       
+
         <section id="decrypt">
             <form action="." method="post">
                 <h2>Decrypt text</h2>
                 {% csrf_token %}
                 {% if not decrypted %}
-                    
+
                 {% if mistake_decrypt%}
                 <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
-                
+
                 <div class="fields">
                     <div class="field" >
                         <label for="m_decrypt">Size m of the mxm matrix: </label>
@@ -93,7 +93,7 @@
                         <textarea name="codedtext"></textarea>
                     </div>
                 </div>
-                
+
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
@@ -102,7 +102,7 @@
 
                 {% endif %}
             </form>
-            <div>          
+            <div>
                 {% if decrypted %}
                 {% if failed_decrypt %}
                 <label>This are all the posible text:</label>
@@ -119,7 +119,7 @@
                     <label>Encoded text:</label>
                     <p>{{encodedtext}}</p>
                 </div>
-                
+
                 <ul class="actions">
                     <form action="." method="get">
                         <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
@@ -135,13 +135,14 @@
 
 <!-- IMAGES -->
 <section id="ende">
+    
     <div class="inner">
         <section id="encrypt">
             <form action="." method="post">
                 <h2>Encrypt image</h2>
                 {% csrf_token %}
                 {% if not encrypted %}
-                    
+
                 {% if mistake_encrypt%}
                 <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
@@ -167,21 +168,23 @@
 
                 {% endif %}
             </form>
-            <div>          
+            <div>
                 {% if encrypted %}
                 <div >
                     <label>Used matrix:  </label>
                     <p>{{key_encrypt}}</p>
                 </div>
-                <div >
-                    <label>Your text:</label>
-                    <p>{{cleartext}}</p>
+                <!-- <div >
+                    <label>Your image:</label>
+                    <span class="image">
+                        <img src="static/images/image.jpg" alt="your image">
+                    </span>
                 </div>
                 <div >
-                    <label>Encoded text:</label>
-                    <p>{{encodedtext}}</p>
-                </div>
-                
+                    <label>Encoded image:</label>
+                    <img src="out.png" alt="coded image">
+                </div> -->
+
                 <ul class="actions">
                     <form action="." method="get">
                         <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
@@ -192,37 +195,43 @@
                 {% endif %}
             </div>
         </section>
-       
+
         <section id="decrypt">
             <form action="." method="post">
                 <h2>Decrypt image</h2>
                 {% csrf_token %}
                 {% if not decrypted %}
-                    
+
                 {% if mistake_decrypt%}
-                <label> {{countfail}} mistakes</label>
+                <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
-                
+
                 <div class="fields">
-                    <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
+                    <div class="field" >
+                        <label for="m_decrypt">Size m of the mxm matrix: </label>
+                        <input type="text" id="m_decrypt" name="m_decrypt">
+                    </div>
+                    <div class="field">
+                        <label>Key (square matrix):</label>
+                        <label for="key_decrypt">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
                         <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
-                    <div class="field" >
-                        <label for="codedtext">Text to decrypt:</label><br>
-                        <textarea name="codedtext"></textarea>
+                    <div class="field">
+                        <label for="image">Select image:</label>
+                        <input type="file" id="image" name="image" accept="image/*">
                     </div>
+
                 </div>
-                
+
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <li><input type="submit" value="I don't know the key" class="primary" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
             </form>
-            <div>          
+            <div>
                 {% if decrypted %}
                 {% if failed_decrypt %}
                 <label>This are all the posible text:</label>
@@ -239,7 +248,7 @@
                     <label>Encoded text:</label>
                     <p>{{encodedtext}}</p>
                 </div>
-                
+
                 <ul class="actions">
                     <form action="." method="get">
                         <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>

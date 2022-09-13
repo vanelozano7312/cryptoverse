@@ -23,3 +23,7 @@ urlpatterns = [
     path('CS/<str:name>/', views.cryptosystem_view),
     path('admin/', admin.site.urls),
 ]
+
+
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
