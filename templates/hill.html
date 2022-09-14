@@ -72,7 +72,7 @@
             <form action="." method="post">
                 <h2>Decrypt text</h2>
                 {% csrf_token %}
-                {% if not decrypted %}
+                {% if not decrypted_text %}
 
                 {% if mistake_decrypt%}
                 <label> Invalid key (remember to separate the elements)</label>
@@ -80,17 +80,17 @@
 
                 <div class="fields">
                     <div class="field" >
-                        <label for="m_decrypt">Size m of the mxm matrix: </label>
-                        <input type="text" id="m_decrypt" name="m_decrypt">
+                        <label for="m_decrypt_text">Size m of the mxm matrix: </label>
+                        <input type="text" id="m_decrypt_text" name="m_decrypt_text">
                     </div>
                     <div class="field ">
                         <label>Key (square matrix):</label>
-                        <label for="key_decrypt">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
-                        <input type="text" id="key_decrypt" name="key_decrypt">
+                        <label for="key_decrypt_text">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
+                        <input type="text" id="key_decrypt_text" name="key_decrypt_text">
                     </div>
                     <div class="field" >
-                        <label for="codedtext">Text to decrypt:</label><br>
-                        <textarea name="codedtext"></textarea>
+                        <label for="codedtext_text">Text to decrypt:</label><br>
+                        <textarea name="codedtext_text"></textarea>
                     </div>
                 </div>
 
@@ -103,21 +103,21 @@
                 {% endif %}
             </form>
             <div>
-                {% if decrypted %}
+                {% if decrypted_text %}
                 {% if failed_decrypt %}
                 <label>This are all the posible text:</label>
                 {% else %}
                 <div >
                     <label>Used key:  </label>
-                    <p>{{key_decrypt}}</p>
+                    <p>{{key_decrypt_text}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>
-                    <p>{{cleartext}}</p>
+                    <p>{{cleartext_text}}</p>
                 </div>
                 <div >
                     <label>Encoded text:</label>
-                    <p>{{encodedtext}}</p>
+                    <p>{{encodedtext_text}}</p>
                 </div>
 
                 <ul class="actions">
@@ -135,7 +135,7 @@
 
 <!-- IMAGES -->
 <section id="ende">
-    
+
     <div class="inner">
         <section id="encrypt">
             <form action="." method="post">

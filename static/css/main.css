@@ -3639,6 +3639,8 @@ input, select, textarea {
 			display: -ms-flex;
 			display: flex;
 			padding: 0 !important;
+			
+			word-break: break-all;
 		}
 
 			#ende > .inner > :nth-child(2n - 1) {

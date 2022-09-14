@@ -316,6 +316,7 @@ def decode_despla(string, key, count_fallas):
 #     res = deconvert(lista)
 #   return res
 
+
 def decode_mult(string, key, count_fallas):
   inver_validas = inver_primes()
   keys = rela_primes()
@@ -325,9 +326,9 @@ def decode_mult(string, key, count_fallas):
     lista = convert(lista)
     for i in range(len(keys)):
       if keys[i] == key:
-        key = inver_validas[i]
+        a = inver_validas[i]
     for j in range(len(lista)):  
-      lista[j] = int((lista[j]*key)%26)
+      lista[j] = int((lista[j]*a)%26)
     string = deconvert(lista)
     return string, key
   elif count_fallas >= 2:
@@ -336,8 +337,8 @@ def decode_mult(string, key, count_fallas):
       lista = convert(lista)
       for j in range(len(lista)):
         lista[j] = int((lista[j]*i)%26)
-        res = deconvert(lista)
-        results.append(res)
+      res = deconvert(lista)
+      results.append(res)
     return results, key
   else:
     return -1,-1
@@ -349,19 +350,19 @@ def decode_sust(palabrast,key,count_falla):
   lista = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
   palabrals = unify(palabrast)
   count = 0
-  key = key.lower()
+  keyf = key.lower()
   if count_falla >= 2:
     listaran = lista[:]
     ran.shuffle(listaran)
-    key = ""
+    keyf = ""
     for item in listaran:
-      key = key + item
-    for item in key:
+      keyf = keyf + item
+    for item in keyf:
       if item not in dic.values():
         dic[lista[count]] = item
-  elif len(key) != 26:
+  elif len(keyf) != 26:
     return -1,-1
-  for item in key:
+  for item in keyf:
     if item not in lista:
       return -1, -1
     else:
@@ -372,10 +373,9 @@ def decode_sust(palabrast,key,count_falla):
         return -1, -1 
   string = ""
   for i in range(len(palabrals)):
-    palabrals[i] = dic[palabrals[i]]
+    palabrals[i] = list(dic.keys())[list(dic.values()).index(palabrals[i])]
     string = string + palabrals[i]
-  return string, key
-
+  return string, keyf
 
 def decode_afin(string, a, b, count_fallas):
   alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
