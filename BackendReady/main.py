@@ -79,13 +79,13 @@ def strtomat(string, m):
 ###LIMPIO
 def encode_despla(palabrast,key,count_falla):
   """
-This codification method receives a message, and a key
-From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-The key is required to be between 1 and 25.
-If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
-The codification method adds the key value to each number and transforms the result back to an alphabetical value.
-Then returns the message encrypted
+  This codification method receives a message, and a key
+  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  The key is required to be between 1 and 25.
+  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+  The codification method adds the key value to each number and transforms the result back to an alphabetical value.
+  Then returns the message encrypted
   """
   palabrals = unify(palabrast)
   if 1 <= key <= 26:
@@ -108,14 +108,14 @@ Then returns the message encrypted
 
 ####LIMPIO
 def encode_mult(palabrast,key,count_falla):
-  """
-This codification method receives a message, and a key
-From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-The key is required to be in the list of relative prime numbers with 26.
-If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
-The codification method adds the key value to each number and transforms the result back to an alphabetical value.
-Then returns the message encrypted
+    """
+  This codification method receives a message, and a key
+  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  The key is required to be in the list of relative prime numbers with 26.
+  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+  The codification method adds the key value to each number and transforms the result back to an alphabetical value.
+  Then returns the message encrypted
   """
 
   palabrals = unify(palabrast)
@@ -137,13 +137,13 @@ Then returns the message encrypted
     return -1,-1
 
 def encode_sust(palabrast,key,count_falla):
-  """
-This codification method receives a message, and a key
-From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-The key is a list of letters that, in order, replace one of the characters in the message. non alphabet characters and duplicates are not allowed
-If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-The codification method substitutes each letter by its replacement as stated in the key.
-Then returns the message encrypted
+    """
+  This codification method receives a message, and a key
+  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  The key is a list of letters that, in order, replace one of the characters in the message. non alphabet characters and duplicates are not allowed
+  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  The codification method substitutes each letter by its replacement as stated in the key.
+  Then returns the message encrypted
   """
 
   dic = {'a':"", 'b':"", 'c':"", 'd':"", 'e':"", 'f':"", 'g':"", 'h':"", 'i':"", 'j':"", 'k':"", 'l':"",'m':"", 'n':"", 'o':"", 'p':"", 'q':"", 'r':"", 's':"", 't':"", 'u':"", 'v':"", 'w':"", 'x':"", 'y':"", 'z':""}
@@ -180,14 +180,14 @@ Then returns the message encrypted
 ####LIMPIO
 def encode_afin(palabrast, a, b, count_falla):
   """
-This codification method receives a message, and a key
-From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-The key is composed by a and b, for a it needs to be in the list of relative primes of 26 and b requires it to be between 1 and 25.
-If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
-The codification method multiplies a and ads b to each number and transforms the result back to an alphabetical value.
-Then returns the message encrypted
-  """
+  This codification method receives a message, and a key
+  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  The key is composed by a and b, for a it needs to be in the list of relative primes of 26 and b requires it to be between 1 and 25.
+  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+  The codification method multiplies a and ads b to each number and transforms the result back to an alphabetical value.
+  Then returns the message encrypted
+    """
 
   palabrals = unify(palabrast)
   claves_validas = rela_primes()
@@ -212,12 +212,12 @@ Then returns the message encrypted
 
 def encode_permu(string, tama, key, count_falla):
   """
-This codification method receives a message, and a key
-From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-The key is composed by a and b, a needs to bea positive number lower than the length of the processed text, b requires to be between 1 and a.
-If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-The codification method takes chunks of size a and moves each letter b spaces to the right, if the letter is in the last position of the chunk, it goes back to the first.
-Then returns the message encrypted
+  This codification method receives a message, and a key
+  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  The key is composed by a and b, a needs to bea positive number lower than the length of the processed text, b requires to be between 1 and a.
+  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  The codification method takes chunks of size a and moves each letter b spaces to the right, if the letter is in the last position of the chunk, it goes back to the first.
+  Then returns the message encrypted
   """
   
   palabrals = unify(string)
@@ -389,3 +389,59 @@ def decode_permu(string, tama, key, count_falla):
       return -1
   else:
     return -1
+
+#/////////////////////////////////////////////////
+#//////////////CRYPTOANALISIS/////////////////////
+#/////////////////////////////////////////////////
+
+
+def analisis_afin(string):
+  alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  dic={}
+  lista = unify(string)
+  claves_validas = rela_primes()
+  inversas_validas = inver_primes()
+  for item in lista:
+    if item not in dic.keys():
+      dic[item] = 1
+    else:
+      dic[item] = dic[item]+1
+  dic = dict(sorted(dic.items(), key=lambda item: item[1], reverse = True))
+  dict_items = dic.items()
+
+  first_two = list(dict_items)[:2]
+  e= "e"
+  ei = first_two[0][0]
+  t = "t"
+  ti = first_two[1][0]
+  for i in range(len(alf)):
+    if alf[i] == e:
+      e = i
+    if alf[i] == ei:
+      ei = i 
+    if alf[i] == t:
+      t = i
+    if alf[i] == ti:
+      ti = i
+  a = e - t
+  c = ei - ti
+  signoa = a/abs(a)
+  signoc = c/abs(c)
+  if abs(a) not in claves_validas:
+    return -1,-1,-1
+  else:
+    for i in range(len(claves_validas)):
+      if claves_validas[i] == abs(a):
+        a = inversas_validas[i]
+    lista = unify(string)
+    ares = ((signoa*abs(a))*c)%26
+    bres = (ei-(e * ares)%26)%26
+    for i in range(len(claves_validas)):
+      if claves_validas[i] == abs(ares):
+        ares = inversas_validas[i]
+        break
+    bres = int(bres)
+    return ares, bres
+
+string=analisis_afin("djfidafbguaynfisnviunviunsbinvbinasfdoado gaok god ag ipaoiopdsaifopasifdopifpaidfoeoig oihdgio sdfig hisodfug iofhqwbfiqwebfqbkbkajsd fqhf hjaodfinado fnaodsiu hfhdabvchacgvyuagtjrhgtqke gnaifodug nahg")
+print(string)
