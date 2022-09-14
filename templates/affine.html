@@ -76,10 +76,13 @@
                 <h2>Decrypt</h2>
                 {% csrf_token %}
                 {% if not decrypted %}
-                    
-                {% if mistake_decrypt%}
-                <label>Invalid key</label>
+                {% if failed_decrypt %}
+                <label>Try scrolling down and use the cryptoanalisis!</label>
+                
+                {% elif mistake_decrypt%}
+                <label>{{countfail}} mistakes</label>
                 {% endif %}
+                
                 
                 <div class="fields">
                     <div class="field">
@@ -107,9 +110,7 @@
             </form>
             <div>          
                 {% if decrypted %}
-                {% if failed_decrypt %}
-                <label>Try scrolling down and use the cryptoanalisis!</label>
-                {% else %}
+                
                 <div >
                     <label>Used key:  </label>
                     <p>a: {{a_key_decrypt}}    b: {{b_key_decrypt}}</p>
@@ -129,7 +130,6 @@
                     </form>
 
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>
@@ -160,9 +160,7 @@
         {% if ca %}
         <div >
             <label> These are the frecuencies of each letter:  </label>
-            <!-- {% for i in frecuencies %} -->
             <p>{{frecuencies}}</p>
-            <!-- {% endfor %} -->
         </div>
         <div >
             <label>The two most frequent letters are: </label>
@@ -174,12 +172,16 @@
         </div>
         <div >
             <label>Decoded text using a and b:</label>
-            <p>{{decodedtext_ca}}</p>
+            <p>{{cleartext_ca}}</p>
+        </div>
+        <div >
+            <label>Your text:</label>
+            <p>{{encodedtext_ca}}</p>
         </div>
         
         <ul class="actions">
             <form action="." method="get">
-                <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                <button  type="submit" name="decrypt_again" value="decrypt">Analize again</button>
             </form>
 
         </ul>
