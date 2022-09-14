@@ -244,7 +244,7 @@ def cryptosystem_view(request, name=None):
                     context['second_frec']=first_two[1][1]
                     
                     
-                    decode_ca = decode_afin(codedtext_ca, ares, bres, 0)
+                    decode_ca, a, b = decode_afin(codedtext_ca, ares, bres, 0)
                     context['cleartext_ca']=decode_ca                        
                     context['encodedtext_ca']=codedtext_ca
                     context['ca']=True
