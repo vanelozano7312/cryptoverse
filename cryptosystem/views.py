@@ -213,9 +213,12 @@ def cryptosystem_view(request, name=None):
                     if decode == -1:
                         count_falla=count_falla+1
                         context['mistake_decrypt']=True
+                        if count_falla>2:
+                            context['failed_decrypt']=True
+                            count_falla=0
                         context['countfail']=count_falla
                     else:
-                        if count_falla>=2:
+                        if count_falla>2:
                             context['failed_decrypt']=True
                         count_falla=0
                         context['a_key_decrypt']=a_key_decrypt
@@ -228,26 +231,23 @@ def cryptosystem_view(request, name=None):
                 
                 
                 #ca
-                key_len_ca = request.POST.get("key_len_ca")
                 codedtext_ca = request.POST.get("codedtext_ca")
                 try:
-                    print("a")
-                    key_len_ca=int(key_len_ca)
-                    print("b")
-                    key_len_ca= GuessKeywordLength(key_len_ca, codedtext_ca)
-                    print("c")
-                    keyword=GuessKeyword(key_len_ca, codedtext_ca)
-                    print("d")
-                    if keyword == -1:
-                        context['mistake_decrypt']=True
-                    else:
-                        count_falla=0
-                        context['keyword']=keyword
-                        context['ca']=True
-                        decode_ca = decode_vigenere(keyword, codedtext_ca)
-                        print("aaaaaa")
-                        context['cleartext_ca']=decode_ca
-                        context['encodedtext_ca']=codedtext_ca
+                    ares, bres, first_two, frecuencies = analisis_afin(codedtext_ca)
+                    print(frecuencies)
+                    context['frecuencies']=frecuencies
+                    context['ares']=ares
+                    context['bres']=bres
+                    context['first_letter']=first_two[0][0]
+                    context['first_frec']=first_two[0][1]
+                    context['second_letter']=first_two[1][0]
+                    context['second_frec']=first_two[1][1]
+                    
+                    
+                    decode_ca = decode_afin(codedtext_ca, ares, bres, 0)
+                    context['cleartext_ca']=decode_ca                        
+                    context['encodedtext_ca']=codedtext_ca
+                    context['ca']=True
                 except:
                     pass
 
