@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Cryptosystem 
-from main import *
+from BackendReady.main import *
 from BackendReady.Vigenere import *
 from BackendReady.CryptoanalysisVigenere import *
 from BackendReady.Hill import *
