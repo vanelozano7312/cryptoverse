@@ -49,7 +49,7 @@
                     <label>A key has been chosen for you</label>
                     {% endif %}
                     <label>Used key:  </label>
-                    <p>a: {{a_key_encrypt}}     b: {{a_key_encrypt}}</p>
+                    <p>a: {{a_key_encrypt}}     b: {{b_key_encrypt}}</p>
                 </div>
                 <div >
                     <label>Your text:</label>
@@ -108,7 +108,7 @@
             <div>          
                 {% if decrypted %}
                 {% if failed_decrypt %}
-                <label>This are all the posible text:</label>
+                <label>Try scrolling down and use the cryptoanalisis!</label>
                 {% else %}
                 <div >
                     <label>Used key:  </label>
@@ -135,5 +135,57 @@
         </section>
     </div>
 </section>
+
+
+<section class="cryptoanalisis">
+    <form action="." method="post">
+        <h2>Cryptoanalisis</h2>
+        {% csrf_token %}
+        {% if not ca %}
+            
+        <div class="fields">
+            <div class="field" >
+                <label for="codedtext_ca">Text to analize:</label><br>
+                <textarea name="codedtext_ca"></textarea>
+            </div>
+        </div>
+        <ul class="actions">
+            <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
+            <li><input type="reset" value="Clear" /></li>
+        </ul>
+
+        {% endif %}
+    </form>
+    <div>          
+        {% if ca %}
+        <div >
+            <label> These are the frecuencies of each letter:  </label>
+            <!-- {% for i in frecuencies %} -->
+            <p>{{frecuencies}}</p>
+            <!-- {% endfor %} -->
+        </div>
+        <div >
+            <label>The two most frequent letters are: </label>
+            <p>{{first_letter}}: {{first_frec}}   {{second_letter}}: {{second_frec}}  </p>
+        </div>
+        <div >
+            <label>Using this two letters to replace E and T respectively we obtain the following keys:</label>
+            <p>a: {{ares}}  b: {{bres}}</p>
+        </div>
+        <div >
+            <label>Decoded text using a and b:</label>
+            <p>{{decodedtext_ca}}</p>
+        </div>
+        
+        <ul class="actions">
+            <form action="." method="get">
+                <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+            </form>
+
+        </ul>
+        {% endif %}
+    </div>
+</section>
+
 
 {% endblock content %}

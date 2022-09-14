@@ -211,9 +211,11 @@ def cryptosystem_view(request, name=None):
                     decode, a_key_decrypt, b_key_decrypt= decode_afin(codedtext, a_key_decrypt, b_key_decrypt, count_falla)
                     print(decode)
                     if decode == -1:
+                        count_falla=count_falla+1
                         context['mistake_decrypt']=True
+                        context['countfail']=count_falla
                     else:
-                        if count_falla==2:
+                        if count_falla>=2:
                             context['failed_decrypt']=True
                         count_falla=0
                         context['a_key_decrypt']=a_key_decrypt
@@ -221,6 +223,31 @@ def cryptosystem_view(request, name=None):
                         context['decrypted']=True
                         context['cleartext']=decode
                         context['encodedtext']=codedtext
+                except:
+                    pass
+                
+                
+                #ca
+                key_len_ca = request.POST.get("key_len_ca")
+                codedtext_ca = request.POST.get("codedtext_ca")
+                try:
+                    print("a")
+                    key_len_ca=int(key_len_ca)
+                    print("b")
+                    key_len_ca= GuessKeywordLength(key_len_ca, codedtext_ca)
+                    print("c")
+                    keyword=GuessKeyword(key_len_ca, codedtext_ca)
+                    print("d")
+                    if keyword == -1:
+                        context['mistake_decrypt']=True
+                    else:
+                        count_falla=0
+                        context['keyword']=keyword
+                        context['ca']=True
+                        decode_ca = decode_vigenere(keyword, codedtext_ca)
+                        print("aaaaaa")
+                        context['cleartext_ca']=decode_ca
+                        context['encodedtext_ca']=codedtext_ca
                 except:
                     pass
 
