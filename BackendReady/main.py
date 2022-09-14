@@ -408,37 +408,42 @@ def analisis_afin(string):
       dic[item] = dic[item]+1
   dic = dict(sorted(dic.items(), key=lambda item: item[1], reverse = True))
   dict_items = dic.items()
-
   first_two = list(dict_items)[:6]
-  e= "e"
-  ei = first_two[0][0]
-  t = "t"
-  ti = first_two[1][0]
-  for i in range(len(alf)):
-    if alf[i] == e:
-      e = i
-    if alf[i] == ei:
-      ei = i 
-    if alf[i] == t:
-      t = i
-    if alf[i] == ti:
-      ti = i
-  a = e - t
-  c = ei - ti
-  signoa = a/abs(a)
-  signoc = c/abs(c)
-  if abs(a) not in claves_validas:
-    return -1,-1,-1
-  else:
-    for i in range(len(claves_validas)):
-      if claves_validas[i] == abs(a):
-        a = inversas_validas[i]
-    lista = unify(string)
-    ares = ((signoa*abs(a))*c)%26
-    bres = (ei-(e * ares)%26)%26
-    for i in range(len(claves_validas)):
-      if claves_validas[i] == abs(ares):
-        ares = inversas_validas[i]
-        break
-    bres = int(bres)
-    return ares, bres, first_two, dic
+  for x in range(6):
+    for y in range(6):
+      if x == y:
+        continue
+      e= "e"
+      ei = first_two[x][0]
+      t = "t"
+      ti = first_two[y][0]
+      for i in range(len(alf)):
+        if alf[i] == e:
+          e = i
+        if alf[i] == ei:
+          ei = i 
+        if alf[i] == t:
+          t = i
+        if alf[i] == ti:
+          ti = i
+      a = e - t
+      c = ei - ti
+      signoa = a/abs(a)
+      signoc = c/abs(c)
+      if abs(a) not in claves_validas:
+        return -1,-1,-1
+      else:
+        for i in range(len(claves_validas)):
+          if claves_validas[i] == abs(a):
+            a = inversas_validas[i]
+        lista = unify(string)
+        ares = ((signoa*abs(a))*c)%26
+        bres = (ei-(e * ares)%26)%26
+        for i in range(len(claves_validas)):
+          if claves_validas[i] == abs(ares):
+            ares = inversas_validas[i]
+            break
+        bres = int(bres)
+        if ares not in inversas_validas:
+          continue
+        return ares, bres, first_two, dic
