@@ -22,6 +22,7 @@
                 <div class="fields">
                     <div class="field">
                         <label for="key_encrypt">Key (relative prime of 26 between 1 and 25):</label>
+                        <label>[1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]</label>
                         <input type="text" id="key_encrypt" name="key_encrypt">
                     </div>
                     <div class="field" >
@@ -78,6 +79,7 @@
                 <div class="fields">
                     <div class="field ">
                         <label for="key_decrypt">Key (relative prime of 26 between 1 and 25):</label>
+                        <label>[1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]</label>
                         <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >
@@ -100,7 +102,9 @@
                 <label>This are all the posible text:</label>
                 <div >
                     <label>Clear texts:  </label>
-                    <p>{{cleartext}}</p>
+                    {% for i in cleartext %}
+                    <p>{{i}}</p>
+                    {% endfor %}
                 </div>
                 <ul class="actions">
                     <form action="." method="get">

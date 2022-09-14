@@ -124,7 +124,7 @@ def encode_mult(palabrast,key,count_falla):
         palabrals[i] = (palabrals[i] * key)%26
       palabrast = deconvert(palabrals)
       return palabrast, key
-  if count_falla == 2:
+  if count_falla >= 2:
     key = claves_validas[ran.randint(1,len(claves_validas))]
     palabrals = convert(palabrals)
     for i in range(len(palabrals)):
@@ -294,7 +294,10 @@ def decode_mult(string, key, count_fallas):
       for j in range(len(lista)):
         lista[j] = int((lista[j]*i)%26)
       res = deconvert(lista)
-      results.append(res)
+      for a in range(len(inver_validas)):
+        if inver_validas[a] == i:
+          valor = keys[a]
+      results.append("Key used {"+ str(valor) + "} :     "+res)
     return results, key
   else:
     return -1,-1
