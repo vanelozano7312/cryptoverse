@@ -20,7 +20,10 @@ No cloud was in the sky:
 No birds were flying overhead -
 There were no birds to fly
 
-
+----Affin test--------------
+key1: ubcdefghijklmnopqrstavwxyz
+key2: ubcedfghijklmnoqprstavwxyz
+key fail: ubcedfghijkzmnoqprstavwxyz
 
 ----Hill text test---------
 
@@ -37,3 +40,6 @@ There were no birds to fly
 198 171 71 79 18 22 85 64 61
 
 https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/600px-Cat03.jpg
+
+
+
