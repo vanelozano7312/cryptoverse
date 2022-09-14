@@ -189,7 +189,7 @@ def encode_afin(palabrast, a, b, count_falla):
   palabrals = unify(palabrast)
   claves_validas = rela_primes()
   if a in claves_validas:
-    if 1 <= b <= 25:
+    if 0 <= b <= 25:
       palabrals = convert(palabrals)
       for i in range(len(palabrals)):
         palabrals[i] = (((palabrals[i] * a)%26)+b)%26
@@ -344,7 +344,7 @@ def decode_afin(string, a, b, count_fallas):
     for i in range(len(claves_validas)):
       if claves_validas[i] == a:
         ai = inversas_validas[i]
-    if 1 <= b <= 25:
+    if 0 <= b <= 25:
       palabrals = convert(lista)
       for i in range(len(palabrals)):
         palabrals[i] = (((palabrals[i] - b)%26)*ai)%26
@@ -393,7 +393,7 @@ def decode_permu(string, tama, key, count_falla):
 #/////////////////////////////////////////////////
 #//////////////CRYPTOANALISIS/////////////////////
 #/////////////////////////////////////////////////
-
+#/////////////////////////////////////////////////
 
 def analisis_afin(string):
   alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -446,4 +446,7 @@ def analisis_afin(string):
         bres = int(bres)
         if ares not in inversas_validas:
           continue
+        ei = first_two[x]
+        ti = first_two[y]
+        first_two = [ei,ti]
         return ares, bres, first_two, dic
