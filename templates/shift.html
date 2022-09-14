@@ -102,7 +102,9 @@
                 <label>This are all the posible text:</label>
                 <div >
                     <label>Clear texts:  </label>
-                    <p>{{cleartext}}</p>
+                    {% for i in cleartext %}
+                    <p>{{i}}</p>
+                    {% endfor %}
                 </div>
                 <ul class="actions">
                     <form action="." method="get">
