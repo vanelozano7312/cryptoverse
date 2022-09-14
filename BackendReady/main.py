@@ -409,7 +409,7 @@ def analisis_afin(string):
   dic = dict(sorted(dic.items(), key=lambda item: item[1], reverse = True))
   dict_items = dic.items()
 
-  first_two = list(dict_items)[:2]
+  first_two = list(dict_items)[:6]
   e= "e"
   ei = first_two[0][0]
   t = "t"
@@ -441,7 +441,4 @@ def analisis_afin(string):
         ares = inversas_validas[i]
         break
     bres = int(bres)
-    return ares, bres
-
-string=analisis_afin("djfidafbguaynfisnviunviunsbinvbinasfdoado gaok god ag ipaoiopdsaifopasifdopifpaidfoeoig oihdgio sdfig hisodfug iofhqwbfiqwebfqbkbkajsd fqhf hjaodfinado fnaodsiu hfhdabvchacgvyuagtjrhgtqke gnaifodug nahg")
-print(string)
+    return ares, bres, first_two, dic
