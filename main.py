@@ -251,24 +251,8 @@ Then returns the message encrypted
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////
 #////////////////////////////////////////////////////////////////
-#### LIMPIO
-# def decode_despla(string, key, count_fallas):
-#   if 1<= key<=26:
-#     lista = unify(string)
-#     lista = convert(lista)
-#     for j in range(len(lista)):
-#       lista[j] = (lista[j]-key)%26
-#     string = deconvert(lista)
-#     return string
-#   else:
-#     return -1
-#   for i in range(25):
-#     lista = unify(string)
-#     lista = convert(lista)
-#     for j in range(len(lista)):
-#       lista[j] = (lista[j]+1)%26
-#     string = deconvert(lista)
-#   return string
+
+
 def decode_despla(string, key, count_fallas):
   if 1<= key<=26:
     lista = unify(string)
@@ -290,31 +274,6 @@ def decode_despla(string, key, count_fallas):
     return all
   else:
     return -1
-
-
-# ##### LIMPIO
-# def decode_mult(string, key, count_fallas):
-#   inver_validas = inver_primes()
-#   keys = rela_primes()
-#   if key in keys:
-#     lista = unify(string)
-#     lista = convert(lista)
-#     for i in range(len(keys)):
-#       if keys[i] == key:
-#         key = inver_validas[i]
-#     for j in range(len(lista)):  
-#       lista[j] = int((lista[j]*key)%26)
-#     string = deconvert(lista)
-#     return string
-#   else:
-#     return -1
-#   for i in inver_validas:
-#     lista = unify(string)
-#     lista = convert(lista)
-#     for j in range(len(lista)):
-#       lista[j] = int((lista[j]*i)%26)
-#     res = deconvert(lista)
-#   return res
 
 
 def decode_mult(string, key, count_fallas):
@@ -342,7 +301,6 @@ def decode_mult(string, key, count_fallas):
     return results, key
   else:
     return -1,-1
-
 
 #LIMPIO
 def decode_sust(palabrast,key,count_falla):
@@ -414,7 +372,6 @@ def permufiesta(palabra,m,l):
   final = convert(final)
   final = deconvert(final)
   return final
-
 
 #### LIMPIO
 def decode_permu(string, tama, key, count_falla):

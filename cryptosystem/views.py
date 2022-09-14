@@ -431,23 +431,29 @@ def cryptosystem_view(request, name=None):
                 except:
                     pass
 
-                # #ca
-                # key_ca = request.POST.get("key_decrypt")
-                # codedtextca = request.POST.get("codedtext")
-                # try:
-                #     key_ca=int(key_ca)
-                #     decodeca= GuessKeywordLength(key_ca, codedtextca)
-                #     decodeca=GuessKeyword(decodeca, codedtextca)
-                #     if decodeca == -1:
-                #         context['mistake_decrypt']=True
-                #     else:
-                #         count_falla=0
-                #         context['key_ca']=key_ca
-                #         context['ca']=True
-                #         context['cleartextca']=decodeca
-                #         context['encodedtextca']=codedtextca
-                # except:
-                #     pass
+                #ca
+                key_len_ca = request.POST.get("key_len_ca")
+                codedtext_ca = request.POST.get("codedtext_ca")
+                try:
+                    print("a")
+                    key_len_ca=int(key_len_ca)
+                    print("b")
+                    key_len_ca= GuessKeywordLength(key_len_ca, codedtext_ca)
+                    print("c")
+                    keyword=GuessKeyword(key_len_ca, codedtext_ca)
+                    print("d")
+                    if keyword == -1:
+                        context['mistake_decrypt']=True
+                    else:
+                        count_falla=0
+                        context['keyword']=keyword
+                        context['ca']=True
+                        decode_ca = decode_vigenere(keyword, codedtext_ca)
+                        print("aaaaaa")
+                        context['cleartext_ca']=decode_ca
+                        context['encodedtext_ca']=codedtext_ca
+                except:
+                    pass
 
     return render(request, view, context=context)
 

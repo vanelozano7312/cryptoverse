@@ -125,8 +125,8 @@
     </div>
     
 </section>
-<!-- 
-<section>
+
+<section >
     <form action="." method="post">
         <h2>Cryptoanalisis</h2>
         {% csrf_token %}
@@ -134,12 +134,12 @@
             
         <div class="fields">
             <div class="field">
-                <label for="key_ca">Possible keyword lenght:</label>
-                <input type="text" id="key_ca" name="key_ca">
+                <label for="key_len_ca">Possible keyword lenght:</label>
+                <input type="text" id="key_len_ca" name="key_len_ca">
             </div>
             <div class="field" >
-                <label for="codedtextca">Text to analize:</label><br>
-                <textarea name="codedtextca"></textarea>
+                <label for="codedtext_ca">Text to analize:</label><br>
+                <textarea name="codedtext_ca"></textarea>
             </div>
         </div>
         <ul class="actions">
@@ -153,15 +153,15 @@
         {% if ca %}
         <div >
             <label>Used keyword:  </label>
-            <p>{{key_decrypt}}</p>
+            <p>{{keyword}}</p>
         </div>
         <div >
             <label>Clear text:  </label>
-            <p>{{cleartext}}</p>
+            <p>{{cleartext_ca}}</p>
         </div>
         <div >
             <label>Encoded text:</label>
-            <p>{{encodedtext}}</p>
+            <p>{{encodedtext_ca}}</p>
         </div>
         
         <ul class="actions">
@@ -172,6 +172,6 @@
         </ul>
         {% endif %}
     </div>
-</section> -->
+</section>
 
 {% endblock content %}
