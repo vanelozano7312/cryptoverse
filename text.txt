@@ -19,8 +19,8 @@ No cloud was in the sky:
 No birds were flying overhead -
 There were no birds to fly
 
-10 4 12 3 14 4 8 9 0
+10 4 12 3 14 4 8 9 0 [matriz, hill]
 
-198 171 71 79 18 22 85 64 61
+198 171 71 79 18 22 85 64 61 [inversa matriz, hill]
 
 https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/600px-Cat03.jpg

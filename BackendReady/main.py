@@ -267,9 +267,9 @@ def decode_despla(string, key, count_fallas):
       lista = unify(string)
       lista = convert(lista)
       for j in range(len(lista)):
-        lista[j] = (lista[j]+1)%26
+        lista[j] = (lista[j]-1)%26
       string = deconvert(lista)
-      all.append(string)
+      all.append("Key used {" + str(i+1) + "} :    " + string)
 
     return all
   else:
