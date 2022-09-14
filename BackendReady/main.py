@@ -78,15 +78,15 @@ def strtomat(string, m):
 
 ###LIMPIO
 def encode_despla(palabrast,key,count_falla):
-  """
-  This codification method receives a message, and a key
-  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-  The key is required to be between 1 and 25.
-  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-  Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
-  The codification method adds the key value to each number and transforms the result back to an alphabetical value.
-  Then returns the message encrypted
-  """
+
+  # This codification method receives a message, and a key
+  # From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  # The key is required to be between 1 and 25.
+  # If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  # Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+  # The codification method adds the key value to each number and transforms the result back to an alphabetical value.
+  # Then returns the message encrypted
+  
   palabrals = unify(palabrast)
   if 1 <= key <= 26:
       palabrals = convert(palabrals)
@@ -108,16 +108,14 @@ def encode_despla(palabrast,key,count_falla):
 
 ####LIMPIO
 def encode_mult(palabrast,key,count_falla):
-    """
-  This codification method receives a message, and a key
-  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-  The key is required to be in the list of relative prime numbers with 26.
-  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-  Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
-  The codification method adds the key value to each number and transforms the result back to an alphabetical value.
-  Then returns the message encrypted
-  """
-
+  # This codification method receives a message, and a key
+  # From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  # The key is required to be in the list of relative prime numbers with 26.
+  # If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  # Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+  # The codification method adds the key value to each number and transforms the result back to an alphabetical value.
+  # Then returns the message encrypted
+  
   palabrals = unify(palabrast)
   claves_validas = rela_primes()
   if key in claves_validas:
@@ -137,14 +135,14 @@ def encode_mult(palabrast,key,count_falla):
     return -1,-1
 
 def encode_sust(palabrast,key,count_falla):
-    """
-  This codification method receives a message, and a key
-  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-  The key is a list of letters that, in order, replace one of the characters in the message. non alphabet characters and duplicates are not allowed
-  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-  The codification method substitutes each letter by its replacement as stated in the key.
-  Then returns the message encrypted
-  """
+  
+  # This codification method receives a message, and a key
+  # From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  # The key is a list of letters that, in order, replace one of the characters in the message. non alphabet characters and duplicates are not allowed
+  # If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  # The codification method substitutes each letter by its replacement as stated in the key.
+  # Then returns the message encrypted
+  
 
   dic = {'a':"", 'b':"", 'c':"", 'd':"", 'e':"", 'f':"", 'g':"", 'h':"", 'i':"", 'j':"", 'k':"", 'l':"",'m':"", 'n':"", 'o':"", 'p':"", 'q':"", 'r':"", 's':"", 't':"", 'u':"", 'v':"", 'w':"", 'x':"", 'y':"", 'z':""}
   lista = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -179,15 +177,14 @@ def encode_sust(palabrast,key,count_falla):
 
 ####LIMPIO
 def encode_afin(palabrast, a, b, count_falla):
-  """
-  This codification method receives a message, and a key
-  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-  The key is composed by a and b, for a it needs to be in the list of relative primes of 26 and b requires it to be between 1 and 25.
-  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-  Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
-  The codification method multiplies a and ads b to each number and transforms the result back to an alphabetical value.
-  Then returns the message encrypted
-    """
+  
+  # This codification method receives a message, and a key
+  # From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  # The key is composed by a and b, for a it needs to be in the list of relative primes of 26 and b requires it to be between 1 and 25.
+  # If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  # Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
+  # The codification method multiplies a and ads b to each number and transforms the result back to an alphabetical value.
+  # Then returns the message encrypted
 
   palabrals = unify(palabrast)
   claves_validas = rela_primes()
@@ -211,14 +208,14 @@ def encode_afin(palabrast, a, b, count_falla):
 
 
 def encode_permu(string, tama, key, count_falla):
-  """
-  This codification method receives a message, and a key
-  From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
-  The key is composed by a and b, a needs to bea positive number lower than the length of the processed text, b requires to be between 1 and a.
-  If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
-  The codification method takes chunks of size a and moves each letter b spaces to the right, if the letter is in the last position of the chunk, it goes back to the first.
-  Then returns the message encrypted
-  """
+  
+  # This codification method receives a message, and a key
+  # From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
+  # The key is composed by a and b, a needs to bea positive number lower than the length of the processed text, b requires to be between 1 and a.
+  # If the user fails 3 times providing a valid key, the program chooses randomly a valid key and encrypts the message using it.
+  # The codification method takes chunks of size a and moves each letter b spaces to the right, if the letter is in the last position of the chunk, it goes back to the first.
+  # Then returns the message encrypted
+  
   
   palabrals = unify(string)
   if count_falla == 2:
