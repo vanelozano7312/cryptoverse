@@ -5,6 +5,12 @@ from BackendReady.Vigenere import *
 from BackendReady.CryptoanalysisVigenere import *
 from BackendReady.Hill import *
 
+from django.core.files.storage import FileSystemStorage
+
+import os
+import sys
+import mimetypes
+import time
 #Global variables and function to count the user mistakes and restart 
 #that count every time the user goes into another page
 
@@ -394,30 +400,34 @@ def cryptosystem_view(request, name=None):
 
                 
                 #decrypt image
-                m_decrypt = request.POST.get("m_decrypt")
-                key_decrypt = request.POST.get("key_decrypt")
-                image = request.POST.get("image")
-                print(image)
-                try:
-                    m_decrypt=int(m_decrypt)
-                    key_decrypt_list = key_decrypt.split()
-                    key_decrypt_list=strtomat(key_decrypt_list, m_decrypt)
-                    if key_decrypt_list == -1:
-                        context['mistake_decrypt']=True
+                
+                if 'Decryptimage' in request.POST:
+                    m_decrypt = request.POST.get("m_decrypt")
+                    key_decrypt = request.POST.get("key_decrypt")
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.POST.get('im1')
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        m_decrypt=int(m_decrypt)
+                        key_decrypt_list = key_decrypt.split()
+                        key_decrypt_list=strtomat(key_decrypt_list, m_decrypt)
+                        if key_decrypt_list == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            decode = decode_hill_image(key_decrypt_list, 'static/images/clean.png')
 
-                    else:
-                        decode = decode_hill_text(key_decrypt_list, codedtext)
-
-                    if decode == -1:
-                        context['mistake_decrypt']=True
-                    else:
-                        context['m_decrypt']=m_decrypt
-                        context['key_decrypt']=key_decrypt_list
-                        context['decrypted']=True
-                        context['cleartext']=decode
-                        context['encodedtext']=codedtext
-                except:
-                    pass
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['m_decrypt']=m_decrypt
+                            context['key_decrypt']=key_decrypt_list
+                            context['decrypted']=True
+                            context['cleartext']=decode
+                            context['encodedtext']=codedtext
+                    except:
+                        pass
 
 
         ##VIGENERE CYPHER

@@ -3629,20 +3629,7 @@ input, select, textarea {
 		}
 
 /* Encrypt and Decrypt */
-	#cryptoanalisis {
-		border-bottom: solid 1px rgba(212, 212, 255, 0.1);
-		overflow-x: hidden;
-	}
-
-		#cryptoanalisis > .inner {
-			display: -moz-flex;
-			display: -webkit-flex;
-			display: -ms-flex;
-			display: flex;
-			padding: 3em;
-			
-			word-break: break-all;
-		}
+	
 
 	#ende {
 		border-bottom: solid 1px rgba(212, 212, 255, 0.1);

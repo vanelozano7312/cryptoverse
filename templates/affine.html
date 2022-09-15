@@ -137,55 +137,59 @@
 </section>
 
 
-<section class="cryptoanalisis">
-    <form action="." method="post">
-        <h2>Cryptoanalisis</h2>
-        {% csrf_token %}
-        {% if not ca %}
-            
-        <div class="fields">
-            <div class="field" >
-                <label for="codedtext_ca">Text to analize:</label><br>
-                <textarea name="codedtext_ca"></textarea>
+<section id="ende">
+    <div class="inner">
+        <section>
+        <form action="." method="post">
+            <h2>Cryptoanalisis</h2>
+            {% csrf_token %}
+            {% if not ca %}
+                
+            <div class="fields">
+                <div class="field" >
+                    <label for="codedtext_ca">Text to analize:</label><br>
+                    <textarea name="codedtext_ca"></textarea>
+                </div>
             </div>
-        </div>
-        <ul class="actions">
-            <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
-            <li><input type="reset" value="Clear" /></li>
-        </ul>
+            <ul class="actions">
+                <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
+                <li><input type="reset" value="Clear" /></li>
+            </ul>
 
-        {% endif %}
-    </form>
-    <div>          
-        {% if ca %}
-        <div >
-            <label> These are the frecuencies of each letter:  </label>
-            <p>{{frecuencies}}</p>
-        </div>
-        <div >
-            <label>After analizing we found that the most effective substitution is to change a and b for: </label>
-            <p>{{first_letter}}: {{first_frec}}   {{second_letter}}: {{second_frec}}  </p>
-        </div>
-        <div >
-            <label>Using this two letters to replace E and T respectively we obtain the following keys:</label>
-            <p>a: {{ares}}  b: {{bres}}</p>
-        </div>
-        <div >
-            <label>Decoded text using a and b:</label>
-            <p>{{cleartext_ca}}</p>
-        </div>
-        <div >
-            <label>Your text:</label>
-            <p>{{encodedtext_ca}}</p>
-        </div>
-        
-        <ul class="actions">
-            <form action="." method="get">
-                <button  type="submit" name="decrypt_again" value="decrypt">Analize again</button>
-            </form>
+            {% endif %}
+        </form>
+        <div>          
+            {% if ca %}
+            <div >
+                <label> These are the frecuencies of each letter:  </label>
+                <p>{{frecuencies}}</p>
+            </div>
+            <div >
+                <label>After analizing we found that the most effective substitution is to change a and b for: </label>
+                <p>{{first_letter}}: {{first_frec}}   {{second_letter}}: {{second_frec}}  </p>
+            </div>
+            <div >
+                <label>Using this two letters to replace E and T respectively we obtain the following keys:</label>
+                <p>a: {{ares}}  b: {{bres}}</p>
+            </div>
+            <div >
+                <label>Decoded text using a and b:</label>
+                <p>{{cleartext_ca}}</p>
+            </div>
+            <div >
+                <label>Your text:</label>
+                <p>{{encodedtext_ca}}</p>
+            </div>
+            
+            <ul class="actions">
+                <form action="." method="get">
+                    <button  type="submit" name="decrypt_again" value="decrypt">Analize again</button>
+                </form>
 
-        </ul>
-        {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+    </section>
     </div>
 </section>
 

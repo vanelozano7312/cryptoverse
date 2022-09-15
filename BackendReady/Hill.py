@@ -103,7 +103,7 @@ def decode_hill_image(decryptKey, imgPath):
             
             rowPixels.append(decryptedImg.getpixel((x,y)))
     
-    #decryptedImg.show()
+    decryptedImg.show()
     decryptedImg.save("static/images/out.png")
 
 def encode_hill_text(key, text):
