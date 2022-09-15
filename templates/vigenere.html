@@ -126,51 +126,55 @@
     
 </section>
 
-<section class="cryptoanalisis">
-    <form action="." method="post">
-        <h2>Cryptoanalisis</h2>
-        {% csrf_token %}
-        {% if not ca %}
-            
-        <div class="fields">
-            <div class="field">
-                <label for="key_len_ca">Possible keyword lenght:</label>
-                <input type="text" id="key_len_ca" name="key_len_ca">
-            </div>
-            <div class="field" >
-                <label for="codedtext_ca">Text to analize:</label><br>
-                <textarea name="codedtext_ca"></textarea>
-            </div>
-        </div>
-        <ul class="actions">
-            <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
-            <li><input type="reset" value="Clear" /></li>
-        </ul>
+<section id="ende">
+    <div class="inner">
+        <section>
+            <form action="." method="post">
+                <h2>Cryptoanalisis</h2>
+                {% csrf_token %}
+                {% if not ca %}
+                    
+                <div class="fields">
+                    <div class="field">
+                        <label for="key_len_ca">Possible keyword lenght:</label>
+                        <input type="text" id="key_len_ca" name="key_len_ca">
+                    </div>
+                    <div class="field" >
+                        <label for="codedtext_ca">Text to analize:</label><br>
+                        <textarea name="codedtext_ca"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
 
-        {% endif %}
-    </form>
-    <div>          
-        {% if ca %}
-        <div >
-            <label>Used keyword:  </label>
-            <p>{{keyword}}</p>
-        </div>
-        <div >
-            <label>Clear text:  </label>
-            <p>{{cleartext_ca}}</p>
-        </div>
-        <div >
-            <label>Encoded text:</label>
-            <p>{{encodedtext_ca}}</p>
-        </div>
-        
-        <ul class="actions">
-            <form action="." method="get">
-                <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                {% endif %}
             </form>
+            <div>          
+                {% if ca %}
+                <div >
+                    <label>Used keyword:  </label>
+                    <p>{{keyword}}</p>
+                </div>
+                <div >
+                    <label>Clear text:  </label>
+                    <p>{{cleartext_ca}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p>{{encodedtext_ca}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
 
-        </ul>
-        {% endif %}
+                </ul>
+                {% endif %}
+            </div>
+        </section>
     </div>
 </section>
 

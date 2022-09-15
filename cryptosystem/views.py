@@ -3,6 +3,7 @@ from .models import Cryptosystem
 from BackendReady.main import *
 from BackendReady.Vigenere import *
 from BackendReady.CryptoanalysisVigenere import *
+from BackendReady.CryptoanalysisHill import *
 from BackendReady.Hill import *
 # from .forms import HillImageForm
 from django.core.files.storage import FileSystemStorage
@@ -327,7 +328,8 @@ def cryptosystem_view(request, name=None):
                     if key_encrypt_text_list == -1:
                         context['mistake_encrypt_text']=True
                     else:
-                        encode_text = encode_hill_text(key_encrypt_text_list, cleartext_text)
+                        print("asdf")
+                        encode_text= encode_hill_text(key_encrypt_text_list, cleartext_text)
                         print(encode_text)
 
                     if encode_text == -1:
@@ -419,6 +421,40 @@ def cryptosystem_view(request, name=None):
                             context['m_decrypt']=m_decrypt
                             context['key_decrypt']=key_decrypt_list
                             context['decrypted']=True
+                    except:
+                        pass
+                    
+                #cryptoanalisis
+                
+                if 'Cryptoanalisis' in request.POST:
+                    m_ca = request.POST.get("m_ca")
+                    x = request.POST.get("x")
+                    y = request.POST.get("y")
+                    n = request.POST.get("n")
+                    try:
+                        m_ca=int(m_ca)
+                        n=int(n)
+                        x_list = x.split()
+                        x_list=strtomat(x_list, m_ca)
+                        y_list = y.split()
+                        y_list=strtomat(y_list, m_ca)
+                        if x_list == -1 or y_list == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            key = ca_hill(x, y, n)
+
+                        if key == -1:
+                            context['mistake_ca']=True
+                            context['x']=x
+                            context['y']=y
+                            context['n']=n
+                        else:
+                            context['m_ca']=m_ca
+                            context['x']=x
+                            context['y']=y
+                            context['n']=n
+                            context['key']=key
+                            context['ca']=True
                     except:
                         pass
 

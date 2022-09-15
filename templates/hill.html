@@ -254,4 +254,68 @@
         </section>
     </div>
 </section>
+
+<!-- CRYPTOANALISIS -->
+<section id="ende">
+    <div class="inner">
+        <section>
+            <form action="." method="post">
+                <h2>Cryptoanalisis</h2>
+                {% csrf_token %}
+                {% if not ca %}
+                {% if mistake_ca %}
+                <div><label>the x=[{{x}}] matrix is not invertible modulus {{n}}</label></div>
+                
+                {% endif %}
+                <div class="fields">
+                    <div class="field" >
+                        <label for="m_ca">Size m of the mxm matrix: </label>
+                        <input type="text" id="m_ca" name="m_ca">
+                    </div>
+                    <div class="field">
+                        <label>First square matrix:</label>
+                        <label for="x">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
+                        <input type="text" id="x" name="x">
+                    </div>
+                    <div class="field">
+                        <label>Second square matrix:</label>
+                        <label for="y">write the matrix as you would do it in python (ex: a11 a12 a13 ...)</label>
+                        <input type="text" id="y" name="y">
+                    </div>
+                    <div class="field" >
+                        <label >Modulus to use in all the operations:</label><br>
+                        <label for="n">for text use 26     for images use 255</label>
+                        <textarea name="n"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Cryptoanalisis" class="primary" name="Cryptoanalisis" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>          
+                {% if ca %}
+                
+                <div >
+                    <label>Using x={{x}} and y={{y}} where the x i-th row it's
+                        supposed to be mapped to the y i-th row</label>
+                </div>
+                <div >
+                    <label>Possible key: </label>
+                    <p>{{key}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
 {% endblock content %}
