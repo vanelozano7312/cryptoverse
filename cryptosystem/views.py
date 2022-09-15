@@ -295,17 +295,17 @@ def cryptosystem_view(request, name=None):
                 try:
                     size_decrypt=int(size_decrypt)
                     key_decrypt=int(key_decrypt)
-                    decode= decode_permu(codedtext, size_decrypt, key_decrypt, count_falla)
+                    decode = decode_permu(codedtext, size_decrypt, key_decrypt, count_falla)
                     if decode == -1:
                         context['mistake_decrypt']=True
                     else:
                         if count_falla==2:
                             context['failed_decrypt']=True
                         count_falla=0
-                        context['size_decrypt']=size_decrypt
-                        context['key_decrypt']=key_decrypt
+                        context['size_decrypt']=decode[1]
+                        context['key_decrypt']=decode[2]
                         context['decrypted']=True
-                        context['cleartext']=decode
+                        context['cleartext']=decode[0]
                         context['encodedtext']=codedtext
                 except:
                     pass
