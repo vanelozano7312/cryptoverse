@@ -20,7 +20,7 @@ No cloud was in the sky:
 No birds were flying overhead -
 There were no birds to fly
 
-----Affin test--------------
+----substitution test--------------
 key1: ubcdefghijklmnopqrstavwxyz
 key2: ubcedfghijklmnoqprstavwxyz
 key fail: ubcedfghijkzmnoqprstavwxyz

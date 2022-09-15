@@ -60,7 +60,7 @@ def deconvert(list):
   return string
 
 def strtomat(string, m):
-  if len(string)%m != 0 or len(string)==m:
+  if len(string)%m != 0:
     return -1
   else:
     temp = [string[index: index + m] for index in range(0, len(string), m)]
@@ -371,7 +371,7 @@ def permufiesta(palabra,m,l):
     final.extend(test)
   final = convert(final)
   final = deconvert(final)
-  return final
+  return final, m, l
 
 #### LIMPIO
 def decode_permu(string, tama, key, count_falla):
@@ -379,12 +379,15 @@ def decode_permu(string, tama, key, count_falla):
   if count_falla == 2:
     final = []
     for i in range(1,len(palabra)+1):
-      final.append(permufiesta(palabra,i))
+      for j in range(i):
+        palabra, tama, key = permufiesta(palabra,i,j)
+        final.append(palabra, tama, key)
     
     return final
   if 1 <= tama <= len(palabra):
     if 1 <= key < tama:
-      return permufiesta(palabra,tama,key)
+      palabra, tama, key = permufiesta(palabra,tama,key)
+      return palabra, tama, key
     else:
       return -1
   else:
@@ -393,7 +396,7 @@ def decode_permu(string, tama, key, count_falla):
 #/////////////////////////////////////////////////
 #//////////////CRYPTOANALISIS/////////////////////
 #/////////////////////////////////////////////////
-#/////////////////////////////////////////////////
+
 
 def analisis_afin(string):
   alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -450,3 +453,4 @@ def analisis_afin(string):
         ti = first_two[y]
         first_two = [ei,ti]
         return ares, bres, first_two, dic
+  
