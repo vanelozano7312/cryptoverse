@@ -4,7 +4,7 @@ from BackendReady.main import *
 from BackendReady.Vigenere import *
 from BackendReady.CryptoanalysisVigenere import *
 from BackendReady.Hill import *
-
+# from .forms import HillImageForm
 from django.core.files.storage import FileSystemStorage
 
 import os
@@ -374,7 +374,6 @@ def cryptosystem_view(request, name=None):
                 key_encrypt = request.POST.get("key_encrypt")
                 url = request.POST.get("url")
                 try:
-                    print("bbbbbb")
                     m_encrypt=int(m_encrypt)
                     key_encrypt_list = key_encrypt.split()
                     key_encrypt_list=strtomat(key_encrypt_list, m_encrypt)
@@ -384,13 +383,9 @@ def cryptosystem_view(request, name=None):
                     else:
                         print(key_encrypt_list, url)
                         encode = encode_hill_image(key_encrypt_list, url)
-                        print("dss")
                     if encode == -1:
                         context['mistake_encrypt']=True
-                        print("ddddd")
                     else:
-                        
-                        print("aaaaaaabhhhhhhhhbbbbb")
                         context['m_encrypt']=m_encrypt
                         context['key_encrypt']=key_encrypt_list
                         context['encrypted']=True
@@ -406,7 +401,7 @@ def cryptosystem_view(request, name=None):
                     key_decrypt = request.POST.get("key_decrypt")
                     if os.path.exists("static/images/clean.png"):
                         os.remove("static/images/clean.png")
-                    upload = request.POST.get('im1')
+                    upload = request.FILES.get("im1")
                     fss = FileSystemStorage()
                     fss.save('static/images/clean.png', upload)
                     try:
@@ -424,8 +419,6 @@ def cryptosystem_view(request, name=None):
                             context['m_decrypt']=m_decrypt
                             context['key_decrypt']=key_decrypt_list
                             context['decrypted']=True
-                            context['cleartext']=decode
-                            context['encodedtext']=codedtext
                     except:
                         pass
 

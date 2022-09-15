@@ -60,6 +60,7 @@ def encode_hill_image(key, url):
     # Show the image and save it in a .pgm file
     encryptedImg.show()
     encryptedImg.save("static/images/result.pgm")
+    encryptedImg.save("static/images/result.png")
 
 def decode_hill_image(decryptKey, imgPath):
     """
@@ -104,7 +105,7 @@ def decode_hill_image(decryptKey, imgPath):
             rowPixels.append(decryptedImg.getpixel((x,y)))
     
     decryptedImg.show()
-    decryptedImg.save("static/images/out.png")
+    decryptedImg.save("static/images/out.jpg")
 
 def encode_hill_text(key, text):
     """

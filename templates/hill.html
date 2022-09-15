@@ -183,6 +183,8 @@
                     <label>Encoded image:</label>
                     <img src="out.png" alt="coded image">
                 </div> -->
+                <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
 
                 <ul class="actions">
                     <form action="." method="get">
@@ -196,7 +198,7 @@
         </section>
 
         <section id="decrypt">
-            <form action="." method="post">
+            <form action="." method="post" enctype="multipart/form-data">
                 <h2>Decrypt image</h2>
                 {% csrf_token %}
                 {% if not decrypted %}
@@ -232,21 +234,14 @@
             </form>
             <div>
                 {% if decrypted %}
-                {% if failed_decrypt %}
-                <label>This are all the posible text:</label>
-                {% else %}
                 <div >
                     <label>Used key:  </label>
                     <p>{{key_decrypt}}</p>
                 </div>
-                <div >
-                    <label>Clear text:  </label>
-                    <p>{{cleartext}}</p>
-                </div>
-                <div >
-                    <label>Encoded text:</label>
-                    <p>{{encodedtext}}</p>
-                </div>
+                
+                <div><p><img src="{% static 'images/clean.png' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/out.jpg' %}" class="img-fluid"></p></div>
+
 
                 <ul class="actions">
                     <form action="." method="get">
@@ -254,7 +249,6 @@
                     </form>
 
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>
