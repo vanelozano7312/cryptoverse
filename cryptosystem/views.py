@@ -362,11 +362,13 @@ def cryptosystem_view(request, name=None):
                     pass
 
                 
+                
                 #encrypt image 
                 m_encrypt = request.POST.get("m_encrypt")
                 key_encrypt = request.POST.get("key_encrypt")
                 url = request.POST.get("url")
                 try:
+                    print("bbbbbb")
                     m_encrypt=int(m_encrypt)
                     key_encrypt_list = key_encrypt.split()
                     key_encrypt_list=strtomat(key_encrypt_list, m_encrypt)
@@ -376,11 +378,13 @@ def cryptosystem_view(request, name=None):
                     else:
                         print(key_encrypt_list, url)
                         encode = encode_hill_image(key_encrypt_list, url)
-                        print("a")
-
+                        print("dss")
                     if encode == -1:
                         context['mistake_encrypt']=True
+                        print("ddddd")
                     else:
+                        
+                        print("aaaaaaabhhhhhhhhbbbbb")
                         context['m_encrypt']=m_encrypt
                         context['key_encrypt']=key_encrypt_list
                         context['encrypted']=True
@@ -388,6 +392,7 @@ def cryptosystem_view(request, name=None):
                 except:
                     pass
 
+                
                 #decrypt image
                 m_decrypt = request.POST.get("m_decrypt")
                 key_decrypt = request.POST.get("key_decrypt")
@@ -413,6 +418,7 @@ def cryptosystem_view(request, name=None):
                         context['encodedtext']=codedtext
                 except:
                     pass
+
 
         ##VIGENERE CYPHER
         elif name == "Vigenere":

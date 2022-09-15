@@ -32,7 +32,7 @@ def encode_hill_image(key, url):
     m = len(key)
     response = requests.get(url)
     urllib.request.urlretrieve(url,"static/images/image.jpg")
-    img = Image.open("image.jpg")
+    img = Image.open("static/images/image.jpg")
     encryptedImg = img.convert("L")
 
     # Resize image as needed, the image width must be a multiple
