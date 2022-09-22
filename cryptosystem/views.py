@@ -441,20 +441,21 @@ def cryptosystem_view(request, name=None):
                         if x_list == -1 or y_list == -1:
                             context['mistake_decrypt']=True
                         else:
-                            key = ca_hill(x, y, n)
+                            key = ca_hill(x_list, y_list, n)
+                            print(key)
 
-                        if key == -1:
+                        if key.any() == -1:
                             context['mistake_ca']=True
                             context['x']=x
                             context['y']=y
                             context['n']=n
                         else:
+                            context['ca']=True
                             context['m_ca']=m_ca
-                            context['x']=x
-                            context['y']=y
+                            context['x']=x_list
+                            context['y']=y_list
                             context['n']=n
                             context['key']=key
-                            context['ca']=True
                     except:
                         pass
 

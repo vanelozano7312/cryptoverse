@@ -138,8 +138,7 @@ def ComputeInverseKey(n, key):
         return inverse
     else:
         raise "The given matrix is not invertible modulus m"
-
-def GuessKey(x, y, n):
+def ca_hill(x, y, n):
     """
     Description
     -----------
@@ -165,12 +164,15 @@ def GuessKey(x, y, n):
     key which is the product of x^-1*y. Otherwise, it will return
     -1
     """
-    try:
-        m = len(x)
-        inverse = ComputeInverseKey(m, n, x)
+    m = len(x)
+    inverse = ComputeInverseKey(n, x)
+    if inverse != -1:
         key = np.dot(inverse, y)
         mod = m*[m*[n]]
         key = np.mod(key, mod)
         return key
-    except:
-        return -1
+    else:
+        return [-1]
+    
+# a = ca_hill([[5, 17], [8, 3]], [[15, 16], [2, 5]], 26)
+# print(a)
