@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Banner -->
+<section id="banner" class="major">
+    <div class="inner">
+        <header class="major">
+            <h1>Classic Cryptography</h1>
+        </header>
+        <span class="image">
+            <img src="{% static 'images/classic.png' %}" alt="" />
+        </span>
+    </div>
+</section>  
+
+<div id="main">
+    <section id="two" class="titles">
+        <ul>
+            {% for x in object_list %}
+                {% if x.description != 'Block' %}
+                <header class="major">
+                    <h3><a href='/CS/{{x.name}}/'>{{x.name}} cipher</a></h3>
+                </header>
+                    <!-- <li><a href='/{{x.name}}/'>{{x.name}} cipher</a></li> -->
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </section>
+</div>
+{% endblock content %}
