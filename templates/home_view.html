@@ -9,9 +9,9 @@
         <header class="major">
             <h1>CRYPTOVERSE</h1>
         </header>
-        <!-- <span class="image">
-            <img src="{% static 'images/icon0.5x.png' %}" alt="" />
-        </span> -->
+        <span class="image">
+            <img src="{% static 'images/cyber_security.jpg' %}" alt="" />
+        </span>
         <div class="content">
             <ul class="actions">
                 <li><a href="#one" class="button next scrolly">Get Started</a></li>
@@ -22,16 +22,47 @@
 
 <div id="main">
     <section id="one" class="titles">
-        <ul>
-            {% for x in object_list %}
-                {% if x.name %}
+        <section id="one" class="tiles">
+            <article>
+                <span class="image">
+                    <img src="{% static 'images/classic.png' %}" alt="" />
+                </span>
                 <header class="major">
-                    <h3><a href='/CS/{{x.name}}/'>{{x.name}} cipher</a></h3>
+                    <h3><a href="classic.html" class="link">Classic Cryptography</a></h3>
+                    <p>Shift, Multiplication, Substitution, Affine, Permutation, Hill and Vigenere cipher</p>
                 </header>
-                    <!-- <li><a href='/{{x.name}}/'>{{x.name}} cipher</a></li> -->
-                {% endif %}
-            {% endfor %}
-        </ul>
+            </article>
+            <article>
+                <span class="image">
+                    <img src="{% static 'images/block.png' %}" alt="" />
+                </span>
+                <header class="major">
+                    <h3><a href="block.html" class="link">Block Cipher Cryptography</a></h3>
+                    <p>S-DES, T-DES and AES cipher</p>
+                </header>
+            </article>
+        </section>
+    </section>
+    <section id="two">
+        <div class="inner">
+            <header class="major">
+                <h2>Why Cryptography?</h2>
+            </header>
+            <p>Cryptography has been used for thousands of years to help to provide confidential communications between mutually
+                trusted parties. In its most basic form, two people, often denoted as Alice and Bob, have agreed on a particular
+                secret key. At some later time, Alice may wish to send a secret message to Bob(or Bob might want to send a message)
+                to Alice). The key is used to transform the original message(which is usually termed the plaintext) into a scrambled
+                form that is unintelligeble to anyone who does not possess the key. This process is called encryption and the scrambled
+                message is called ciphertext. When Bob receives the ciphertext, he can use the key to transform the cipher text back
+                into the original plaintext; this is the decryption process. A cryptosystem constitutes a complete specification of the
+                keys and how are they used to encrypt and decrypt. Let's see some classic and block ciphers!
+            </p>
+            <div class="content">
+                <ul class="actions">
+                    <li><a href="#one" class="button next scrolly">Get Started</a></li>
+                </ul>
+            </div>
+        </div>
     </section>
 </div>
 {% endblock content %}

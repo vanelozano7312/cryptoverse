@@ -1,0 +1,752 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="cipher-title">
+    <h1>TRIPLE DATA ENCRYPTION STANDARD CIPHER</h1>
+</div>
+
+<!-- ECB MODE -->
+<section id="ende">
+
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt in ECB mode</h2>
+                {% csrf_token %}
+                {% if not encrypted_ecb %}
+
+                {% if mistake_encrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_encrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_1" name="key_encrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_encrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_2" name="key_encrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_encrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_3" name="key_encrypt_3">
+                    </div>
+                    <div class="field" >
+                        <label for="url">Url of the image:</label>
+                        <textarea name="url"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt image" class="primary" name="Encrypt_ECB"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted_ecb %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_encrypt_1}}</p>
+                    <p>{{key_encrypt_2}}</p>
+                    <p>{{key_encrypt_3}}</p>
+                </div>
+                <!-- <div >
+                    <label>Your image:</label>
+                    <span class="image">
+                        <img src="static/images/image.jpg" alt="your image">
+                    </span>
+                </div>
+                <div >
+                    <label>Encoded image:</label>
+                    <img src="out.png" alt="coded image">
+                </div> -->
+                <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post" enctype="multipart/form-data">
+                <h2>Decrypt in ECB mode</h2>
+                {% csrf_token %}
+                {% if not decrypted_ecb %}
+
+                {% if mistake_decrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_decrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_1" name="key_decrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_decrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_2" name="key_decrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_decrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_3" name="key_decrypt_3">
+                    </div>
+                    <div class="field">
+                        <label for="im1">Select image:</label>
+                        <input type="file" id="im1" name="im1" accept="image/*">
+                    </div>
+
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt image" class="primary " name="Decrypt_ECB"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted_ecb %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_decrypt_1}}</p>
+                    <p>{{key_decrypt_2}}</p>
+                    <p>{{key_decrypt_3}}</p>
+                </div>
+                
+                <div><p><img src="{% static 'images/clean.png' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/out.png' %}" class="img-fluid"></p></div>
+
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+<!-- CBC MODE -->
+<section id="ende">
+
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt in CBC mode</h2>
+                {% csrf_token %}
+                {% if not encrypted_cbc %}
+
+                {% if mistake_encrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_encrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_1" name="key_encrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_encrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_2" name="key_encrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_encrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_3" name="key_encrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Initialization vector:</label>
+                        <label for="iv_encrypt">write the 64-bit initialization vector in hexadecimal without spaces </label>
+                        <input type="text" id="iv_encrypt" name="iv_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="url">Url of the image:</label>
+                        <textarea name="url"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt" class="primary" name="Encrypt_CBC"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted_cbc %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_encrypt_1}}</p>
+                    <p>{{key_encrypt_2}}</p>
+                    <p>{{key_encrypt_3}}</p>
+                    <p>{{iv_encrypt}}</p>
+                </div>
+                <!-- <div >
+                    <label>Your image:</label>
+                    <span class="image">
+                        <img src="static/images/image.jpg" alt="your image">
+                    </span>
+                </div>
+                <div >
+                    <label>Encoded image:</label>
+                    <img src="out.png" alt="coded image">
+                </div> -->
+                <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post" enctype="multipart/form-data">
+                <h2>Decrypt in CBC mode</h2>
+                {% csrf_token %}
+                {% if not decrypted_cbc %}
+
+                {% if mistake_decrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_decrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_1" name="key_decrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_decrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_2" name="key_decrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_decrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_3" name="key_decrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Initialization vector:</label>
+                        <label for="iv_decrypt">write the 64-bit initialization vector in hexadecimal without spaces </label>
+                        <input type="text" id="iv_decrypt" name="iv_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="im1">Select image:</label>
+                        <input type="file" id="im1" name="im1" accept="image/*">
+                    </div>
+
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt image" class="primary " name="Decrypt_CBC"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted_cbc %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_decrypt_1}}</p>
+                    <p>{{key_decrypt_2}}</p>
+                    <p>{{key_decrypt_3}}</p>
+                    <p>{{iv_decrypt}}</p>
+                </div>
+                
+                <div><p><img src="{% static 'images/clean.png' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/out.png' %}" class="img-fluid"></p></div>
+
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+<!-- OFB MODE -->
+<section id="ende">
+
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt in OFB mode</h2>
+                {% csrf_token %}
+                {% if not encrypted_ofb %}
+
+                {% if mistake_encrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_encrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_1" name="key_encrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_encrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_2" name="key_encrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_encrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_3" name="key_encrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Initialization vector:</label>
+                        <label for="iv_encrypt">write the 64-bit initialization vector in hexadecimal without spaces </label>
+                        <input type="text" id="iv_encrypt" name="iv_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="url">Url of the image:</label>
+                        <textarea name="url"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt" class="primary" name="Encrypt_OFB"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted_ofb %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_encrypt_1}}</p>
+                    <p>{{key_encrypt_2}}</p>
+                    <p>{{key_encrypt_3}}</p>
+                    <p>{{iv_encrypt}}</p>
+                </div>
+                <!-- <div >
+                    <label>Your image:</label>
+                    <span class="image">
+                        <img src="static/images/image.jpg" alt="your image">
+                    </span>
+                </div>
+                <div >
+                    <label>Encoded image:</label>
+                    <img src="out.png" alt="coded image">
+                </div> -->
+                <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post" enctype="multipart/form-data">
+                <h2>Decrypt in OFB mode</h2>
+                {% csrf_token %}
+                {% if not decrypted_ofb %}
+
+                {% if mistake_decrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_decrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_1" name="key_decrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_decrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_2" name="key_decrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_decrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_3" name="key_decrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Initialization vector:</label>
+                        <label for="iv_decrypt">write the 64-bit initialization vector in hexadecimal without spaces </label>
+                        <input type="text" id="iv_decrypt" name="iv_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="im1">Select image:</label>
+                        <input type="file" id="im1" name="im1" accept="image/*">
+                    </div>
+
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt image" class="primary " name="Decrypt_OFB"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted_ofb %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_decrypt_1}}</p>
+                    <p>{{key_decrypt_2}}</p>
+                    <p>{{key_decrypt_3}}</p>
+                    <p>{{iv_decrypt}}</p>
+                </div>
+                
+                <div><p><img src="{% static 'images/clean.png' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/out.png' %}" class="img-fluid"></p></div>
+
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+<!-- CFB MODE -->
+<section id="ende">
+
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt in CFB mode</h2>
+                {% csrf_token %}
+                {% if not encrypted_cfb %}
+
+                {% if mistake_encrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_encrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_1" name="key_encrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_encrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_2" name="key_encrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_encrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_3" name="key_encrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Initialization vector:</label>
+                        <label for="iv_encrypt">write the 64-bit initialization vector in hexadecimal without spaces </label>
+                        <input type="text" id="iv_encrypt" name="iv_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="url">Url of the image:</label>
+                        <textarea name="url"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt" class="primary" name="Encrypt_CFB"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted_cfb %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_encrypt_1}}</p>
+                    <p>{{key_encrypt_2}}</p>
+                    <p>{{key_encrypt_3}}</p>
+                    <p>{{iv_encrypt}}</p>
+                </div>
+                <!-- <div >
+                    <label>Your image:</label>
+                    <span class="image">
+                        <img src="static/images/image.jpg" alt="your image">
+                    </span>
+                </div>
+                <div >
+                    <label>Encoded image:</label>
+                    <img src="out.png" alt="coded image">
+                </div> -->
+                <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post" enctype="multipart/form-data">
+                <h2>Decrypt in CFB mode</h2>
+                {% csrf_token %}
+                {% if not decrypted_cfb %}
+
+                {% if mistake_decrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_decrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_1" name="key_decrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_decrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_2" name="key_decrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_decrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_3" name="key_decrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Initialization vector:</label>
+                        <label for="iv_decrypt">write the 64-bit initialization vector in hexadecimal without spaces </label>
+                        <input type="text" id="iv_decrypt" name="iv_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="im1">Select image:</label>
+                        <input type="file" id="im1" name="im1" accept="image/*">
+                    </div>
+
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt image" class="primary " name="Decrypt_CFB"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted_cfb %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_decrypt_1}}</p>
+                    <p>{{key_decrypt_2}}</p>
+                    <p>{{key_decrypt_3}}</p>
+                    <p>{{iv_decrypt}}</p>
+                </div>
+                
+                <div><p><img src="{% static 'images/clean.png' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/out.png' %}" class="img-fluid"></p></div>
+
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+<!-- CTR MODE -->
+<section id="ende">
+
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt in CTR mode</h2>
+                {% csrf_token %}
+                {% if not encrypted_ctr %}
+
+                {% if mistake_encrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_encrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_1" name="key_encrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_encrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_2" name="key_encrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_encrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_encrypt_3" name="key_encrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Counter:</label>
+                        <label for="ctr_encrypt">write the 64-bit counter in hexadecimal without spaces </label>
+                        <input type="text" id="ctr_encrypt" name="ctr_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="url">Url of the image:</label>
+                        <textarea name="url"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt" class="primary" name="Encrypt_CTR"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted_ctr %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_encrypt_1}}</p>
+                    <p>{{key_encrypt_2}}</p>
+                    <p>{{key_encrypt_3}}</p>
+                    <p>{{ctr_encrypt}}</p>
+                </div>
+                <!-- <div >
+                    <label>Your image:</label>
+                    <span class="image">
+                        <img src="static/images/image.jpg" alt="your image">
+                    </span>
+                </div>
+                <div >
+                    <label>Encoded image:</label>
+                    <img src="out.png" alt="coded image">
+                </div> -->
+                <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post" enctype="multipart/form-data">
+                <h2>Decrypt in CTR mode</h2>
+                {% csrf_token %}
+                {% if not decrypted_ctr %}
+
+                {% if mistake_decrypt%}
+                <label> Invalid key (remember to separate the elements)</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field">
+                        <label>1 Key:</label>
+                        <label for="key_decrypt_1">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_1" name="key_decrypt_1">
+                    </div>
+                    <div class="field">
+                        <label>2 Key:</label>
+                        <label for="key_decrypt_2">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_2" name="key_decrypt_2">
+                    </div>
+                    <div class="field">
+                        <label>3 Key:</label>
+                        <label for="key_decrypt_3">write the 64-bit key in hexadecimal without spaces </label>
+                        <input type="text" id="key_decrypt_3" name="key_decrypt_3">
+                    </div>
+                    <div class="field">
+                        <label>Counter:</label>
+                        <label for="ctr_decrypt">write the 64-bit counter in hexadecimal without spaces </label>
+                        <input type="text" id="ctr_decrypt" name="ctr_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="im1">Select image:</label>
+                        <input type="file" id="im1" name="im1" accept="image/*">
+                    </div>
+
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt image" class="primary " name="Decrypt_CTR"/></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted_ctr %}
+                <div >
+                    <label>Keys used:  </label>
+                    <p>{{key_decrypt_1}}</p>
+                    <p>{{key_decrypt_2}}</p>
+                    <p>{{key_decrypt_3}}</p>
+                    <p>{{ctr_decrypt}}</p>
+                </div>
+                
+                <div><p><img src="{% static 'images/clean.png' %}" class="img-fluid"></p></div>
+                <div><p><img src="{% static 'images/out.png' %}" class="img-fluid"></p></div>
+
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock content %}

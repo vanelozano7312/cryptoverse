@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import path, re_path
 from cryptosystem import views
 from .views import home_view
+from .views import classic_view
+from .views import block_view
 
 urlpatterns = [
     path('', home_view), #home 
+    path('classic.html', classic_view), #classic
+    path('block.html', block_view), #block
     path('CS/<str:name>/', views.cryptosystem_view),
     path('admin/', admin.site.urls),
 ]

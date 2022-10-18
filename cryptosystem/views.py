@@ -1,3 +1,5 @@
+from turtle import clear
+import string
 from django.shortcuts import render
 from .models import Cryptosystem 
 from BackendReady.main import *
@@ -5,6 +7,10 @@ from BackendReady.Vigenere import *
 from BackendReady.CryptoanalysisVigenere import *
 from BackendReady.CryptoanalysisHill import *
 from BackendReady.Hill import *
+from BackendReady.SDES import *
+from BackendReady.TDES import *
+from BackendReady.AES import *
+import codecs
 # from .forms import HillImageForm
 from django.core.files.storage import FileSystemStorage
 
@@ -36,6 +42,8 @@ def cryptosystem_view(request, name=None):
     global count_falla
 
     if name is not None:
+        print(name)
+        print(Cryptosystem.objects.all)
         cryptosystem_obj = Cryptosystem.objects.get(name=name)
         change_page(cryptosystem_obj.name)
         context['name']= cryptosystem_obj.name
@@ -527,6 +535,578 @@ def cryptosystem_view(request, name=None):
                         context['encodedtext_ca']=codedtext_ca
                 except:
                     pass
+        ##SDES CYPHER
+        elif name == "SDES":
+            view = "s-des.html"
+            if request.method == "POST":
+                #encrypt text 
+                key_encrypt_text = request.POST.get("key_encrypt_text")
+                cleartext_text = request.POST.get("cleartext_text")
+                try:
+                    allowed = set('0'+'1'+' ')
+                    if set(key_encrypt_text) > allowed:
+                        context['mistake_encrypt_text'] = True
+                    if set(cleartext_text) > allowed:
+                        context['mistake_encrypt_text'] = True
+                    key_encrypt_text_list = key_encrypt_text.split()
+                    key_encrypt_text_list = [int(x) for x in key_encrypt_text_list]
+                    print(key_encrypt_text_list)
+
+                    cleartext = cleartext_text.split()
+                    cleartext = [int(x) for x in cleartext]
+                    print(cleartext)
+                    keys = GenerateKeys(key_encrypt_text_list)
+                    encode_text= encode_sdes_text(cleartext, keys)
+                    if encode_text == -1:
+                        context['mistake_encrypt_text']=True
+                    else:
+                        context['encrypted_text']=True
+                        context['cleartext_text']=cleartext_text
+                        encode_text = [str(x) for x in encode_text]
+                        context['encodedtext_text']=' '.join(encode_text)
+                        count_falla=0
+                except:
+                    pass
+
+                #decrypt text
+                key_decrypt_text = request.POST.get("key_decrypt_text")
+                codedtext_text = request.POST.get("codedtext_text")
+                try:
+                    allowed = {'0', '1', ' '}
+
+                    for i in key_decrypt_text:
+                        if i not in allowed:
+                            context['mistake_decrypt'] = True
+                    
+                    for i in codedtext_text:
+                        if i not in allowed:
+                            context['mistake_decrypt'] = True
+                    
+                    key_decrypt_text_list = key_decrypt_text.split()
+                    key_decrypt_text_list = [int(x) for x in key_decrypt_text_list]
+                    print(key_decrypt_text_list)
+
+                    codedtext = codedtext_text.split()
+                    codedtext = [int(x) for x in codedtext]
+                    print(codedtext)
+                    keys = GenerateKeys(key_decrypt_text_list)
+                    decode_text = decode_sdes_text(codedtext, keys)
+                    if decode_text == -1:
+                        context['mistake_decrypt_text']=True
+                    else:
+                        key_decrypt_text_list = [str(x) for x in key_decrypt_text_list]
+                        context['key_decrypt_text']=' '.join(key_decrypt_text_list)
+                        context['decrypted_text']=True
+                        decode_text = [str(x) for x in decode_text]
+                        context['cleartext_text']=' '.join(decode_text)
+                        context['encodedtext_text']=codedtext_text
+                except:
+                    pass
+        ##T-DES CYPHER
+        elif name == "TDES":
+            view = "t-des.html"
+            if request.method == "POST":
+                #encrypt in ECB MODE
+                if 'Encrypt_ECB' in request.POST:
+                    key_encrypt1 = request.POST.get("key_encrypt_1")
+                    key_encrypt2 = request.POST.get("key_encrypt_2")
+                    key_encrypt3 = request.POST.get("key_encrypt_3")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt1 = key_encrypt1.upper()
+                        key_encrypt2 = key_encrypt2.upper()
+                        key_encrypt3 = key_encrypt3.upper()
+                        encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
+                        if encode == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt_1'] = key_encrypt1
+                            context['key_encrypt_2'] = key_encrypt2
+                            context['key_encrypt_3'] = key_encrypt3
+                            context['encrypted_ecb']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in ECB MODE
+                if 'Decrypt_ECB' in request.POST:
+                    key_decrypt_1 = request.POST.get("key_decrypt_1")
+                    key_decrypt_2 = request.POST.get("key_decrypt_2")
+                    key_decrypt_3 = request.POST.get("key_decrypt_3")
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt_1 = key_decrypt_1.upper()
+                        key_decrypt_2 = key_decrypt_2.upper()
+                        key_decrypt_3 = key_decrypt_3.upper()
+                        decode = decode_tdes_image_ecb(key_decrypt_1, key_decrypt_2, key_decrypt_3, 'static/images/clean.png')
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt_1']=key_decrypt_1
+                            context['key_decrypt_2']=key_decrypt_2
+                            context['key_decrypt_3']=key_decrypt_3
+                            context['decrypted_ecb']=True
+                    except:
+                        pass
+                
+                #encrypt in CBC MODE
+                if 'Encrypt_CBC' in request.POST:
+                    key_encrypt1 = request.POST.get("key_encrypt_1")
+                    key_encrypt2 = request.POST.get("key_encrypt_2")
+                    key_encrypt3 = request.POST.get("key_encrypt_3")
+                    iv_encrypt = request.POST.get("iv_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt1 = key_encrypt1.upper()
+                        key_encrypt2 = key_encrypt2.upper()
+                        key_encrypt3 = key_encrypt3.upper()
+                        iv_encrypt = iv_encrypt.upper()
+                        encode = encode_tdes_image_cbc(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        if encode == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt_1'] = key_encrypt1
+                            context['key_encrypt_2'] = key_encrypt2
+                            context['key_encrypt_3'] = key_encrypt3
+                            context['iv_encrypt'] = iv_encrypt
+                            context['encrypted_cbc']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in CBC MODE
+                if 'Decrypt_CBC' in request.POST:
+                    key_decrypt_1 = request.POST.get("key_decrypt_1")
+                    key_decrypt_2 = request.POST.get("key_decrypt_2")
+                    key_decrypt_3 = request.POST.get("key_decrypt_3")
+                    iv_decrypt = request.POST.get("iv_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt_1 = key_decrypt_1.upper()
+                        key_decrypt_2 = key_decrypt_2.upper()
+                        key_decrypt_3 = key_decrypt_3.upper()
+                        iv_decrypt = iv_decrypt.upper()
+                        decode = decode_tdes_image_cbc(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt_1']=key_decrypt_1
+                            context['key_decrypt_2']=key_decrypt_2
+                            context['key_decrypt_3']=key_decrypt_3
+                            context['iv_decrypt']=iv_decrypt
+                            context['decrypted_cbc']=True
+                    except:
+                        pass
+                
+                #encrypt in OFB MODE
+                if 'Encrypt_OFB' in request.POST:
+                    key_encrypt1 = request.POST.get("key_encrypt_1")
+                    key_encrypt2 = request.POST.get("key_encrypt_2")
+                    key_encrypt3 = request.POST.get("key_encrypt_3")
+                    iv_encrypt = request.POST.get("iv_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt1 = key_encrypt1.upper()
+                        key_encrypt2 = key_encrypt2.upper()
+                        key_encrypt3 = key_encrypt3.upper()
+                        iv_encrypt = iv_encrypt.upper()
+                        encode = encode_tdes_image_ofb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        if encode == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt_1'] = key_encrypt1
+                            context['key_encrypt_2'] = key_encrypt2
+                            context['key_encrypt_3'] = key_encrypt3
+                            context['iv_encrypt'] = iv_encrypt
+                            context['encrypted_ofb']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in OFB MODE
+                if 'Decrypt_OFB' in request.POST:
+                    key_decrypt_1 = request.POST.get("key_decrypt_1")
+                    key_decrypt_2 = request.POST.get("key_decrypt_2")
+                    key_decrypt_3 = request.POST.get("key_decrypt_3")
+                    iv_decrypt = request.POST.get("iv_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt_1 = key_decrypt_1.upper()
+                        key_decrypt_2 = key_decrypt_2.upper()
+                        key_decrypt_3 = key_decrypt_3.upper()
+                        iv_decrypt = iv_decrypt.upper()
+                        decode = decode_tdes_image_ofb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt_1']=key_decrypt_1
+                            context['key_decrypt_2']=key_decrypt_2
+                            context['key_decrypt_3']=key_decrypt_3
+                            context['iv_decrypt']=iv_decrypt
+                            context['decrypted_ofb']=True
+                    except:
+                        pass
+                
+                #encrypt in CFB MODE
+                if 'Encrypt_CFB' in request.POST:
+                    key_encrypt1 = request.POST.get("key_encrypt_1")
+                    key_encrypt2 = request.POST.get("key_encrypt_2")
+                    key_encrypt3 = request.POST.get("key_encrypt_3")
+                    iv_encrypt = request.POST.get("iv_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt1 = key_encrypt1.upper()
+                        key_encrypt2 = key_encrypt2.upper()
+                        key_encrypt3 = key_encrypt3.upper()
+                        iv_encrypt = iv_encrypt.upper()
+                        encode = encode_tdes_image_cfb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        print(":)")
+                        if encode == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt_1'] = key_encrypt1
+                            context['key_encrypt_2'] = key_encrypt2
+                            context['key_encrypt_3'] = key_encrypt3
+                            context['iv_encrypt'] = iv_encrypt
+                            context['encrypted_cfb']=True
+                            count_falla=0
+                    except:
+                        pass
+                
+                #decrypt in CFB MODE
+                if 'Decrypt_CFB' in request.POST:
+                    key_decrypt_1 = request.POST.get("key_decrypt_1")
+                    key_decrypt_2 = request.POST.get("key_decrypt_2")
+                    key_decrypt_3 = request.POST.get("key_decrypt_3")
+                    iv_decrypt = request.POST.get("iv_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt_1 = key_decrypt_1.upper()
+                        key_decrypt_2 = key_decrypt_2.upper()
+                        key_decrypt_3 = key_decrypt_3.upper()
+                        iv_decrypt = iv_decrypt.upper()
+                        decode = decode_tdes_image_cfb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt_1']=key_decrypt_1
+                            context['key_decrypt_2']=key_decrypt_2
+                            context['key_decrypt_3']=key_decrypt_3
+                            context['iv_decrypt']=iv_decrypt
+                            context['decrypted_cfb']=True
+                    except:
+                        pass
+                
+                #encrypt in CTR MODE
+                if 'Encrypt_CTR' in request.POST:
+                    key_encrypt1 = request.POST.get("key_encrypt_1")
+                    key_encrypt2 = request.POST.get("key_encrypt_2")
+                    key_encrypt3 = request.POST.get("key_encrypt_3")
+                    ctr_encrypt = request.POST.get("ctr_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt1 = key_encrypt1.upper()
+                        key_encrypt2 = key_encrypt2.upper()
+                        key_encrypt3 = key_encrypt3.upper()
+                        ctr_encrypt = ctr_encrypt.upper()
+                        encode = encode_tdes_image_ctr(key_encrypt1, key_encrypt2, key_encrypt3, ctr_encrypt, url)
+                        print(":)")
+                        if encode == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt_1'] = key_encrypt1
+                            context['key_encrypt_2'] = key_encrypt2
+                            context['key_encrypt_3'] = key_encrypt3
+                            context['ctr_encrypt'] = ctr_encrypt
+                            context['encrypted_ctr']=True
+                            count_falla=0
+                    except:
+                        pass
+                
+                #decrypt in CTR MODE
+                if 'Decrypt_CTR' in request.POST:
+                    key_decrypt_1 = request.POST.get("key_decrypt_1")
+                    key_decrypt_2 = request.POST.get("key_decrypt_2")
+                    key_decrypt_3 = request.POST.get("key_decrypt_3")
+                    ctr_decrypt = request.POST.get("ctr_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt_1 = key_decrypt_1.upper()
+                        key_decrypt_2 = key_decrypt_2.upper()
+                        key_decrypt_3 = key_decrypt_3.upper()
+                        ctr_decrypt = ctr_decrypt.upper()
+                        decode = decode_tdes_image_ctr(key_decrypt_1, key_decrypt_2, key_decrypt_3, ctr_decrypt, 'static/images/clean.png')
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt_1']=key_decrypt_1
+                            context['key_decrypt_2']=key_decrypt_2
+                            context['key_decrypt_3']=key_decrypt_3
+                            context['ctr_decrypt']=ctr_decrypt
+                            context['decrypted_ctr']=True
+                    except:
+                        pass
+        ##AES CYPHER
+        elif name == "AES":
+            view = "aes.html"
+            if request.method == "POST":
+                #encrypt in ECB MODE
+                if 'Encrypt_ECB' in request.POST:
+                    key_encrypt_hex = request.POST.get("key_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        encode = encode_aes_image_ecb(key_encrypt, url)
+                        if encode == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt'] = key_encrypt_hex
+                            context['encrypted_ecb']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in ECB MODE
+                if 'Decrypt_ECB' in request.POST:
+                    key_decrypt_hex = request.POST.get("key_decrypt")
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                        decode = decode_aes_image_ecb(key_decrypt, 'static/images/clean.png')
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt']=key_decrypt_hex
+                            context['decrypted_ecb']=True
+                    except:
+                        pass
+                
+                #encrypt in CBC MODE
+                if 'Encrypt_CBC' in request.POST:
+                    key_encrypt_hex = request.POST.get("key_encrypt")
+                    iv_encrypt_hex = request.POST.get("iv_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        if iv_encrypt_hex != "":
+                            iv_encrypt = codecs.decode(iv_encrypt_hex, 'hex_codec')
+                        else:
+                            iv_encrypt = None
+                        iv_encrypt = encode_aes_image_cbc(key_encrypt, url, iv_encrypt)
+                        if iv_encrypt == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt'] = key_encrypt_hex
+                            context['iv_encrypt'] = iv_encrypt.upper()
+                            context['encrypted_cbc']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in CBC MODE
+                if 'Decrypt_CBC' in request.POST:
+                    key_decrypt_hex = request.POST.get("key_decrypt")
+                    iv_decrypt_hex = request.POST.get("iv_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                        iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
+                        decode = decode_aes_image_cbc(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt']=key_decrypt_hex
+                            context['iv_decrypt']=iv_decrypt_hex
+                            context['decrypted_cbc']=True
+                    except:
+                        pass
+                
+                #encrypt in OFB MODE
+                if 'Encrypt_OFB' in request.POST:
+                    key_encrypt_hex = request.POST.get("key_encrypt")
+                    iv_encrypt_hex = request.POST.get("iv_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        if iv_encrypt_hex != "":
+                            iv_encrypt = codecs.decode(iv_encrypt_hex, 'hex_codec')
+                        else:
+                            iv_encrypt = None
+                        iv_encrypt = encode_aes_image_ofb(key_encrypt, url, iv_encrypt)
+                        if iv_encrypt == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt'] = key_encrypt_hex
+                            context['iv_encrypt'] = iv_encrypt.upper()
+                            context['encrypted_ofb']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in OFB MODE
+                if 'Decrypt_OFB' in request.POST:
+                    key_decrypt_hex = request.POST.get("key_decrypt")
+                    iv_decrypt_hex = request.POST.get("iv_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                        iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
+                        decode = decode_aes_image_ofb(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt']=key_decrypt_hex
+                            context['iv_decrypt']=iv_decrypt_hex
+                            context['decrypted_ofb']=True
+                    except:
+                        pass
+                
+                #encrypt in CFB MODE
+                if 'Encrypt_CFB' in request.POST:
+                    key_encrypt_hex = request.POST.get("key_encrypt")
+                    iv_encrypt_hex = request.POST.get("iv_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        if iv_encrypt_hex != "":
+                            iv_encrypt = codecs.decode(iv_encrypt_hex, 'hex_codec')
+                        else:
+                            iv_encrypt = None
+                        iv_encrypt = encode_aes_image_cfb(key_encrypt, url, iv_encrypt)
+                        if iv_encrypt == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt'] = key_encrypt_hex
+                            context['iv_encrypt'] = iv_encrypt.upper()
+                            context['encrypted_cfb']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                
+                #decrypt in CFB MODE
+                if 'Decrypt_CFB' in request.POST:
+                    key_decrypt_hex = request.POST.get("key_decrypt")
+                    iv_decrypt_hex = request.POST.get("iv_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                        iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
+                        decode = decode_aes_image_cfb(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt']=key_decrypt_hex
+                            context['iv_decrypt']=iv_decrypt_hex
+                            context['decrypted_cfb']=True
+                    except:
+                        pass
+                
+                #encrypt in CTR MODE
+                if 'Encrypt_CTR' in request.POST:
+                    key_encrypt_hex = request.POST.get("key_encrypt")
+                    nonce_encrypt_hex = request.POST.get("nonce_encrypt")
+
+                    url = request.POST.get("url")
+                    try:
+                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        if nonce_encrypt_hex != "":
+                            nonce_encrypt = codecs.decode(nonce_encrypt_hex, 'hex_codec')
+                        else:
+                            nonce_encrypt = None
+                        print("wenas")
+                        nonce_encrypt = encode_aes_image_ctr(key_encrypt, url, nonce_encrypt)
+                        if nonce_encrypt == -1:
+                            context['mistake_encrypt']=True
+                        else:
+                            context['key_encrypt'] = key_encrypt_hex
+                            context['nonce_encrypt'] = nonce_encrypt.upper()
+                            context['encrypted_ctr']=True
+                            count_falla=0
+                    except:
+                        pass
+
+                #decrypt in CTR MODE
+                if 'Decrypt_CTR' in request.POST:
+                    key_decrypt_hex = request.POST.get("key_decrypt")
+                    nonce_decrypt_hex = request.POST.get("nonce_decrypt")
+
+                    if os.path.exists("static/images/clean.png"):
+                        os.remove("static/images/clean.png")
+                    upload = request.FILES.get("im1")
+                    fss = FileSystemStorage()
+                    fss.save('static/images/clean.png', upload)
+                    try:
+                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                        nonce_decrypt = codecs.decode(nonce_decrypt_hex, 'hex_codec')
+                        print("holi")
+                        decode = decode_aes_image_ctr(key_decrypt, 'static/images/clean.png', nonce_decrypt)
+                        if decode == -1:
+                            context['mistake_decrypt']=True
+                        else:
+                            context['key_decrypt']=key_decrypt_hex
+                            context['nonce_decrypt']=nonce_decrypt_hex
+                            context['decrypted_ctr']=True
+                    except:
+                        pass
 
     return render(request, view, context=context)
 
