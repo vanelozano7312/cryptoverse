@@ -8,7 +8,7 @@ def toBinary(n, len):
         i = i // 2
     return binary
 
-def GenerateKeys(key):
+def generate_keys_sdes(key):
     p8 = [6, 3, 7, 4, 8, 5, 10, 9]
     p10 = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6]
     # Step-1
@@ -89,41 +89,46 @@ def Swap(arr):
 
 
 def encode_sdes_text(x, K):
-    IP = [2, 6, 3, 1, 4, 8, 5, 7]
-    IP_inv = [4, 1, 3, 5, 7, 2, 8, 6]
-    
-    s1 = [1]*8
-    for i in range(0, 8):
-        s1[i] = x[IP[i] - 1]
-    
-    arr1 = Function(s1, K[0])
-    after_swap = Swap(arr1)
-    arr2 = Function(after_swap, K[1])
-    cipherText = [1]*8
-    for i in range(0, 8):
-        cipherText[i] = arr2[IP_inv[i] - 1]
-    return cipherText
+    try:
+        IP = [2, 6, 3, 1, 4, 8, 5, 7]
+        IP_inv = [4, 1, 3, 5, 7, 2, 8, 6]
+
+        s1 = [1]*8
+        for i in range(0, 8):
+            s1[i] = x[IP[i] - 1]
+        arr1 = Function(s1, K[0])
+        after_swap = Swap(arr1)
+        arr2 = Function(after_swap, K[1])
+        cipherText = [1]*8
+        for i in range(0, 8):
+            cipherText[i] = arr2[IP_inv[i] - 1]
+        return cipherText
+    except:
+        return -1
     
 def decode_sdes_text(y, K):
-    IP = [2, 6, 3, 1, 4, 8, 5, 7]
-    IP_inv = [4, 1, 3, 5, 7, 2, 8, 6]
-    
-    s1 = [1]*8
-    for i in range(0, 8):
-        s1[i] = y[IP[i] - 1]
-    
-    arr1 = Function(s1, K[1])
-    after_swap = Swap(arr1)
-    arr2 = Function(after_swap, K[0])
-    decryptedText = [1]*8
-    for i in range(0, 8):
-        decryptedText[i] = arr2[IP_inv[i] - 1]
-    return decryptedText
+    try:
+        IP = [2, 6, 3, 1, 4, 8, 5, 7]
+        IP_inv = [4, 1, 3, 5, 7, 2, 8, 6]
+
+        s1 = [1]*8
+        for i in range(0, 8):
+            s1[i] = y[IP[i] - 1]
+
+        arr1 = Function(s1, K[1])
+        after_swap = Swap(arr1)
+        arr2 = Function(after_swap, K[0])
+        decryptedText = [1]*8
+        for i in range(0, 8):
+            decryptedText[i] = arr2[IP_inv[i] - 1]
+        return decryptedText
+    except:
+        return -1
 
 """
 key = [1,0,1,0,0,0,0,0,1,0]
-
-K = GenerateKeys(key, p8, p10)
+K = generate_keys_sdes(key)
+print(K)
 x = [1, 0, 0, 1, 0, 1, 1, 1]
 y = encode_sdes_text(x, K)
 print(y)
