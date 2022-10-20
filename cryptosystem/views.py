@@ -542,23 +542,27 @@ def cryptosystem_view(request, name=None):
                 #encrypt text 
                 key_encrypt_text = request.POST.get("key_encrypt_text")
                 cleartext_text = request.POST.get("cleartext_text")
+                error = False
                 try:
                     allowed = set('0'+'1'+' ')
                     if set(key_encrypt_text) > allowed:
-                        context['mistake_encrypt_text'] = True
+                        error = True
                     if set(cleartext_text) > allowed:
-                        context['mistake_encrypt_text'] = True
+                        error = True
                     key_encrypt_text_list = key_encrypt_text.split()
                     key_encrypt_text_list = [int(x) for x in key_encrypt_text_list]
+                    if len(key_encrypt_text_list) != 10:
+                        error = True
                     print(key_encrypt_text_list)
 
                     cleartext = cleartext_text.split()
                     cleartext = [int(x) for x in cleartext]
                     print(cleartext)
-                    keys = GenerateKeys(key_encrypt_text_list)
+                    keys = generate_keys_sdes(key_encrypt_text_list)
+                    print(keys)
                     encode_text= encode_sdes_text(cleartext, keys)
-                    if encode_text == -1:
-                        context['mistake_encrypt_text']=True
+                    if encode_text == -1 or error:
+                        context['mistake_encrypt']=True
                     else:
                         context['encrypted_text']=True
                         context['cleartext_text']=cleartext_text
@@ -571,28 +575,31 @@ def cryptosystem_view(request, name=None):
                 #decrypt text
                 key_decrypt_text = request.POST.get("key_decrypt_text")
                 codedtext_text = request.POST.get("codedtext_text")
+                error = False
                 try:
                     allowed = {'0', '1', ' '}
 
                     for i in key_decrypt_text:
                         if i not in allowed:
-                            context['mistake_decrypt'] = True
+                            error = True
                     
                     for i in codedtext_text:
                         if i not in allowed:
-                            context['mistake_decrypt'] = True
-                    
+                            error = True
+
                     key_decrypt_text_list = key_decrypt_text.split()
                     key_decrypt_text_list = [int(x) for x in key_decrypt_text_list]
                     print(key_decrypt_text_list)
+                    if len(key_decrypt_text_list) != 10:
+                        error = True
 
                     codedtext = codedtext_text.split()
                     codedtext = [int(x) for x in codedtext]
                     print(codedtext)
-                    keys = GenerateKeys(key_decrypt_text_list)
+                    keys = generate_keys_sdes(key_decrypt_text_list)
                     decode_text = decode_sdes_text(codedtext, keys)
-                    if decode_text == -1:
-                        context['mistake_decrypt_text']=True
+                    if decode_text == -1 or error:
+                        context['mistake_decrypt']=True
                     else:
                         key_decrypt_text_list = [str(x) for x in key_decrypt_text_list]
                         context['key_decrypt_text']=' '.join(key_decrypt_text_list)
