@@ -32,8 +32,6 @@ def change_page(name):
         count_falla=0
 
 
-
-
 #views for every cryptosystem
 def cryptosystem_view(request, name=None):
     cryptosystem_obj = None
@@ -467,7 +465,6 @@ def cryptosystem_view(request, name=None):
                     except:
                         pass
 
-
         ##VIGENERE CYPHER
         elif name == "Vigenere":
             view = "vigenere.html"
@@ -535,6 +532,7 @@ def cryptosystem_view(request, name=None):
                         context['encodedtext_ca']=codedtext_ca
                 except:
                     pass
+        
         ##SDES CYPHER
         elif name == "SDES":
             view = "s-des.html"
@@ -602,6 +600,7 @@ def cryptosystem_view(request, name=None):
                         context['encodedtext_text']=codedtext_text
                 except:
                     pass
+        
         ##T-DES CYPHER
         elif name == "TDES":
             view = "t-des.html"
@@ -878,6 +877,7 @@ def cryptosystem_view(request, name=None):
                             context['decrypted_ctr']=True
                     except:
                         pass
+        
         ##AES CYPHER
         elif name == "AES":
             view = "aes.html"
