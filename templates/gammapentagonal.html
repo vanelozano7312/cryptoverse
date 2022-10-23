@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="wrapper">
+    <div class="cipher-title">
+        <h1>GAMMA PENTAGONAL</h1>
+    </div>
+
+    <div id="main" class="alt">
+        <section id="one">
+            <div class="inner">
+                <div class="row gtr-200">
+                    <div class="col-6 col-12-medium">
+                        <h3>Grafo</h3>
+                        <span class="image fit"><img src="{% static 'images/GMgrafo.png' %}" class="img-fluid"></p></span>
+                    </div>
+                    <div class="col-6 col-12-medium">
+                        <h3>Permutación</h3>
+                        <span class="image fit"><img src="{% static 'images/GMpermutacion.png' %}" class="img-fluid"></span>
+                    </div>
+                </div>
+                
+                <h3>Editar grafo:</h3>
+                    <form method="post" action="#">
+                        {% csrf_token %}
+                        <label>Punto inicial:</label>
+                        <div class="row gtr-uniform">
+                            <div class="col-1 col-12-xsmall">
+                                <label for="x">X</label>
+                                <input type="text" name="x" id="x" value="" placeholder="x" />
+                            </div>
+                            <div class="col-1 col-12-xsmall">
+                                <label for="y">Y</label>
+                                <input type="text" name="y" id="y" value="" placeholder="y" />
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <label for="permutacion"> 10 números de 0 a 25 separados por espacios</label>
+                                <input type="text" name="permutacion" id="permutacion" value="" placeholder="Permutación" />
+                            </div>
+                            <div class="col-4 col-12-small">
+                                <label></label>
+                                <input type="checkbox" id="aleatoria" name="aleatoria">
+                                <label for="aleatoria">Generar permutación</label>
+                            </div>
+                            <!-- Break -->
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Actualizar" class="primary" /></li>
+                                    <li><input type="reset" value="Clear" /></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </form>
+            </div>
+
+            
+        </section>
+    </div>
+</div>
+
+
+<!-- TEXT -->
+<section id="ende">
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt text</h2>
+                {% csrf_token %}
+                {% if not encrypted_text %}
+
+                {% if mistake_encrypt_text%}
+                <!-- <label> Invalid key (remember to separate the elements)</label> -->
+                {% endif %}
+                <div class="fields">
+                    
+                    <div class="field" >
+                        <label for="cleartext_text">Text to encrypt:</label><br>
+                        <textarea name="cleartext_text"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Encrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted_text %}
+                <div >
+                    <label>Your text:</label>
+                    <p>{{cleartext_text}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p>{{encodedtext_text}}</p>
+                </div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt_text">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post">
+                <h2>Decrypt text</h2>
+                {% csrf_token %}
+                {% if not decrypted_text %}
+
+                {% if mistake_decrypt%}
+                <!-- <label> Invalid key (remember to separate the elements)</label> -->
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field" >
+                        <label for="codedtext_text">Text to decrypt:</label><br>
+                        <textarea name="codedtext_text"></textarea>
+                    </div>
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" value="Decrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted_text %}
+                {% if failed_decrypt %}
+                <label>This are all the posible text:</label>
+                {% else %}
+                <div >
+                    <label>Clear text:  </label>
+                    <p>{{cleartext_text}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p>{{encodedtext_text}}</p>
+                </div>
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+{% endblock content %}

@@ -54,6 +54,7 @@ def unify(palabra):
     palabralist.append(palabra[i])
   return palabralist
   
+  
 def convert (list):
   """
   Converst a list of characters into a list of numbers
