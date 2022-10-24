@@ -11,7 +11,12 @@ def generarPermutacion():
         permutacion.append(random.randint(0, 25))
     return(permutacion)
 
-
+#Genera un punto inicial x, y
+def generarPunto():
+    x = random.randint(-10, 3)
+    y = random.randint(-10, 3)
+    return x, y
+    
 #Dibuja la permutación 
 def dibujarPermutacion(permutacion, x, y):
     
@@ -145,17 +150,36 @@ def gammaencript(palabra,permu,vectores):
                 if (i%10,j) not in list(vectores.keys()):
                     vectores[(i%10,j)] = []
                 vectorconvert.append(((i%10)+len(vectores[(i%10,j)]),j))
+    vectorconvert_str = ""
+    for i in vectorconvert:
+        vectorconvert_str+= str(i)+" "
 
-    return vectorconvert
+    return vectorconvert_str
 
 
 #Decriptación
 def gammadecript(vectorconvert,permu,vectores):
-    alfabeto = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    palabra = []
-    for i in range(0,len(vectorconvert)):
-        palabra.append(alfabeto[(permu[i%10]+vectorconvert[i][1])%26])
-    return palabra
+    try:
+        vectorconvert =vectorconvert.replace(" ", '')
+        vectorconvert = vectorconvert.replace(")", '')
+        vectorconvert = vectorconvert.split("(")
+        for i in range(0, len(vectorconvert)):
+            vectorconvert[i]=vectorconvert[i].split(",")
+        vectorconvert.pop(0)
+        if vectorconvert==[]:
+            return -1
+        alfabeto = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        palabra = []
+        for i in range(0,len(vectorconvert)):
+            palabra.append(alfabeto[(permu[i%10]+ int(vectorconvert[i][1]))%26])
+            
+        palabra_str = ""
+        for i in palabra:
+            palabra_str = palabra_str + i
+            
+        return palabra_str
+    except:
+        return -1
 
 def convertirPermutacion(permutacion):
     try:

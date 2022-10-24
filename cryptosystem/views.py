@@ -40,6 +40,7 @@ def change_page(name):
 def default_graph():
     global permutacion   
     permutacion = "0 1 2 3 4 5 6 7 8 9"
+    permutacion = convertirPermutacion(permutacion)
     global punto_inicial_x
     global punto_inicial_y
     punto_inicial_x, punto_inicial_y = 0, 0
@@ -1112,60 +1113,79 @@ def cryptosystem_view(request, name=None):
                 
                 #editar grafo
                 actualizar = request.POST.get("actualizar")
-                if actualizar == "Actualizar":
-                    x = request.POST.get("x")
-                    y = request.POST.get("y")
-                    permutacion = request.POST.get("permutacion")
-                    aleatoria = request.POST.get("aleatoria")
-                    if aleatoria == "on":
-                        grafo, permutacion= nuevoGrafoAlt(x, y)
-                    else:
-                        permutacion=convertirPermutacion(permutacion)
-                        grafo = nuevoGrafo(x, y, permutacion)
-                    if grafo == -1:
-                            count_falla=count_falla+1
-                            context['mistake_graph']=True
-                            context['countfail']=count_falla
-                    else:
-                        vectores = grafo
-                        if count_falla>=2:
-                            context['failed_graph']=True
-                        count_falla=0
+                try:
+                    if actualizar == "Actualizar":
+                        x = request.POST.get("x")
+                        y = request.POST.get("y")
+                        permutacion = request.POST.get("permutacion")
+                        aleatoria = request.POST.get("aleatoria")
+                        if aleatoria == "on":
+                            grafo, permutacion= nuevoGrafoAlt(x, y)
+                        else:
+                            permutacion=convertirPermutacion(permutacion)
+                            grafo = nuevoGrafo(x, y, permutacion)
+                        if grafo == -1:
+                                count_falla=count_falla+1
+                                if count_falla>=3:
+                                    context['failed_graph']=True
+                                    count_falla=0
+                                    x, y = generarPunto()
+                                    grafo, permutacion= nuevoGrafoAlt(x, y)
+                                else:
+                                    context['mistake_graph']=True
+                                    context['countfail']=count_falla
+                        else:
+                            count_falla=0
+                            vectores = grafo
+                except:
+                    pass
                 
                 
                 #encrypt
                 encrypt = request.POST.get("encrypt")
-                if encrypt == "Encrypt":
-                    cleartext = request.POST.get("cleartext")
-                    encode = gammaencript(cleartext, permutacion, vectores)
-                    if encode == -1:
-                        count_falla=count_falla+1
-                        context['mistake_encrypt']=True
-                        context['countfail']=count_falla
-                    else:
-                        if count_falla==2:
-                            context['failed_encrypt']=True
-                        context['encrypted']=True
-                        context['cleartext']=cleartext
-                        context['encodedtext']=encode
-                        count_falla=0
-                        
+                try:
+                    if encrypt == "Encrypt":
+                        cleartext = request.POST.get("cleartext")
+                        encode = gammaencript(cleartext, permutacion, vectores)
+                        if encode == -1:
+                                count_falla=count_falla+1
+                                if count_falla>=3:
+                                    context['failed_encrypt']=True
+                                    count_falla=0
+                                else:
+                                    context['mistake_encrypt']=True
+                                    context['countfail']=count_falla
+                        else:
+                            count_falla=0
+                            context['encrypted']=True
+                            context['cleartext']=cleartext
+                            context['encodedtext']=encode
+                except:
+                    pass
+                    
+                    
                 #decrypt
-                decrypt = request.POST.get("Decrypt")
-                if decrypt == "Decrypt":
-                    codedtext = request.POST.get("codedtext")
-                    decode = gammadecript(codedtext, permutacion, vectores)
-                    if decode == -1:
-                        count_falla=count_falla+1
-                        context['mistake_decrypt']=True
-                        context['countfail']=count_falla
-                    else:
-                        if count_falla==2:
-                            context['failed_decrypt']=True
-                        context['decrypted']=True
-                        context['cleartext']=decode
-                        context['encodedtext']=codedtext
-                        count_falla=0
+                decrypt = request.POST.get("decrypt")
+                try:
+                    if decrypt == "Decrypt":
+                        codedtext = request.POST.get("codedtext")
+                        decode = gammadecript(codedtext, permutacion, vectores)
+                        if decode == -1:
+                                count_falla=count_falla+1
+                                if count_falla>=3:
+                                    context['failed_decrypt']=True
+                                    count_falla=0
+                                else:
+                                    context['mistake_decrypt']=True
+                                    context['countfail']=count_falla
+                        else:
+                            count_falla=0
+                            context['decrypted']=True
+                            context['cleartext']=decode
+                            context['encodedtext']=codedtext
+                except:
+                    pass
+                
 
                 
     return render(request, view, context=context)
