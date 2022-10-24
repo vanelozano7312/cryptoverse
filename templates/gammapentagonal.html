@@ -22,7 +22,7 @@
                 </div>
                 
                 <h3>Editar grafo:</h3>
-                    <form method="post" action="#">
+                    <form action="." method="post">
                         {% csrf_token %}
                         <label>Punto inicial:</label>
                         <div class="row gtr-uniform">
@@ -46,7 +46,7 @@
                             <!-- Break -->
                             <div class="col-12">
                                 <ul class="actions">
-                                    <li><input type="submit" value="Actualizar" class="primary" /></li>
+                                    <li><input type="submit" name="actualizar" value="Actualizar" class="primary" /></li>
                                     <li><input type="reset" value="Clear" /></li>
                                 </ul>
                             </div>
@@ -68,34 +68,34 @@
             <form action="." method="post">
                 <h2>Encrypt text</h2>
                 {% csrf_token %}
-                {% if not encrypted_text %}
+                {% if not encrypted %}
 
-                {% if mistake_encrypt_text%}
+                {% if mistake_encrypt%}
                 <!-- <label> Invalid key (remember to separate the elements)</label> -->
                 {% endif %}
                 <div class="fields">
                     
                     <div class="field" >
-                        <label for="cleartext_text">Text to encrypt:</label><br>
-                        <textarea name="cleartext_text"></textarea>
+                        <label for="cleartext">Text to encrypt:</label><br>
+                        <textarea name="cleartext"></textarea>
                     </div>
                 </div>
                 <ul class="actions">
-                    <li><input type="submit" value="Encrypt" class="primary" /></li>
+                    <li><input type="submit" name="encrypt" value="Encrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                 </ul>
 
                 {% endif %}
             </form>
             <div>
-                {% if encrypted_text %}
+                {% if encrypted %}
                 <div >
                     <label>Your text:</label>
-                    <p>{{cleartext_text}}</p>
+                    <p>{{cleartext}}</p>
                 </div>
                 <div >
                     <label>Encoded text:</label>
-                    <p>{{encodedtext_text}}</p>
+                    <p>{{encodedtext}}</p>
                 </div>
 
                 <ul class="actions">
@@ -121,13 +121,13 @@
 
                 <div class="fields">
                     <div class="field" >
-                        <label for="codedtext_text">Text to decrypt:</label><br>
-                        <textarea name="codedtext_text"></textarea>
+                        <label for="codedtext">Text to decrypt:</label><br>
+                        <textarea name="codedtext"></textarea>
                     </div>
                 </div>
 
                 <ul class="actions">
-                    <li><input type="submit" value="Decrypt" class="primary" /></li>
+                    <li><input type="submit" name= "decrypt" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                     <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>

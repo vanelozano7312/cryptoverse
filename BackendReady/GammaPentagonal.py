@@ -1,4 +1,5 @@
-from backendready import *
+from itertools import permutations
+from BackendReady.backendready import *
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -20,6 +21,7 @@ def dibujarPermutacion(permutacion, x, y):
     # plt.plot([x-1, 10], [0, 0], color="yellow")
     columna=0
     for num in permutacion:
+        num = int(num)
         for i in range(0, 26):
             letra = deconvert([(num+i)%26])
             plt.text(columna, i, letra,
@@ -44,8 +46,8 @@ def generarGrafo(x_inicial, y_inicial):
         
     #PRIMERA GENERACIÓN
     pendiente = 0
-    x=x_inicial
-    y=y_inicial
+    x=int(x_inicial)
+    y=int(y_inicial)
     while y < 26 and x < 26:
         if (x+1, y+pendiente) in vectores.keys():
             vectores[(x+1, y+pendiente)].append(pendiente)
@@ -155,10 +157,37 @@ def gammadecript(vectorconvert,permu,vectores):
         palabra.append(alfabeto[(permu[i%10]+vectorconvert[i][1])%26])
     return palabra
 
+def convertirPermutacion(permutacion):
+    try:
+        permutacion = permutacion.split()
+        if len(permutacion)!=10:
+            return -1
+        for i in range(10):
+            permutacion[i]=int(permutacion[i])
+        return permutacion
+    except:
+        return -1
 
 
-def nuevoGrafo(x, y):
-    generarGrafo(x, y)
-    dibujarPermutacion(generarPermutacion(), x, y)
+def nuevoGrafo(x, y, permutacion):
+    try:
+        x=int(x)
+        y=int(y)
+        vectores = generarGrafo(x, y)
+        dibujarPermutacion(permutacion, x, y)
+        return vectores
+    except:
+        return -1
     
-nuevoGrafo(-5, -4)
+    
+def nuevoGrafoAlt(x, y):
+    try:
+        x=int(x)
+        y=int(y)
+        vectores = generarGrafo(x, y)
+        permutacion = generarPermutacion()
+        dibujarPermutacion(permutacion, x, y)
+        return vectores, permutacion
+    except:
+        return -1, -1
+    

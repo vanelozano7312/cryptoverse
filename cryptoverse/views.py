@@ -2,9 +2,10 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from cryptosystem.models import Cryptosystem
 from cryptosystem.views import *
-
+from BackendReady.GammaPentagonal import *
 
 def home_view(request, *args, **kwargs):
+    default_graph()
 
     cryptosystem_qs = Cryptosystem.objects.all()
     change_page("home")

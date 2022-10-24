@@ -10,6 +10,7 @@ from BackendReady.Hill import *
 from BackendReady.SDES import *
 from BackendReady.TDES import *
 from BackendReady.AES import *
+from BackendReady.GammaPentagonal import *
 import codecs
 # from .forms import HillImageForm
 from django.core.files.storage import FileSystemStorage
@@ -23,6 +24,10 @@ import time
 
 count_falla=0
 page=''
+permutacion = "0 1 2 3 4 5 6 7 8 9"
+punto_inicial_x = 0
+punto_inicial_y = 0
+vectores = {}
 
 def change_page(name):
     global page
@@ -30,6 +35,15 @@ def change_page(name):
     if name!= page:
         page=name
         count_falla=0
+        default_graph()
+
+def default_graph():
+    global permutacion   
+    permutacion = "0 1 2 3 4 5 6 7 8 9"
+    global punto_inicial_x
+    global punto_inicial_y
+    punto_inicial_x, punto_inicial_y = 0, 0
+    nuevoGrafo(0, 0, permutacion)
 
 
 #views for every cryptosystem
@@ -38,10 +52,12 @@ def cryptosystem_view(request, name=None):
     view = "cryptosystem.html"
     context = {}
     global count_falla
+    global permutacion
+    global punto_inicial_x
+    global punto_inicial_y
+    global vectores
 
     if name is not None:
-        print(name)
-        print(Cryptosystem.objects.all)
         cryptosystem_obj = Cryptosystem.objects.get(name=name)
         change_page(cryptosystem_obj.name)
         context['name']= cryptosystem_obj.name
@@ -79,7 +95,6 @@ def cryptosystem_view(request, name=None):
                 try:
                     key_decrypt=int(key_decrypt)
                     decode= decode_despla(codedtext, key_decrypt, count_falla)
-                    print(decode)
                     if decode == -1:
                         count_falla=count_falla+1
                         context['countfail']=count_falla
@@ -222,7 +237,6 @@ def cryptosystem_view(request, name=None):
                     a_key_decrypt=int(a_key_decrypt)
                     b_key_decrypt=int(b_key_decrypt)
                     decode, a_key_decrypt, b_key_decrypt= decode_afin(codedtext, a_key_decrypt, b_key_decrypt, count_falla)
-                    print(decode)
                     if decode == -1:
                         count_falla=count_falla+1
                         context['mistake_decrypt']=True
@@ -247,7 +261,6 @@ def cryptosystem_view(request, name=None):
                 codedtext_ca = request.POST.get("codedtext_ca")
                 try:
                     ares, bres, first_two, frecuencies = analisis_afin(codedtext_ca)
-                    print(frecuencies)
                     context['frecuencies']=frecuencies
                     context['ares']=ares
                     context['bres']=bres
@@ -276,9 +289,7 @@ def cryptosystem_view(request, name=None):
                 try:
                     size_encrypt=int(size_encrypt)
                     key_encrypt=int(key_encrypt)
-                    print(size_encrypt, key_encrypt, cleartext)
                     encode, size_encrypt, key_encrypt = encode_permu(cleartext, size_encrypt, key_encrypt, count_falla)
-                    print(encode)
                     if encode == -1:
                         count_falla=count_falla+1
                         context['mistake_encrypt']=True
@@ -328,15 +339,11 @@ def cryptosystem_view(request, name=None):
                 try:
                     m_encrypt_text=int(m_encrypt_text)
                     key_encrypt_text_list = key_encrypt_text.split()
-                    print(key_encrypt_text_list)
                     key_encrypt_text_list=strtomat(key_encrypt_text_list, m_encrypt_text)
-                    print(key_encrypt_text_list)
                     if key_encrypt_text_list == -1:
                         context['mistake_encrypt_text']=True
                     else:
-                        print("asdf")
                         encode_text= encode_hill_text(key_encrypt_text_list, cleartext_text)
-                        print(encode_text)
 
                     if encode_text == -1:
                         context['mistake_encrypt_text']=True
@@ -385,11 +392,9 @@ def cryptosystem_view(request, name=None):
                     m_encrypt=int(m_encrypt)
                     key_encrypt_list = key_encrypt.split()
                     key_encrypt_list=strtomat(key_encrypt_list, m_encrypt)
-                    print(key_encrypt_list)
                     if key_encrypt_list == -1:
                         context['mistake_encrypt']=True
                     else:
-                        print(key_encrypt_list, url)
                         encode = encode_hill_image(key_encrypt_list, url)
                     if encode == -1:
                         context['mistake_encrypt']=True
@@ -448,7 +453,6 @@ def cryptosystem_view(request, name=None):
                             context['mistake_decrypt']=True
                         else:
                             key = ca_hill(x_list, y_list, n)
-                            print(key)
 
                         if key.any() == -1:
                             context['mistake_ca']=True
@@ -513,13 +517,9 @@ def cryptosystem_view(request, name=None):
                 key_len_ca = request.POST.get("key_len_ca")
                 codedtext_ca = request.POST.get("codedtext_ca")
                 try:
-                    print("a")
                     key_len_ca=int(key_len_ca)
-                    print("b")
                     key_len_ca= GuessKeywordLength(key_len_ca, codedtext_ca)
-                    print("c")
                     keyword=GuessKeyword(key_len_ca, codedtext_ca)
-                    print("d")
                     if keyword == -1:
                         context['mistake_decrypt']=True
                     else:
@@ -527,7 +527,6 @@ def cryptosystem_view(request, name=None):
                         context['keyword']=keyword
                         context['ca']=True
                         decode_ca = decode_vigenere(keyword, codedtext_ca)
-                        print("aaaaaa")
                         context['cleartext_ca']=decode_ca
                         context['encodedtext_ca']=codedtext_ca
                 except:
@@ -551,13 +550,10 @@ def cryptosystem_view(request, name=None):
                     key_encrypt_text_list = [int(x) for x in key_encrypt_text_list]
                     if len(key_encrypt_text_list) != 10:
                         error = True
-                    print(key_encrypt_text_list)
 
                     cleartext = cleartext_text.split()
                     cleartext = [int(x) for x in cleartext]
-                    print(cleartext)
                     keys = generate_keys_sdes(key_encrypt_text_list)
-                    print(keys)
                     encode_text= encode_sdes_text(cleartext, keys)
                     if encode_text == -1 or error:
                         context['mistake_encrypt']=True
@@ -587,13 +583,11 @@ def cryptosystem_view(request, name=None):
 
                     key_decrypt_text_list = key_decrypt_text.split()
                     key_decrypt_text_list = [int(x) for x in key_decrypt_text_list]
-                    print(key_decrypt_text_list)
                     if len(key_decrypt_text_list) != 10:
                         error = True
 
                     codedtext = codedtext_text.split()
                     codedtext = [int(x) for x in codedtext]
-                    print(codedtext)
                     keys = generate_keys_sdes(key_decrypt_text_list)
                     decode_text = decode_sdes_text(codedtext, keys)
                     if decode_text == -1 or error:
@@ -787,7 +781,6 @@ def cryptosystem_view(request, name=None):
                         key_encrypt3 = key_encrypt3.upper()
                         iv_encrypt = iv_encrypt.upper()
                         encode = encode_tdes_image_cfb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
-                        print(":)")
                         if encode == -1:
                             context['mistake_encrypt']=True
                         else:
@@ -843,7 +836,6 @@ def cryptosystem_view(request, name=None):
                         key_encrypt3 = key_encrypt3.upper()
                         ctr_encrypt = ctr_encrypt.upper()
                         encode = encode_tdes_image_ctr(key_encrypt1, key_encrypt2, key_encrypt3, ctr_encrypt, url)
-                        print(":)")
                         if encode == -1:
                             context['mistake_encrypt']=True
                         else:
@@ -1079,7 +1071,6 @@ def cryptosystem_view(request, name=None):
                             nonce_encrypt = codecs.decode(nonce_encrypt_hex, 'hex_codec')
                         else:
                             nonce_encrypt = None
-                        print("wenas")
                         nonce_encrypt = encode_aes_image_ctr(key_encrypt, url, nonce_encrypt)
                         if nonce_encrypt == -1:
                             context['mistake_encrypt']=True
@@ -1104,7 +1095,6 @@ def cryptosystem_view(request, name=None):
                     try:
                         key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
                         nonce_decrypt = codecs.decode(nonce_decrypt_hex, 'hex_codec')
-                        print("holi")
                         decode = decode_aes_image_ctr(key_decrypt, 'static/images/clean.png', nonce_decrypt)
                         if decode == -1:
                             context['mistake_decrypt']=True
@@ -1119,12 +1109,35 @@ def cryptosystem_view(request, name=None):
         elif name == "Gamma pentagonal":
             view = "gammapentagonal.html"
             if request.method == "POST":
+                
+                #editar grafo
+                actualizar = request.POST.get("actualizar")
+                if actualizar == "Actualizar":
+                    x = request.POST.get("x")
+                    y = request.POST.get("y")
+                    permutacion = request.POST.get("permutacion")
+                    aleatoria = request.POST.get("aleatoria")
+                    if aleatoria == "on":
+                        grafo, permutacion= nuevoGrafoAlt(x, y)
+                    else:
+                        permutacion=convertirPermutacion(permutacion)
+                        grafo = nuevoGrafo(x, y, permutacion)
+                    if grafo == -1:
+                            count_falla=count_falla+1
+                            context['mistake_graph']=True
+                            context['countfail']=count_falla
+                    else:
+                        vectores = grafo
+                        if count_falla>=2:
+                            context['failed_graph']=True
+                        count_falla=0
+                
+                
                 #encrypt
-                key_encrypt = request.POST.get("key_encrypt")
-                cleartext = request.POST.get("cleartext")
-                try:
-                    key_encrypt=int(key_encrypt)
-                    encode, key_encrypt = encode_mult(cleartext, key_encrypt, count_falla)
+                encrypt = request.POST.get("encrypt")
+                if encrypt == "Encrypt":
+                    cleartext = request.POST.get("cleartext")
+                    encode = gammaencript(cleartext, permutacion, vectores)
                     if encode == -1:
                         count_falla=count_falla+1
                         context['mistake_encrypt']=True
@@ -1132,34 +1145,28 @@ def cryptosystem_view(request, name=None):
                     else:
                         if count_falla==2:
                             context['failed_encrypt']=True
-                        context['key_encrypt']=key_encrypt
                         context['encrypted']=True
                         context['cleartext']=cleartext
                         context['encodedtext']=encode
                         count_falla=0
-                except:
-                    pass
-
+                        
                 #decrypt
-                key_decrypt = request.POST.get("key_decrypt")
-                codedtext = request.POST.get("codedtext")
-                try:
-                    key_decrypt=int(key_decrypt)
-                    decode, key_decrypt= decode_mult(codedtext, key_decrypt, count_falla)
+                decrypt = request.POST.get("Decrypt")
+                if decrypt == "Decrypt":
+                    codedtext = request.POST.get("codedtext")
+                    decode = gammadecript(codedtext, permutacion, vectores)
                     if decode == -1:
                         count_falla=count_falla+1
-                        context['countfail']=count_falla
                         context['mistake_decrypt']=True
+                        context['countfail']=count_falla
                     else:
-                        if count_falla>=2:
+                        if count_falla==2:
                             context['failed_decrypt']=True
-                        count_falla=0
-                        context['key_decrypt']=key_decrypt
                         context['decrypted']=True
                         context['cleartext']=decode
                         context['encodedtext']=codedtext
-                except:
-                    pass
+                        count_falla=0
+
                 
     return render(request, view, context=context)
 
