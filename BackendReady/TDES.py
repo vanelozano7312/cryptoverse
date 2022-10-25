@@ -379,6 +379,10 @@ def encode_tdes_image_ecb(key1, key2, key3, url):
 	encryptedImg.save("static/images/result.png")
 
 def decode_tdes_image_ecb(key1, key2, key3, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16:
+		return -1
+
 	rk1, rkb1 = GenerateKeys(key1)
 	rk2, rkb2 = GenerateKeys(key2)
 	rk3, rkb3 = GenerateKeys(key3)
@@ -406,6 +410,9 @@ def decode_tdes_image_ecb(key1, key2, key3, url):
 
 # CBC mode
 def encode_tdes_image_cbc(key1, key2, key3, iv, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(iv)!=16:
+		return -1
 
 	# Key generation
 	# --hex to binary
@@ -447,6 +454,10 @@ def encode_tdes_image_cbc(key1, key2, key3, iv, url):
 	encryptedImg.save("static/images/result.png")
 
 def decode_tdes_image_cbc(key1, key2, key3, iv, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(iv)!=16:
+		return -1
+
 	rk1, rkb1 = GenerateKeys(key1)
 	rk2, rkb2 = GenerateKeys(key2)
 	rk3, rkb3 = GenerateKeys(key3)
@@ -477,6 +488,9 @@ def decode_tdes_image_cbc(key1, key2, key3, iv, url):
 
 # OFB mode
 def encode_tdes_image_ofb(key1, key2, key3, iv, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(iv)!=16:
+		return -1
 
 	# Key generation
 	# --hex to binary
@@ -517,6 +531,10 @@ def encode_tdes_image_ofb(key1, key2, key3, iv, url):
 	encryptedImg.save("static/images/result.png")
 
 def decode_tdes_image_ofb(key1, key2, key3, iv, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(iv)!=16:
+		return -1
+
 	rk1, rkb1 = GenerateKeys(key1)
 	rk2, rkb2 = GenerateKeys(key2)
 	rk3, rkb3 = GenerateKeys(key3)
@@ -547,6 +565,9 @@ def decode_tdes_image_ofb(key1, key2, key3, iv, url):
 
 # CFB mode
 def encode_tdes_image_cfb(key1, key2, key3, iv, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(iv)!=16:
+		return -1
 
 	# Key generation
 	# --hex to binary
@@ -588,6 +609,10 @@ def encode_tdes_image_cfb(key1, key2, key3, iv, url):
 	encryptedImg.save("static/images/result.png")
 
 def decode_tdes_image_cfb(key1, key2, key3, iv, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(iv)!=16:
+		return -1
+
 	rk1, rkb1 = GenerateKeys(key1)
 	rk2, rkb2 = GenerateKeys(key2)
 	rk3, rkb3 = GenerateKeys(key3)
@@ -620,6 +645,9 @@ def decode_tdes_image_cfb(key1, key2, key3, iv, url):
 
 # CTR mode
 def encode_tdes_image_ctr(key1, key2, key3, ctr, url):
+	
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(ctr)!=16:
+		return -1
 
 	# Key generation
 	# --hex to binary
@@ -662,6 +690,10 @@ def encode_tdes_image_ctr(key1, key2, key3, ctr, url):
 	encryptedImg.save("static/images/result.png")
 
 def decode_tdes_image_ctr(key1, key2, key3, ctr, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16 or len(ctr)!=16:
+		return -1
+
 	rk1, rkb1 = GenerateKeys(key1)
 	rk2, rkb2 = GenerateKeys(key2)
 	rk3, rkb3 = GenerateKeys(key3)
@@ -694,18 +726,18 @@ def decode_tdes_image_ctr(key1, key2, key3, ctr, url):
 	#decryptedImg.show()
 	decryptedImg.save("static/images/out.png")
 
-pt = "123456ABCD132536"
-key1 = "AABB09182736CCDD"
-key2 = "BBBB09182736AADD"
-key3 = "FFBB09182736CCEE"
-iv = "AABBFF18EE36CCDD"
+# pt = "123456ABCD132536"
+# key1 = "AABB09182736CCDD"
+# key2 = "BBBB09182736AADD"
+# key3 = "FFBB09182736CCEE"
+# iv = "AABBFF18EE36CCDD"
 #encode_tdes_image_cfb(key1, key2, key3, iv, "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg?20090323211402")
 #decode_tdes_image_ctr(key1, key2, key3, iv, "result.png")
 
 
 def randomkeyhexa():
 	from random import randint
-	string = " "
+	string = ""
 	hexvec=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
 	for i in range(0,16):
 		string = string + hexvec[randint(0,15)]

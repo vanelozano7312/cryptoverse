@@ -643,20 +643,18 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        try:
-                            key_encrypt1 = key_encrypt1.upper()
-                            key_encrypt2 = key_encrypt2.upper()
-                            key_encrypt3 = key_encrypt3.upper()
-                            encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
-                        except:
-                            encode = -1
+                        key_encrypt1 = key_encrypt1.upper()
+                        key_encrypt2 = key_encrypt2.upper()
+                        key_encrypt3 = key_encrypt3.upper()
+                        encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
                         if encode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
+                                print("ya estoy creando uno nuevo")
                                 key_encrypt1 = randomkeyhexa()
                                 key_encrypt2 = randomkeyhexa()
                                 key_encrypt3 = randomkeyhexa()
-                                context['failed_encrypt']=True
+                                context['failed_encrypt_ecb']=True
                                 context['key_encrypt_1'] = key_encrypt1
                                 context['key_encrypt_2'] = key_encrypt2
                                 context['key_encrypt_3'] = key_encrypt3
@@ -664,7 +662,7 @@ def cryptosystem_view(request, name=None):
                                 context['encrypted_ecb']=True
                                 count_falla=0 
                             else:
-                                context['mistake_encrypt']=True
+                                context['mistake_encrypt_ecb']=True
                                 context['countfail']=count_falla
                         else:
                             context['key_encrypt_1'] = key_encrypt1
@@ -677,21 +675,25 @@ def cryptosystem_view(request, name=None):
                 
                 #decrypt in ECB MODE
                 if 'Decrypt_ECB' in request.POST:
-                    key_decrypt_1 = request.POST.get("key_decrypt_1")
-                    key_decrypt_2 = request.POST.get("key_decrypt_2")
-                    key_decrypt_3 = request.POST.get("key_decrypt_3")
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt_1 = key_decrypt_1.upper()
-                        key_decrypt_2 = key_decrypt_2.upper()
-                        key_decrypt_3 = key_decrypt_3.upper()
-                        decode = decode_tdes_image_ecb(key_decrypt_1, key_decrypt_2, key_decrypt_3, 'static/images/clean.png')
+                        try:
+                            key_decrypt_1 = request.POST.get("key_decrypt_1")
+                            key_decrypt_2 = request.POST.get("key_decrypt_2")
+                            key_decrypt_3 = request.POST.get("key_decrypt_3")
+                            
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt_1 = key_decrypt_1.upper()
+                            key_decrypt_2 = key_decrypt_2.upper()
+                            key_decrypt_3 = key_decrypt_3.upper()
+                            decode = decode_tdes_image_ecb(key_decrypt_1, key_decrypt_2, key_decrypt_3, 'static/images/clean.png')
+                        except:
+                            decode= -1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_ecb']=True
                         else:
                             context['key_decrypt_1']=key_decrypt_1
                             context['key_decrypt_2']=key_decrypt_2
@@ -709,13 +711,32 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        key_encrypt1 = key_encrypt1.upper()
-                        key_encrypt2 = key_encrypt2.upper()
-                        key_encrypt3 = key_encrypt3.upper()
-                        iv_encrypt = iv_encrypt.upper()
-                        encode = encode_tdes_image_cbc(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        try:
+                            key_encrypt1 = key_encrypt1.upper()
+                            key_encrypt2 = key_encrypt2.upper()
+                            key_encrypt3 = key_encrypt3.upper()
+                            iv_encrypt = iv_encrypt.upper()
+                            encode = encode_tdes_image_cbc(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        except:
+                            encode=-1
                         if encode == -1:
-                            context['mistake_encrypt']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt1 = randomkeyhexa()
+                                key_encrypt2 = randomkeyhexa()
+                                key_encrypt3 = randomkeyhexa()
+                                iv_encrypt = randomkeyhexa()
+                                context['failed_encrypt_cbc']=True
+                                context['key_encrypt_1'] = key_encrypt1
+                                context['key_encrypt_2'] = key_encrypt2
+                                context['key_encrypt_3'] = key_encrypt3
+                                context['iv_encrypt'] = iv_encrypt
+                                encode = encode_tdes_image_cbc(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                                context['encrypted_cbc']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_cbc']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt_1'] = key_encrypt1
                             context['key_encrypt_2'] = key_encrypt2
@@ -729,24 +750,27 @@ def cryptosystem_view(request, name=None):
                 
                 #decrypt in CBC MODE
                 if 'Decrypt_CBC' in request.POST:
-                    key_decrypt_1 = request.POST.get("key_decrypt_1")
-                    key_decrypt_2 = request.POST.get("key_decrypt_2")
-                    key_decrypt_3 = request.POST.get("key_decrypt_3")
-                    iv_decrypt = request.POST.get("iv_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt_1 = key_decrypt_1.upper()
-                        key_decrypt_2 = key_decrypt_2.upper()
-                        key_decrypt_3 = key_decrypt_3.upper()
-                        iv_decrypt = iv_decrypt.upper()
-                        decode = decode_tdes_image_cbc(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        try:
+                            key_decrypt_1 = request.POST.get("key_decrypt_1")
+                            key_decrypt_2 = request.POST.get("key_decrypt_2")
+                            key_decrypt_3 = request.POST.get("key_decrypt_3")
+                            iv_decrypt = request.POST.get("iv_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt_1 = key_decrypt_1.upper()
+                            key_decrypt_2 = key_decrypt_2.upper()
+                            key_decrypt_3 = key_decrypt_3.upper()
+                            iv_decrypt = iv_decrypt.upper()
+                            decode = decode_tdes_image_cbc(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        except:
+                            decode=-1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_cbc']=True
                         else:
                             context['key_decrypt_1']=key_decrypt_1
                             context['key_decrypt_2']=key_decrypt_2
@@ -765,13 +789,32 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        key_encrypt1 = key_encrypt1.upper()
-                        key_encrypt2 = key_encrypt2.upper()
-                        key_encrypt3 = key_encrypt3.upper()
-                        iv_encrypt = iv_encrypt.upper()
-                        encode = encode_tdes_image_ofb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        try:
+                            key_encrypt1 = key_encrypt1.upper()
+                            key_encrypt2 = key_encrypt2.upper()
+                            key_encrypt3 = key_encrypt3.upper()
+                            iv_encrypt = iv_encrypt.upper()
+                            encode = encode_tdes_image_ofb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        except:
+                            encode=-1
                         if encode == -1:
-                            context['mistake_encrypt']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt1 = randomkeyhexa()
+                                key_encrypt2 = randomkeyhexa()
+                                key_encrypt3 = randomkeyhexa()
+                                iv_encrypt = randomkeyhexa()
+                                context['failed_encrypt_ofb']=True
+                                context['key_encrypt_1'] = key_encrypt1
+                                context['key_encrypt_2'] = key_encrypt2
+                                context['key_encrypt_3'] = key_encrypt3
+                                context['iv_encrypt'] = iv_encrypt
+                                encode = encode_tdes_image_ofb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                                context['encrypted_ofb']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_ofb']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt_1'] = key_encrypt1
                             context['key_encrypt_2'] = key_encrypt2
@@ -785,24 +828,27 @@ def cryptosystem_view(request, name=None):
                 
                 #decrypt in OFB MODE
                 if 'Decrypt_OFB' in request.POST:
-                    key_decrypt_1 = request.POST.get("key_decrypt_1")
-                    key_decrypt_2 = request.POST.get("key_decrypt_2")
-                    key_decrypt_3 = request.POST.get("key_decrypt_3")
-                    iv_decrypt = request.POST.get("iv_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt_1 = key_decrypt_1.upper()
-                        key_decrypt_2 = key_decrypt_2.upper()
-                        key_decrypt_3 = key_decrypt_3.upper()
-                        iv_decrypt = iv_decrypt.upper()
-                        decode = decode_tdes_image_ofb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        try:
+                            key_decrypt_1 = request.POST.get("key_decrypt_1")
+                            key_decrypt_2 = request.POST.get("key_decrypt_2")
+                            key_decrypt_3 = request.POST.get("key_decrypt_3")
+                            iv_decrypt = request.POST.get("iv_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt_1 = key_decrypt_1.upper()
+                            key_decrypt_2 = key_decrypt_2.upper()
+                            key_decrypt_3 = key_decrypt_3.upper()
+                            iv_decrypt = iv_decrypt.upper()
+                            decode = decode_tdes_image_ofb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        except:
+                            decode=-1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_ofb']=True
                         else:
                             context['key_decrypt_1']=key_decrypt_1
                             context['key_decrypt_2']=key_decrypt_2
@@ -821,13 +867,32 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        key_encrypt1 = key_encrypt1.upper()
-                        key_encrypt2 = key_encrypt2.upper()
-                        key_encrypt3 = key_encrypt3.upper()
-                        iv_encrypt = iv_encrypt.upper()
-                        encode = encode_tdes_image_cfb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        try:
+                            key_encrypt1 = key_encrypt1.upper()
+                            key_encrypt2 = key_encrypt2.upper()
+                            key_encrypt3 = key_encrypt3.upper()
+                            iv_encrypt = iv_encrypt.upper()
+                            encode = encode_tdes_image_cfb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                        except:
+                            encode=-1
                         if encode == -1:
-                            context['mistake_encrypt']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt1 = randomkeyhexa()
+                                key_encrypt2 = randomkeyhexa()
+                                key_encrypt3 = randomkeyhexa()
+                                iv_encrypt = randomkeyhexa()
+                                context['failed_encrypt_cfb']=True
+                                context['key_encrypt_1'] = key_encrypt1
+                                context['key_encrypt_2'] = key_encrypt2
+                                context['key_encrypt_3'] = key_encrypt3
+                                context['iv_encrypt'] = iv_encrypt
+                                encode = encode_tdes_image_cfb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                                context['encrypted_cfb']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_cfb']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt_1'] = key_encrypt1
                             context['key_encrypt_2'] = key_encrypt2
@@ -840,24 +905,27 @@ def cryptosystem_view(request, name=None):
                 
                 #decrypt in CFB MODE
                 if 'Decrypt_CFB' in request.POST:
-                    key_decrypt_1 = request.POST.get("key_decrypt_1")
-                    key_decrypt_2 = request.POST.get("key_decrypt_2")
-                    key_decrypt_3 = request.POST.get("key_decrypt_3")
-                    iv_decrypt = request.POST.get("iv_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt_1 = key_decrypt_1.upper()
-                        key_decrypt_2 = key_decrypt_2.upper()
-                        key_decrypt_3 = key_decrypt_3.upper()
-                        iv_decrypt = iv_decrypt.upper()
-                        decode = decode_tdes_image_cfb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        try:
+                            key_decrypt_1 = request.POST.get("key_decrypt_1")
+                            key_decrypt_2 = request.POST.get("key_decrypt_2")
+                            key_decrypt_3 = request.POST.get("key_decrypt_3")
+                            iv_decrypt = request.POST.get("iv_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt_1 = key_decrypt_1.upper()
+                            key_decrypt_2 = key_decrypt_2.upper()
+                            key_decrypt_3 = key_decrypt_3.upper()
+                            iv_decrypt = iv_decrypt.upper()
+                            decode = decode_tdes_image_cfb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                        except:
+                            decode=-1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_cfb']=True
                         else:
                             context['key_decrypt_1']=key_decrypt_1
                             context['key_decrypt_2']=key_decrypt_2
@@ -875,14 +943,34 @@ def cryptosystem_view(request, name=None):
                     ctr_encrypt = request.POST.get("ctr_encrypt")
 
                     url = request.POST.get("url")
+                    
                     try:
-                        key_encrypt1 = key_encrypt1.upper()
-                        key_encrypt2 = key_encrypt2.upper()
-                        key_encrypt3 = key_encrypt3.upper()
-                        ctr_encrypt = ctr_encrypt.upper()
-                        encode = encode_tdes_image_ctr(key_encrypt1, key_encrypt2, key_encrypt3, ctr_encrypt, url)
+                        try:
+                            key_encrypt1 = key_encrypt1.upper()
+                            key_encrypt2 = key_encrypt2.upper()
+                            key_encrypt3 = key_encrypt3.upper()
+                            ctr_encrypt = ctr_encrypt.upper()
+                            encode = encode_tdes_image_ctr(key_encrypt1, key_encrypt2, key_encrypt3, ctr_encrypt, url)
+                        except:
+                            encode=-1
                         if encode == -1:
-                            context['mistake_encrypt']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt1 = randomkeyhexa()
+                                key_encrypt2 = randomkeyhexa()
+                                key_encrypt3 = randomkeyhexa()
+                                ctr_encrypt = randomkeyhexa()
+                                context['failed_encrypt_ctr']=True
+                                context['key_encrypt_1'] = key_encrypt1
+                                context['key_encrypt_2'] = key_encrypt2
+                                context['key_encrypt_3'] = key_encrypt3
+                                context['ctr_encrypt'] = ctr_encrypt
+                                encode = encode_tdes_image_ctr(key_encrypt1, key_encrypt2, key_encrypt3, ctr_encrypt, url)
+                                context['encrypted_ctr']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_ctr']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt_1'] = key_encrypt1
                             context['key_encrypt_2'] = key_encrypt2
@@ -895,24 +983,27 @@ def cryptosystem_view(request, name=None):
                 
                 #decrypt in CTR MODE
                 if 'Decrypt_CTR' in request.POST:
-                    key_decrypt_1 = request.POST.get("key_decrypt_1")
-                    key_decrypt_2 = request.POST.get("key_decrypt_2")
-                    key_decrypt_3 = request.POST.get("key_decrypt_3")
-                    ctr_decrypt = request.POST.get("ctr_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt_1 = key_decrypt_1.upper()
-                        key_decrypt_2 = key_decrypt_2.upper()
-                        key_decrypt_3 = key_decrypt_3.upper()
-                        ctr_decrypt = ctr_decrypt.upper()
-                        decode = decode_tdes_image_ctr(key_decrypt_1, key_decrypt_2, key_decrypt_3, ctr_decrypt, 'static/images/clean.png')
+                        try:
+                            key_decrypt_1 = request.POST.get("key_decrypt_1")
+                            key_decrypt_2 = request.POST.get("key_decrypt_2")
+                            key_decrypt_3 = request.POST.get("key_decrypt_3")
+                            ctr_decrypt = request.POST.get("ctr_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt_1 = key_decrypt_1.upper()
+                            key_decrypt_2 = key_decrypt_2.upper()
+                            key_decrypt_3 = key_decrypt_3.upper()
+                            ctr_decrypt = ctr_decrypt.upper()
+                            decode = decode_tdes_image_ctr(key_decrypt_1, key_decrypt_2, key_decrypt_3, ctr_decrypt, 'static/images/clean.png')
+                        except:
+                            decode=-1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_ctr']=True
                         else:
                             context['key_decrypt_1']=key_decrypt_1
                             context['key_decrypt_2']=key_decrypt_2
@@ -932,16 +1023,30 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
-                        encode = encode_aes_image_ecb(key_encrypt, url)
+                        try:
+                            key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                            encode = encode_aes_image_ecb(key_encrypt, url)
+                        except:
+                            encode = -1
                         if encode == -1:
-                            context['mistake_encrypt']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt = randomkeyhexa32()
+                                context['failed_encrypt_ecb']=True
+                                context['key_encrypt'] = key_encrypt
+                                encode = encode_aes_image_ecb(key_encrypt, url)
+                                context['encrypted_ecb']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_ecb']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt'] = key_encrypt_hex
                             context['encrypted_ecb']=True
                             count_falla=0
                     except:
                         pass
+                    
 
                 
                 #decrypt in ECB MODE
@@ -956,7 +1061,7 @@ def cryptosystem_view(request, name=None):
                         key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
                         decode = decode_aes_image_ecb(key_decrypt, 'static/images/clean.png')
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_ecb']=True
                         else:
                             context['key_decrypt']=key_decrypt_hex
                             context['decrypted_ecb']=True

@@ -17,7 +17,7 @@
                 {% csrf_token %}
                 {% if not encrypted_ecb %}
 
-                {% if mistake_encrypt%}
+                {% if mistake_encrypt_ecb%}
                 <label>{{countfail}} Mistakes. Invalid key (remember not to separate the elements)</label>
                 {% endif %}
                 
@@ -52,7 +52,7 @@
             </form>
             <div>
                 {% if encrypted_ecb %}
-                {% if failed_encrypt %}
+                {% if failed_encrypt_ecb %}
                 <label> 3 random keys have been chosen for you: </label>
                 {% endif %}
                 <div >
@@ -81,7 +81,7 @@
                 {% csrf_token %}
                 {% if not decrypted_ecb %}
 
-                {% if mistake_decrypt%}
+                {% if mistake_decrypt_ecb%}
                 <label> Invalid key (remember not to separate the elements)</label>
                 {% endif %}
 
@@ -151,9 +151,10 @@
                 {% csrf_token %}
                 {% if not encrypted_cbc %}
 
-                {% if mistake_encrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                {% if mistake_encrypt_cbc%}
+                <label>{{countfail}} Mistakes. Invalid key (remember not to separate the elements)</label>
                 {% endif %}
+
                 <div class="fields">
                     <div class="field">
                         <label>1 Key:</label>
@@ -189,6 +190,9 @@
             </form>
             <div>
                 {% if encrypted_cbc %}
+                {% if failed_encrypt_cbc %}
+                <label> 3 random keys and a initialization vector have been chosen for you: </label>
+                {% endif %}
                 <div >
                     <label>Keys used:  </label>
                     <p>{{key_encrypt_1}}</p>
@@ -196,16 +200,7 @@
                     <p>{{key_encrypt_3}}</p>
                     <p>{{iv_encrypt}}</p>
                 </div>
-                <!-- <div >
-                    <label>Your image:</label>
-                    <span class="image">
-                        <img src="static/images/image.jpg" alt="your image">
-                    </span>
-                </div>
-                <div >
-                    <label>Encoded image:</label>
-                    <img src="out.png" alt="coded image">
-                </div> -->
+
                 <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
                 <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
 
@@ -226,7 +221,7 @@
                 {% csrf_token %}
                 {% if not decrypted_cbc %}
 
-                {% if mistake_decrypt%}
+                {% if mistake_decrypt_cbc%}
                 <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
 
@@ -302,8 +297,8 @@
                 {% csrf_token %}
                 {% if not encrypted_ofb %}
 
-                {% if mistake_encrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                {% if mistake_encrypt_ofb%}
+                <label>{{countfail}} Mistakes. Invalid key (remember not to separate the elements)</label>
                 {% endif %}
                 <div class="fields">
                     <div class="field">
@@ -340,6 +335,10 @@
             </form>
             <div>
                 {% if encrypted_ofb %}
+                {% if failed_encrypt_ofb %}
+                <label> 3 random keys and a initialization vector have been chosen for you: </label>
+                {% endif %}
+                
                 <div >
                     <label>Keys used:  </label>
                     <p>{{key_encrypt_1}}</p>
@@ -347,16 +346,6 @@
                     <p>{{key_encrypt_3}}</p>
                     <p>{{iv_encrypt}}</p>
                 </div>
-                <!-- <div >
-                    <label>Your image:</label>
-                    <span class="image">
-                        <img src="static/images/image.jpg" alt="your image">
-                    </span>
-                </div>
-                <div >
-                    <label>Encoded image:</label>
-                    <img src="out.png" alt="coded image">
-                </div> -->
                 <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
                 <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
 
@@ -377,8 +366,8 @@
                 {% csrf_token %}
                 {% if not decrypted_ofb %}
 
-                {% if mistake_decrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                {% if mistake_decrypt_ofb%}
+                <label> Invalid key (remember not to separate the elements)</label>
                 {% endif %}
 
                 <div class="fields">
@@ -412,7 +401,6 @@
                 <ul class="actions">
                     <li><input type="submit" value="Decrypt image" class="primary " name="Decrypt_OFB"/></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
@@ -453,8 +441,8 @@
                 {% csrf_token %}
                 {% if not encrypted_cfb %}
 
-                {% if mistake_encrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                {% if mistake_encrypt_cfb%}
+                <label>{{countfail}} Mistakes. Invalid key (remember not to separate the elements)</label>
                 {% endif %}
                 <div class="fields">
                     <div class="field">
@@ -491,6 +479,9 @@
             </form>
             <div>
                 {% if encrypted_cfb %}
+                {% if failed_encrypt_cfb %}
+                <label> 3 random keys and a initialization vector have been chosen for you: </label>
+                {% endif %}
                 <div >
                     <label>Keys used:  </label>
                     <p>{{key_encrypt_1}}</p>
@@ -498,16 +489,6 @@
                     <p>{{key_encrypt_3}}</p>
                     <p>{{iv_encrypt}}</p>
                 </div>
-                <!-- <div >
-                    <label>Your image:</label>
-                    <span class="image">
-                        <img src="static/images/image.jpg" alt="your image">
-                    </span>
-                </div>
-                <div >
-                    <label>Encoded image:</label>
-                    <img src="out.png" alt="coded image">
-                </div> -->
                 <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
                 <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
 
@@ -528,7 +509,7 @@
                 {% csrf_token %}
                 {% if not decrypted_cfb %}
 
-                {% if mistake_decrypt%}
+                {% if mistake_decrypt_cfb %}
                 <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
 
@@ -604,8 +585,8 @@
                 {% csrf_token %}
                 {% if not encrypted_ctr %}
 
-                {% if mistake_encrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                {% if mistake_encrypt_ctr%}
+                <label>{{countfail}} Mistakes. Invalid key (remember not to separate the elements)</label>
                 {% endif %}
                 <div class="fields">
                     <div class="field">
@@ -642,6 +623,10 @@
             </form>
             <div>
                 {% if encrypted_ctr %}
+                {% if failed_encrypt_ctr %}
+                <label> 3 random keys and a counter have been chosen for you: </label>
+                {% endif %}
+                
                 <div >
                     <label>Keys used:  </label>
                     <p>{{key_encrypt_1}}</p>
@@ -649,16 +634,6 @@
                     <p>{{key_encrypt_3}}</p>
                     <p>{{ctr_encrypt}}</p>
                 </div>
-                <!-- <div >
-                    <label>Your image:</label>
-                    <span class="image">
-                        <img src="static/images/image.jpg" alt="your image">
-                    </span>
-                </div>
-                <div >
-                    <label>Encoded image:</label>
-                    <img src="out.png" alt="coded image">
-                </div> -->
                 <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
                 <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
 
@@ -679,7 +654,7 @@
                 {% csrf_token %}
                 {% if not decrypted_ctr %}
 
-                {% if mistake_decrypt%}
+                {% if mistake_decrypt_ctr %}
                 <label> Invalid key (remember to separate the elements)</label>
                 {% endif %}
 

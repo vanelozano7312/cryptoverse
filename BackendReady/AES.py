@@ -30,6 +30,9 @@ def HexToDecimal(s):
 
 # ECB
 def encode_aes_image_ecb(key, url):
+	if len(key) != 32 :
+		return -1
+
 	cipher = AES.new(key, AES.MODE_ECB)
 
 	urllib.request.urlretrieve(url,"static/images/image.jpg")
@@ -63,6 +66,8 @@ def encode_aes_image_ecb(key, url):
 	encryptedImg.save("static/images/result.png")
 
 def decode_aes_image_ecb(key, url):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_ECB)
 	img = Image.open(url)
 	decryptedImg = img
@@ -89,6 +94,8 @@ def decode_aes_image_ecb(key, url):
 
 #CBC
 def encode_aes_image_cbc(key, url, iv=None):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_CBC, iv)
 
 	urllib.request.urlretrieve(url,"static/images/image.jpg")
@@ -123,6 +130,8 @@ def encode_aes_image_cbc(key, url, iv=None):
 	return (cipher.iv).hex()
 
 def decode_aes_image_cbc(key, url, iv):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_CBC, iv)
 	img = Image.open(url)
 	decryptedImg = img
@@ -149,6 +158,8 @@ def decode_aes_image_cbc(key, url, iv):
 
 #OFB
 def encode_aes_image_ofb(key, url, iv=None):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_OFB, iv)
 
 	urllib.request.urlretrieve(url,"static/images/image.jpg")
@@ -183,6 +194,8 @@ def encode_aes_image_ofb(key, url, iv=None):
 	return (cipher.iv).hex()
 
 def decode_aes_image_ofb(key, url, iv):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_OFB, iv)
 	img = Image.open(url)
 	decryptedImg = img
@@ -209,6 +222,8 @@ def decode_aes_image_ofb(key, url, iv):
 
 #CFB
 def encode_aes_image_cfb(key, url, iv=None):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_CFB, iv, segment_size=128)
 
 	urllib.request.urlretrieve(url,"static/images/image.jpg")
@@ -243,6 +258,8 @@ def encode_aes_image_cfb(key, url, iv=None):
 	return (cipher.iv).hex()
 
 def decode_aes_image_cfb(key, url, iv):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_CFB, iv, segment_size=128)
 	img = Image.open(url)
 	decryptedImg = img
@@ -269,6 +286,8 @@ def decode_aes_image_cfb(key, url, iv):
 
 #CTR
 def encode_aes_image_ctr(key, url, nonce=None):
+	if len(key) !=32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
 
 	urllib.request.urlretrieve(url,"static/images/image.jpg")
@@ -303,6 +322,8 @@ def encode_aes_image_ctr(key, url, nonce=None):
 	return (cipher.nonce).hex()
 
 def decode_aes_image_ctr(key, url, nonce):
+	if len(key) != 32 :
+		return -1
 	cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
 	img = Image.open(url)
 	decryptedImg = img
@@ -328,8 +349,18 @@ def decode_aes_image_ctr(key, url, nonce):
 	decryptedImg.save("static/images/out.png")
 
 
-key = "7EAB923792032CBA5F6046022B963826"
-bin_key = codecs.decode(key, 'hex_codec')
-print(bin_key)
+# key = "7EAB923792032CBA5F6046022B963826"
+# bin_key = codecs.decode(key, 'hex_codec')
+# print(bin_key)
 #iv = encode_aes_image_ofb(bin_key, "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg?20090323211402")
 #decode_aes_image_ofb(bin_key, "result.png", codecs.decode(iv, 'hex_codec'))
+
+
+def randomkeyhexa32():
+	from random import randint
+	string = ""
+	hexvec=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
+	for i in range(0,16):
+		string = string + hexvec[randint(0,15)]
+		
+	return string
