@@ -18,8 +18,10 @@
                 {% if not encrypted_ecb %}
 
                 {% if mistake_encrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                <label>{{countfail}} Mistakes. Invalid key (remember not to separate the elements)</label>
                 {% endif %}
+                
+                
                 <div class="fields">
                     <div class="field">
                         <label>1 Key:</label>
@@ -50,22 +52,15 @@
             </form>
             <div>
                 {% if encrypted_ecb %}
+                {% if failed_encrypt %}
+                <label> 3 random keys have been chosen for you: </label>
+                {% endif %}
                 <div >
                     <label>Keys used:  </label>
                     <p>{{key_encrypt_1}}</p>
                     <p>{{key_encrypt_2}}</p>
                     <p>{{key_encrypt_3}}</p>
                 </div>
-                <!-- <div >
-                    <label>Your image:</label>
-                    <span class="image">
-                        <img src="static/images/image.jpg" alt="your image">
-                    </span>
-                </div>
-                <div >
-                    <label>Encoded image:</label>
-                    <img src="out.png" alt="coded image">
-                </div> -->
                 <div><p><img src="{% static 'images/image.jpg' %}" class="img-fluid"></p></div>
                 <div><p><img src="{% static 'images/result.png' %}" class="img-fluid"></p></div>
 
@@ -87,7 +82,7 @@
                 {% if not decrypted_ecb %}
 
                 {% if mistake_decrypt%}
-                <label> Invalid key (remember to separate the elements)</label>
+                <label> Invalid key (remember not to separate the elements)</label>
                 {% endif %}
 
                 <div class="fields">

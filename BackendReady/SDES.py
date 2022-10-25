@@ -1,4 +1,5 @@
 import numpy as np
+from random import randint
 
 def toBinary(n, len):
     binary = []
@@ -135,3 +136,13 @@ print(y)
 x = decode_sdes_text(y, K)
 print(x)
 """
+
+def randomkey():
+    string = ""
+    for i in range(0,20):
+        if i%2==0:
+            string = string + str(randint(0,1))
+        else:
+            string = string + " "
+            
+    return string

@@ -14,43 +14,49 @@
             <form action="." method="post">
                 <h2>Encrypt text</h2>
                 {% csrf_token %}
-                {% if not encrypted_text %}
+                {% if not encrypted %}
 
                 {% if mistake_encrypt %}
-                <label> Invalid key or text (remember to separate the elements and just use 0's and 1's) </label>
+                <label> {{countfail}} Mistakes. Invalid key or text (remember to separate the elements and just use 0's and 1's) </label>
                 {% endif %}
+                
+                {% if failed_encrypt %}
+                <label> A random key has been chosen for you: {{key}}</label>
+                {% endif %}
+
                 <div class="fields">
                     <div class="field">
                         <label>Key</label>
-                        <label for="key_encrypt_text">Write the 10-bit key in the following format: 1 0 0 0 1 0 0 1 1 1</label>
-                        <input type="text" id="key_encrypt_text" name="key_encrypt_text">
+                        <label for="key_encrypt">Write the 10-bit key in the following format: 1 0 0 0 1 0 0 1 1 1</label>
+                        <input type="text" id="key_encrypt" name="key_encrypt">
                     </div>
                     <div class="field" >
-                        <label for="cleartext_text">Write the 8-bit text to encrypt in the same format as the key:</label><br>
-                        <textarea name="cleartext_text"></textarea>
+                        <label for="cleartext">Write the 8-bit text to encrypt in the same format as the key:</label><br>
+                        <textarea name="cleartext"></textarea>
                     </div>
                 </div>
                 <ul class="actions">
-                    <li><input type="submit" value="Encrypt" class="primary" /></li>
+                    <li><input type="submit" name="encrypt" value="Encrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                 </ul>
 
                 {% endif %}
             </form>
             <div>
-                {% if encrypted_text %}
+                {% if encrypted %}
+                
                 <div >
                     <label>Your text:</label>
-                    <p>{{cleartext_text}}</p>
+                    <p>{{cleartext}}</p>
                 </div>
                 <div >
                     <label>Encoded text:</label>
-                    <p>{{encodedtext_text}}</p>
+                    <p>{{encodedtext}}</p>
                 </div>
 
                 <ul class="actions">
                     <form action="." method="get">
-                        <button  type="submit" name="encrypt_again" value="encrypt_text">Encrypt again</button>
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
                     </form>
 
                 </ul>
@@ -63,7 +69,7 @@
             <form action="." method="post">
                 <h2>Decrypt text</h2>
                 {% csrf_token %}
-                {% if not decrypted_text %}
+                {% if not decrypted %}
 
                 {% if mistake_decrypt %}
                 <label> Invalid key or text (remember to separate the elements and just use 0's and 1's)</label>
@@ -72,39 +78,35 @@
                 <div class="fields">
                     <div class="field ">
                         <label>Key:</label>
-                        <label for="key_decrypt_text">Write the 10-bit key in the following format: 1 0 0 0 1 0 0 1 1 1</label>
-                        <input type="text" id="key_decrypt_text" name="key_decrypt_text">
+                        <label for="key_decrypt">Write the 10-bit key in the following format: 1 0 0 0 1 0 0 1 1 1</label>
+                        <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >
-                        <label for="codedtext_text">Write the 8-bit ciphertext to decrypt in the same format as the key:</label><br>
-                        <textarea name="codedtext_text"></textarea>
+                        <label for="codedtext">Write the 8-bit ciphertext to decrypt in the same format as the key:</label><br>
+                        <textarea name="codedtext"></textarea>
                     </div>
                 </div>
 
                 <ul class="actions">
-                    <li><input type="submit" value="Decrypt" class="primary" /></li>
+                    <li><input type="submit" name="decrypt" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
-                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
 
                 {% endif %}
             </form>
             <div>
-                {% if decrypted_text %}
-                {% if failed_decrypt %}
-                <label>This is the text decrypted:</label>
-                {% else %}
+                {% if decrypted %}
                 <div >
                     <label>Used key:  </label>
-                    <p>{{key_decrypt_text}}</p>
+                    <p>{{key_decrypt}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>
-                    <p>{{cleartext_text}}</p>
+                    <p>{{cleartext}}</p>
                 </div>
                 <div >
                     <label>Encoded text:</label>
-                    <p>{{encodedtext_text}}</p>
+                    <p>{{encodedtext}}</p>
                 </div>
 
                 <ul class="actions">
@@ -113,7 +115,6 @@
                     </form>
 
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>

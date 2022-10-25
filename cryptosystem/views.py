@@ -537,76 +537,104 @@ def cryptosystem_view(request, name=None):
         elif name == "SDES":
             view = "s-des.html"
             if request.method == "POST":
-                #encrypt text 
-                key_encrypt_text = request.POST.get("key_encrypt_text")
-                cleartext_text = request.POST.get("cleartext_text")
-                error = False
-                try:
-                    allowed = set('0'+'1'+' ')
-                    if set(key_encrypt_text) > allowed:
-                        error = True
-                    if set(cleartext_text) > allowed:
-                        error = True
-                    key_encrypt_text_list = key_encrypt_text.split()
-                    key_encrypt_text_list = [int(x) for x in key_encrypt_text_list]
-                    if len(key_encrypt_text_list) != 10:
-                        error = True
-
-                    cleartext = cleartext_text.split()
-                    cleartext = [int(x) for x in cleartext]
-                    keys = generate_keys_sdes(key_encrypt_text_list)
-                    encode_text= encode_sdes_text(cleartext, keys)
-                    if encode_text == -1 or error:
-                        context['mistake_encrypt']=True
-                    else:
-                        context['encrypted_text']=True
-                        context['cleartext_text']=cleartext_text
-                        encode_text = [str(x) for x in encode_text]
-                        context['encodedtext_text']=' '.join(encode_text)
-                        count_falla=0
-                except:
-                    pass
-
-                #decrypt text
-                key_decrypt_text = request.POST.get("key_decrypt_text")
-                codedtext_text = request.POST.get("codedtext_text")
-                error = False
-                try:
-                    allowed = {'0', '1', ' '}
-
-                    for i in key_decrypt_text:
-                        if i not in allowed:
-                            error = True
                     
-                    for i in codedtext_text:
-                        if i not in allowed:
-                            error = True
+                #encrypt
+                encrypt = request.POST.get("encrypt")
+                if encrypt == "Encrypt":
+                    key_encrypt_text = request.POST.get("key_encrypt")
+                    cleartext_text = request.POST.get("cleartext")
+                    error = False
+                    try:
+                        try:
+                            allowed = set('0'+'1'+' ')
+                            if set(key_encrypt_text) > allowed:
+                                error = True
+                            if set(cleartext_text) > allowed:
+                                error = True
+                            key_encrypt_text_list = key_encrypt_text.split()
+                            key_encrypt_text_list = [int(x) for x in key_encrypt_text_list]
+                            if len(key_encrypt_text_list) != 10:
+                                error = True
 
-                    key_decrypt_text_list = key_decrypt_text.split()
-                    key_decrypt_text_list = [int(x) for x in key_decrypt_text_list]
-                    if len(key_decrypt_text_list) != 10:
-                        error = True
+                            cleartext = cleartext_text.split()
+                            cleartext = [int(x) for x in cleartext]
+                            keys = generate_keys_sdes(key_encrypt_text_list)
+                            encode_text= encode_sdes_text(cleartext, keys)
+                        except:
+                            encode_text=-1
+                        if encode_text == -1 or error:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                context['failed_encrypt']=True
+                                context['key']=randomkey()
+                                count_falla=0
+                            else:
+                                context['mistake_encrypt']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['encrypted']=True
+                            context['cleartext']=cleartext_text
+                            encode_text = [str(x) for x in encode_text]
+                            context['encodedtext']=' '.join(encode_text)
+                            count_falla=0
+                    except:
+                        pass
 
-                    codedtext = codedtext_text.split()
-                    codedtext = [int(x) for x in codedtext]
-                    keys = generate_keys_sdes(key_decrypt_text_list)
-                    decode_text = decode_sdes_text(codedtext, keys)
-                    if decode_text == -1 or error:
-                        context['mistake_decrypt']=True
-                    else:
-                        key_decrypt_text_list = [str(x) for x in key_decrypt_text_list]
-                        context['key_decrypt_text']=' '.join(key_decrypt_text_list)
-                        context['decrypted_text']=True
-                        decode_text = [str(x) for x in decode_text]
-                        context['cleartext_text']=' '.join(decode_text)
-                        context['encodedtext_text']=codedtext_text
-                except:
-                    pass
+
+                #decrypt
+                decrypt = request.POST.get("decrypt")
+                if decrypt == "Decrypt":
+                    key_decrypt_text = request.POST.get("key_decrypt")
+                    codedtext_text = request.POST.get("codedtext")
+                    error = False
+                    try:
+                        try:
+                            allowed = {'0', '1', ' '}
+
+                            for i in key_decrypt_text:
+                                if i not in allowed:
+                                    error = True
+                            
+                            for i in codedtext_text:
+                                if i not in allowed:
+                                    error = True
+
+                            key_decrypt_text_list = key_decrypt_text.split()
+                            key_decrypt_text_list = [int(x) for x in key_decrypt_text_list]
+                            if len(key_decrypt_text_list) != 10:
+                                error = True
+
+                            codedtext = codedtext_text.split()
+                            codedtext = [int(x) for x in codedtext]
+                            keys = generate_keys_sdes(key_decrypt_text_list)
+                            decode_text = decode_sdes_text(codedtext, keys)
+                        except:
+                            decode_text = -1
+                            
+                        if decode_text == -1 or error:
+                            count_falla=count_falla+1
+                            # if count_falla>=3:
+                            #     context['failed_encrypt']=True
+                            #     count_falla=0
+                            # else:
+                            context['countfail']=count_falla
+                            context['mistake_decrypt']=True
+                        else:
+                            key_decrypt_text_list = [str(x) for x in key_decrypt_text_list]
+                            context['key_decrypt']=' '.join(key_decrypt_text_list)
+                            context['decrypted']=True
+                            decode_text = [str(x) for x in decode_text]
+                            context['cleartext']=' '.join(decode_text)
+                            context['encodedtext']=codedtext_text
+                            count_falla=0
+                    except:
+                        pass
         
         ##T-DES CYPHER
         elif name == "TDES":
             view = "t-des.html"
             if request.method == "POST":
+                
                 #encrypt in ECB MODE
                 if 'Encrypt_ECB' in request.POST:
                     key_encrypt1 = request.POST.get("key_encrypt_1")
@@ -615,12 +643,29 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        key_encrypt1 = key_encrypt1.upper()
-                        key_encrypt2 = key_encrypt2.upper()
-                        key_encrypt3 = key_encrypt3.upper()
-                        encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
+                        try:
+                            key_encrypt1 = key_encrypt1.upper()
+                            key_encrypt2 = key_encrypt2.upper()
+                            key_encrypt3 = key_encrypt3.upper()
+                            encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
+                        except:
+                            encode = -1
                         if encode == -1:
-                            context['mistake_encrypt']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt1 = randomkeyhexa()
+                                key_encrypt2 = randomkeyhexa()
+                                key_encrypt3 = randomkeyhexa()
+                                context['failed_encrypt']=True
+                                context['key_encrypt_1'] = key_encrypt1
+                                context['key_encrypt_2'] = key_encrypt2
+                                context['key_encrypt_3'] = key_encrypt3
+                                encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
+                                context['encrypted_ecb']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt_1'] = key_encrypt1
                             context['key_encrypt_2'] = key_encrypt2
@@ -629,7 +674,6 @@ def cryptosystem_view(request, name=None):
                             count_falla=0
                     except:
                         pass
-
                 
                 #decrypt in ECB MODE
                 if 'Decrypt_ECB' in request.POST:

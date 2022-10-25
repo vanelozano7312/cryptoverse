@@ -339,6 +339,9 @@ def HexToDecimal(s):
 
 # ECB Mode
 def encode_tdes_image_ecb(key1, key2, key3, url):
+    
+	if len(key1) != 16 or len(key2) != 16 or len(key3) != 16:
+		return -1
 
 	# Key generation
 	# --hex to binary
@@ -698,3 +701,13 @@ key3 = "FFBB09182736CCEE"
 iv = "AABBFF18EE36CCDD"
 #encode_tdes_image_cfb(key1, key2, key3, iv, "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg?20090323211402")
 #decode_tdes_image_ctr(key1, key2, key3, iv, "result.png")
+
+
+def randomkeyhexa():
+	from random import randint
+	string = " "
+	hexvec=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
+	for i in range(0,16):
+		string = string + hexvec[randint(0,15)]
+		
+	return string
