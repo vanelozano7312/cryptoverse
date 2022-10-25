@@ -1023,17 +1023,15 @@ def cryptosystem_view(request, name=None):
 
                     url = request.POST.get("url")
                     try:
-                        try:
-                            key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
-                            encode = encode_aes_image_ecb(key_encrypt, url)
-                        except:
-                            encode = -1
+                        key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        encode = encode_aes_image_ecb(key_encrypt, url)
                         if encode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
-                                key_encrypt = randomkeyhexa32()
+                                key_encrypt_hex = randomkeyhexa32()
+                                key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
                                 context['failed_encrypt_ecb']=True
-                                context['key_encrypt'] = key_encrypt
+                                context['key_encrypt'] = key_encrypt_hex
                                 encode = encode_aes_image_ecb(key_encrypt, url)
                                 context['encrypted_ecb']=True
                                 count_falla=0 
@@ -1047,19 +1045,20 @@ def cryptosystem_view(request, name=None):
                     except:
                         pass
                     
-
-                
                 #decrypt in ECB MODE
                 if 'Decrypt_ECB' in request.POST:
-                    key_decrypt_hex = request.POST.get("key_decrypt")
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
-                        decode = decode_aes_image_ecb(key_decrypt, 'static/images/clean.png')
+                        try:
+                            key_decrypt_hex = request.POST.get("key_decrypt")
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                            decode = decode_aes_image_ecb(key_decrypt, 'static/images/clean.png')
+                        except:
+                            decode= -1
                         if decode == -1:
                             context['mistake_decrypt_ecb']=True
                         else:
@@ -1082,7 +1081,21 @@ def cryptosystem_view(request, name=None):
                             iv_encrypt = None
                         iv_encrypt = encode_aes_image_cbc(key_encrypt, url, iv_encrypt)
                         if iv_encrypt == -1:
-                            context['mistake_encrypt']=True
+                            context['mistake_encrypt_cbc']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt_hex = randomkeyhexa32()
+                                key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                                iv_encrypt = None
+                                iv_encrypt = encode_aes_image_cbc(key_encrypt, url, iv_encrypt)
+                                context['failed_encrypt_cbc']=True
+                                context['iv_encrypt'] = iv_encrypt.upper()
+                                context['key_encrypt'] = key_encrypt_hex
+                                context['encrypted_cbc']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_cbc']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt'] = key_encrypt_hex
                             context['iv_encrypt'] = iv_encrypt.upper()
@@ -1090,24 +1103,26 @@ def cryptosystem_view(request, name=None):
                             count_falla=0
                     except:
                         pass
-
-                
+              
                 #decrypt in CBC MODE
                 if 'Decrypt_CBC' in request.POST:
-                    key_decrypt_hex = request.POST.get("key_decrypt")
-                    iv_decrypt_hex = request.POST.get("iv_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
-                        iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
-                        decode = decode_aes_image_cbc(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        try:
+                            key_decrypt_hex = request.POST.get("key_decrypt")
+                            iv_decrypt_hex = request.POST.get("iv_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                            iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
+                            decode = decode_aes_image_cbc(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        except:
+                            decode= -1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_cbc']=True
                         else:
                             context['key_decrypt']=key_decrypt_hex
                             context['iv_decrypt']=iv_decrypt_hex
@@ -1129,7 +1144,21 @@ def cryptosystem_view(request, name=None):
                             iv_encrypt = None
                         iv_encrypt = encode_aes_image_ofb(key_encrypt, url, iv_encrypt)
                         if iv_encrypt == -1:
-                            context['mistake_encrypt']=True
+                            context['mistake_encrypt_ofb']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt_hex = randomkeyhexa32()
+                                key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                                iv_encrypt = None
+                                iv_encrypt = encode_aes_image_ofb(key_encrypt, url, iv_encrypt)
+                                context['failed_encrypt_ofb']=True
+                                context['iv_encrypt'] = iv_encrypt.upper()
+                                context['key_encrypt'] = key_encrypt_hex
+                                context['encrypted_ofb']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_ofb']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt'] = key_encrypt_hex
                             context['iv_encrypt'] = iv_encrypt.upper()
@@ -1137,24 +1166,26 @@ def cryptosystem_view(request, name=None):
                             count_falla=0
                     except:
                         pass
-
-                
+    
                 #decrypt in OFB MODE
                 if 'Decrypt_OFB' in request.POST:
-                    key_decrypt_hex = request.POST.get("key_decrypt")
-                    iv_decrypt_hex = request.POST.get("iv_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
-                        iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
-                        decode = decode_aes_image_ofb(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        try:
+                            key_decrypt_hex = request.POST.get("key_decrypt")
+                            iv_decrypt_hex = request.POST.get("iv_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                            iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
+                            decode = decode_aes_image_ofb(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        except:
+                            decode= -1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_ofb']=True
                         else:
                             context['key_decrypt']=key_decrypt_hex
                             context['iv_decrypt']=iv_decrypt_hex
@@ -1176,7 +1207,21 @@ def cryptosystem_view(request, name=None):
                             iv_encrypt = None
                         iv_encrypt = encode_aes_image_cfb(key_encrypt, url, iv_encrypt)
                         if iv_encrypt == -1:
-                            context['mistake_encrypt']=True
+                            context['mistake_encrypt_cfb']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt_hex = randomkeyhexa32()
+                                key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                                iv_encrypt = None
+                                iv_encrypt = encode_aes_image_cfb(key_encrypt, url, iv_encrypt)
+                                context['failed_encrypt_cfb']=True
+                                context['iv_encrypt'] = iv_encrypt.upper()
+                                context['key_encrypt'] = key_encrypt_hex
+                                context['encrypted_cfb']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_cfb']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt'] = key_encrypt_hex
                             context['iv_encrypt'] = iv_encrypt.upper()
@@ -1188,20 +1233,23 @@ def cryptosystem_view(request, name=None):
                 
                 #decrypt in CFB MODE
                 if 'Decrypt_CFB' in request.POST:
-                    key_decrypt_hex = request.POST.get("key_decrypt")
-                    iv_decrypt_hex = request.POST.get("iv_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
-                        iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
-                        decode = decode_aes_image_cfb(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        try:
+                            key_decrypt_hex = request.POST.get("key_decrypt")
+                            iv_decrypt_hex = request.POST.get("iv_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                            iv_decrypt = codecs.decode(iv_decrypt_hex, 'hex_codec')
+                            decode = decode_aes_image_cfb(key_decrypt, 'static/images/clean.png', iv_decrypt)
+                        except:
+                            decode= -1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_cfb']=True
                         else:
                             context['key_decrypt']=key_decrypt_hex
                             context['iv_decrypt']=iv_decrypt_hex
@@ -1223,7 +1271,21 @@ def cryptosystem_view(request, name=None):
                             nonce_encrypt = None
                         nonce_encrypt = encode_aes_image_ctr(key_encrypt, url, nonce_encrypt)
                         if nonce_encrypt == -1:
-                            context['mistake_encrypt']=True
+                            context['mistake_encrypt_ctr']=True
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt_hex = randomkeyhexa32()
+                                key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                                nonce_encrypt = None
+                                nonce_encrypt = encode_aes_image_ctr(key_encrypt, url, nonce_encrypt)
+                                context['failed_encrypt_ctr']=True
+                                context['nonce_encrypt'] = nonce_encrypt.upper()
+                                context['key_encrypt'] = key_encrypt_hex
+                                context['encrypted_ctr']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_ctr']=True
+                                context['countfail']=count_falla
                         else:
                             context['key_encrypt'] = key_encrypt_hex
                             context['nonce_encrypt'] = nonce_encrypt.upper()
@@ -1234,20 +1296,23 @@ def cryptosystem_view(request, name=None):
 
                 #decrypt in CTR MODE
                 if 'Decrypt_CTR' in request.POST:
-                    key_decrypt_hex = request.POST.get("key_decrypt")
-                    nonce_decrypt_hex = request.POST.get("nonce_decrypt")
-
-                    if os.path.exists("static/images/clean.png"):
-                        os.remove("static/images/clean.png")
-                    upload = request.FILES.get("im1")
-                    fss = FileSystemStorage()
-                    fss.save('static/images/clean.png', upload)
                     try:
-                        key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
-                        nonce_decrypt = codecs.decode(nonce_decrypt_hex, 'hex_codec')
-                        decode = decode_aes_image_ctr(key_decrypt, 'static/images/clean.png', nonce_decrypt)
+                        try:
+                            key_decrypt_hex = request.POST.get("key_decrypt")
+                            nonce_decrypt_hex = request.POST.get("nonce_decrypt")
+
+                            if os.path.exists("static/images/clean.png"):
+                                os.remove("static/images/clean.png")
+                            upload = request.FILES.get("im1")
+                            fss = FileSystemStorage()
+                            fss.save('static/images/clean.png', upload)
+                            key_decrypt = codecs.decode(key_decrypt_hex, 'hex_codec')
+                            nonce_decrypt = codecs.decode(nonce_decrypt_hex, 'hex_codec')
+                            decode = decode_aes_image_ctr(key_decrypt, 'static/images/clean.png', nonce_decrypt)
+                        except:
+                            decode= -1
                         if decode == -1:
-                            context['mistake_decrypt']=True
+                            context['mistake_decrypt_ctr']=True
                         else:
                             context['key_decrypt']=key_decrypt_hex
                             context['nonce_decrypt']=nonce_decrypt_hex
