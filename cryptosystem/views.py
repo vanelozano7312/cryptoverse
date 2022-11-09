@@ -11,6 +11,7 @@ from BackendReady.SDES import *
 from BackendReady.TDES import *
 from BackendReady.AES import *
 from BackendReady.GammaPentagonal import *
+from BackendReady.Rabin import *
 import codecs
 # from .forms import HillImageForm
 from django.core.files.storage import FileSystemStorage
@@ -1399,6 +1400,80 @@ def cryptosystem_view(request, name=None):
                             context['encodedtext']=codedtext
                 except:
                     pass
+        elif name == "Rabin":
+            view = "rabin.html"
+            if request.method == "POST":
+                #encrypt
+                if 'Encrypt' in request.POST:
+                    key_encrypt = request.POST.get("key_encrypt")
+                    plaintext = request.POST.get("plaintext")
+                    try:
+                        p = 0
+                        q = 0
+                        if key_encrypt == "":
+                            length = 8*len(plaintext) + 1
+                            p = GeneratePrimeNumber(length//2)
+                            q = GeneratePrimeNumber(length//2)
+                            key_encrypt = p*q
+                            context['no_key'] = True
+                            context['p'] = p
+                            context['q'] = q
+                        else:
+                            key_encrypt = int(key_encrypt)
+                            context['no_key'] = False
+                        print("wenas")
+                        encode = encode_rabin(plaintext, key_encrypt)
+                        if encode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                length = 8*len(plaintext) + 1
+                                p = GeneratePrimeNumber(length//2)
+                                q = GeneratePrimeNumber(length//2)
+                                key_encrypt = p*q
+                                context['plaintext'] = plaintext
+                                context['failed_encrypt']=True
+                                context['key_encrypt'] = key_encrypt
+                                context['no_key'] = True
+                                context['p'] = p
+                                context['q'] = q
+                                encode = encode_rabin(plaintext, key_encrypt)
+                                context['encoded'] = encode
+                                context['encrypted']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['plaintext'] = plaintext
+                            context['key_encrypt'] = key_encrypt
+                            context['encoded'] = encode
+                            context['encrypted']=True
+                            count_falla=0
+                    except:
+                        pass
+                    
+                #decrypt
+                if 'Decrypt' in request.POST:
+                    key1_decrypt = request.POST.get("key1_decrypt")
+                    key2_decrypt = request.POST.get("key2_decrypt")
+                    encoded_message = request.POST.get("encoded_message")
+                    try:
+                        p = int(key1_decrypt)
+                        q = int(key2_decrypt)
+                        c = int(encoded_message)
+                        n = p*q
+                        potential_plaintexts = decode_rabin(c, p, q, n)
+                        if potential_plaintexts == -1:
+                            context['decrypted'] = False
+                            context['mistake_decrypt'] = True
+                        else:
+                            context['decrypted'] = True
+                            context['plaintext0'] = potential_plaintexts[0]
+                            context['plaintext1'] = potential_plaintexts[1]
+                            context['plaintext2'] = potential_plaintexts[2]
+                            context['plaintext3'] = potential_plaintexts[3]
+                    except:
+                        pass
                 
 
                 
