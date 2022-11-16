@@ -88,14 +88,7 @@ def encode_despla(palabrast,key,count_falla):
   # Then returns the message encrypted
   
   palabrals = unify(palabrast)
-  if 1 <= key <= 26:
-      palabrals = convert(palabrals)
-      for i in range(len(palabrals)):
-        palabrals[i] = (palabrals[i] + key)%26
-      palabrast = deconvert(palabrals)
-      print(palabrast)
-      return palabrast, key
-  elif count_falla == 2:
+  if count_falla > 2:
     key = ran.randint(1,26)
     palabrals = convert(palabrals)
     for i in range(len(palabrals)):
@@ -103,6 +96,13 @@ def encode_despla(palabrast,key,count_falla):
     palabrast = deconvert(palabrals)
     print(palabrast)
     return palabrast, key
+  elif 1 <= key <= 26:
+      palabrals = convert(palabrals)
+      for i in range(len(palabrals)):
+        palabrals[i] = (palabrals[i] + key)%26
+      palabrast = deconvert(palabrals)
+      print(palabrast)
+      return palabrast, key
   else:
     return -1, -1
 
@@ -118,19 +118,21 @@ def encode_mult(palabrast,key,count_falla):
   
   palabrals = unify(palabrast)
   claves_validas = rela_primes()
-  if key in claves_validas:
-      palabrals = convert(palabrals)
-      for i in range(len(palabrals)):
-        palabrals[i] = (palabrals[i] * key)%26
-      palabrast = deconvert(palabrals)
-      return palabrast, key
-  if count_falla >= 2:
+  if count_falla > 2:
     key = claves_validas[ran.randint(1,len(claves_validas))]
     palabrals = convert(palabrals)
     for i in range(len(palabrals)):
       palabrals[i] = (palabrals[i] * key)%26
     palabrast = deconvert(palabrals)
     return palabrast, key
+  
+  if key in claves_validas:
+      palabrals = convert(palabrals)
+      for i in range(len(palabrals)):
+        palabrals[i] = (palabrals[i] * key)%26
+      palabrast = deconvert(palabrals)
+      return palabrast, key
+  
   else:
     return -1,-1
 
@@ -149,7 +151,7 @@ def encode_sust(palabrast,key,count_falla):
   palabrals = unify(palabrast)
   count = 0
   key = key.lower()
-  if count_falla >= 2:
+  if count_falla > 2:
     listaran = lista[:]
     ran.shuffle(listaran)
     key = ""
@@ -185,17 +187,10 @@ def encode_afin(palabrast, a, b, count_falla):
   # Understanding a<->0, b<->1, ..., z<->25 the codification method transforms each letter to its corresponding numerical value.
   # The codification method multiplies a and ads b to each number and transforms the result back to an alphabetical value.
   # Then returns the message encrypted
-
+  
   palabrals = unify(palabrast)
   claves_validas = rela_primes()
-  if a in claves_validas:
-    if 0 <= b <= 25:
-      palabrals = convert(palabrals)
-      for i in range(len(palabrals)):
-        palabrals[i] = (((palabrals[i] * a)%26)+b)%26
-      palabrast = deconvert(palabrals)
-      return palabrast, a, b
-  elif count_falla >= 2:
+  if count_falla > 2:
     a = claves_validas[ran.randint(1,len(claves_validas))]
     b = ran.randint(1,25)
     palabrals = convert(palabrals)
@@ -203,6 +198,16 @@ def encode_afin(palabrast, a, b, count_falla):
       palabrals[i] = (((palabrals[i] * a)%26)+b)%26
     palabrast = deconvert(palabrals)
     return palabrast, a, b
+  
+  if a in claves_validas:
+    if 0 <= b <= 25:
+      palabrals = convert(palabrals)
+      for i in range(len(palabrals)):
+        palabrals[i] = (((palabrals[i] * a)%26)+b)%26
+      palabrast = deconvert(palabrals)
+      return palabrast, a, b
+    else:
+      return -1,-1, -1
   else:
     return -1,-1, -1
 
@@ -218,16 +223,21 @@ def encode_permu(string, tama, key, count_falla):
   
   
   palabrals = unify(string)
-  if count_falla == 2:
+  if count_falla > 2:
     tama = ran.randint(1,len(palabrals))
-    key = ran.randint(1,tama)
+    key = ran.randint(1,tama -1)
+    print("a")
   while True:
     if 1 <= tama <=len(palabrals):
       break
+    
+    print("b")
     return -1, -1, -1
   while True:
     if 1<= key < tama:
       break
+    
+    print("c", key, tama)
     return -1, -1, -1
   chunks = [palabrals[x:x+tama] for x in range(0, len(palabrals), tama)]
   final=[]
@@ -251,14 +261,7 @@ def encode_permu(string, tama, key, count_falla):
 
 
 def decode_despla(string, key, count_fallas):
-  if 1<= key<=26:
-    lista = unify(string)
-    lista = convert(lista)
-    for j in range(len(lista)):
-      lista[j] = (lista[j]-key)%26
-    string = deconvert(lista)
-    return string
-  elif count_fallas>=2:
+  if count_fallas>2:
     all=[]
     for i in range(25):
       lista = unify(string)
@@ -266,9 +269,16 @@ def decode_despla(string, key, count_fallas):
       for j in range(len(lista)):
         lista[j] = (lista[j]-1)%26
       string = deconvert(lista)
-      all.append("Key used {" + str(i+1) + "} :    " + string)
+      all.append("Key used " + str(i+1) + " :    " + string)
 
     return all
+  if 1<= key<=26:
+    lista = unify(string)
+    lista = convert(lista)
+    for j in range(len(lista)):
+      lista[j] = (lista[j]-key)%26
+    string = deconvert(lista)
+    return string
   else:
     return -1
 
@@ -277,6 +287,19 @@ def decode_mult(string, key, count_fallas):
   inver_validas = inver_primes()
   keys = rela_primes()
   results = []
+  if count_fallas > 2:
+    for i in inver_validas:
+      lista = unify(string)
+      lista = convert(lista)
+      for j in range(len(lista)):
+        lista[j] = int((lista[j]*i)%26)
+      res = deconvert(lista)
+      for a in range(len(inver_validas)):
+        if inver_validas[a] == i:
+          valor = keys[a]
+      results.append("Key used "+ str(valor) + " :     "+res)
+    return results, key
+  
   if key in keys:
     lista = unify(string)
     lista = convert(lista)
@@ -287,18 +310,6 @@ def decode_mult(string, key, count_fallas):
       lista[j] = int((lista[j]*a)%26)
     string = deconvert(lista)
     return string, key
-  elif count_fallas >= 2:
-    for i in inver_validas:
-      lista = unify(string)
-      lista = convert(lista)
-      for j in range(len(lista)):
-        lista[j] = int((lista[j]*i)%26)
-      res = deconvert(lista)
-      for a in range(len(inver_validas)):
-        if inver_validas[a] == i:
-          valor = keys[a]
-      results.append("Key used {"+ str(valor) + "} :     "+res)
-    return results, key
   else:
     return -1,-1
 
@@ -309,7 +320,7 @@ def decode_sust(palabrast,key,count_falla):
   palabrals = unify(palabrast)
   count = 0
   keyf = key.lower()
-  if count_falla >= 2:
+  if count_falla > 2:
     listaran = lista[:]
     ran.shuffle(listaran)
     keyf = ""
@@ -336,6 +347,7 @@ def decode_sust(palabrast,key,count_falla):
   return string, keyf
 
 def decode_afin(string, a, b, count_fallas):
+  
   alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
   lista = unify(string)
   claves_validas = rela_primes()
@@ -376,13 +388,14 @@ def permufiesta(palabra,m,l):
 #### LIMPIO
 def decode_permu(string, tama, key, count_falla):
   palabra = unify(string)
-  if count_falla == 2:
+  if count_falla > 2:
     final = []
     for i in range(1,len(palabra)+1):
       for j in range(i):
         palabra, tama, key = permufiesta(palabra,i,j)
-        final.append(palabra, tama, key)
-    
+        final.append(palabra)
+        final.append(tama)
+        final.append(key)
     return final
   if 1 <= tama <= len(palabra):
     if 1 <= key < tama:

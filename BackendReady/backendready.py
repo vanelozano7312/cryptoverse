@@ -49,7 +49,6 @@ def unify(palabra):
   palabra = palabra.lower()
   regex = re.compile('[^a-z]')
   palabra = regex.sub('', palabra)
-  print(palabra)
   for i in range(len(palabra)):
     palabralist.append(palabra[i])
   return palabralist
@@ -91,6 +90,7 @@ def deconvert(list):
 
 ####LIMPIO
 def encode_despla(palabrast,key,count_falla):
+  print("Se estan usando las funcones de Backendready")
   """
 This codification method receives a message, and a key
 From the message we remove all non alphabetical characters, remove spaces, and lower all characters that remain.
@@ -107,14 +107,12 @@ Then returns the message encrypted
     for i in range(len(palabrals)):
       palabrals[i] = (palabrals[i] + key)%26
     palabrast = deconvert(palabrals)
-    print(palabrast)
     return palabrast, key
   if 1 <= key <= 26:
       palabrals = convert(palabrals)
       for i in range(len(palabrals)):
         palabrals[i] = (palabrals[i] + key)%26
       palabrast = deconvert(palabrals)
-      print(palabrast)
       return palabrast, key
   else:
     return -1, -1
@@ -264,23 +262,44 @@ Then returns the message encrypted
 #### LIMPIO
 ####mbwjebftnvzmjoeb
 ####xmhupmqegzmoaeufmxuzpm (12)
+# def decode_despla(string, key, count_fallas):
+#   if 1<= key<=26:
+#     lista = unify(string)
+#     lista = convert(lista)
+#     for j in range(len(lista)):
+#       lista[j] = (lista[j]-key)%26
+#     string = deconvert(lista)
+#     print(string)
+#     return string
+#   for i in range(25):
+#     lista = unify(string)
+#     lista = convert(lista)
+#     for j in range(len(lista)):
+#       lista[j] = (lista[j]+1)%26
+#     string = deconvert(lista)
+#   return string
+
 def decode_despla(string, key, count_fallas):
-  if 1<= key<=26:
+  if count_fallas>2:
+    all=[]
+    for i in range(25):
+      lista = unify(string)
+      lista = convert(lista)
+      for j in range(len(lista)):
+        lista[j] = (lista[j]+1)%26
+      string = deconvert(lista)
+      all.append("Key usedsss " + str(i+1) + " :    " + string)
+
+    return all
+  elif 1<= key<=26:
     lista = unify(string)
     lista = convert(lista)
     for j in range(len(lista)):
       lista[j] = (lista[j]-key)%26
     string = deconvert(lista)
-    print(string)
     return string
-  for i in range(25):
-    lista = unify(string)
-    lista = convert(lista)
-    for j in range(len(lista)):
-      lista[j] = (lista[j]+1)%26
-    string = deconvert(lista)
-  return string
-
+  else:
+    return -1
 
 
 ##### LIMPIO

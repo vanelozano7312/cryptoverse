@@ -1,5 +1,5 @@
 from itertools import permutations
-from BackendReady.backendready import *
+from BackendReady.main import *
 import matplotlib.pyplot as plt
 import numpy as np
 import random
