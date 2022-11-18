@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <ul class="actions">
-                    <li><input type="submit" value="Encrypt" class="primary" /></li>
+                    <li><input type="submit" value="Encrypt" name="Encrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                 </ul>
 
@@ -70,9 +70,11 @@
                 <h2>Decrypt</h2>
                 {% csrf_token %}
                 {% if not decrypted %}
-                    
-                {% if mistake_decrypt%}
-                <label> Invalid key</label>
+                {% if failed_decrypt %}
+                <label>Try scrolling down and use the cryptoanalisis!</label>
+                
+                {% elif mistake_decrypt%}
+                <label>{{countfail}} mistakes</label>
                 {% endif %}
                 
                 <div class="fields">
@@ -87,7 +89,7 @@
                 </div>
                 
                 <ul class="actions">
-                    <li><input type="submit" value="Decrypt" class="primary" /></li>
+                    <li><input type="submit"name="Decrypt" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                     <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
@@ -96,9 +98,7 @@
             </form>
             <div>          
                 {% if decrypted %}
-                {% if failed_decrypt %}
-                <label>This are all the posible text:</label>
-                {% else %}
+                
                 <div >
                     <label>Used keyword:  </label>
                     <p>{{key_decrypt}}</p>
@@ -118,7 +118,6 @@
                     </form>
 
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>
@@ -145,7 +144,7 @@
                     </div>
                 </div>
                 <ul class="actions">
-                    <li><input type="submit" value="Cryptoanalisis" class="primary" /></li>
+                    <li><input type="submit" name="Cryptoanalisis" value="Cryptoanalisis" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                 </ul>
 

@@ -63,7 +63,7 @@ def encode_vigenere(keyword, text, failures):
             encryptedText += utils.GetLetter((utils.GetCode(text[i]) + (key[i % m])) % 26)
         return encryptedText, keyword
 
-    elif failures >= 2:
+    elif failures > 2:
         keyword = utils.GetRandomString(utils.GetRandomInteger(len(text)))
         
         text = utils.preProcessText(text)

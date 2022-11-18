@@ -393,9 +393,7 @@ def decode_permu(string, tama, key, count_falla):
     for i in range(1,len(palabra)+1):
       for j in range(i):
         palabra, tama, key = permufiesta(palabra,i,j)
-        final.append(palabra)
-        final.append(tama)
-        final.append(key)
+        final.append("Size: "+str(tama) + " Key: "+str(key)+ " Cleartext:" + str(palabra))
     return final
   if 1 <= tama <= len(palabra):
     if 1 <= key < tama:

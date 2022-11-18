@@ -409,7 +409,6 @@ def cryptosystem_view(request, name=None):
                     codedtext = request.POST.get("codedtext")
                     try:
                         try:
-                            print("dddddddd")
                             size_decrypt=int(size_decrypt)
                             key_decrypt=int(key_decrypt)
                             decode = decode_permu(codedtext, size_decrypt, key_decrypt, count_falla)
@@ -418,14 +417,10 @@ def cryptosystem_view(request, name=None):
                         if decode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
-                                print("bbbb")
                                 decode = decode_permu(codedtext, 0, 0, count_falla)
-                                print("cccc")
                                 context['failed_decrypt']=True
-                                context['size_decrypt']=decode[1]
-                                context['key_decrypt']=decode[2]
                                 context['decrypted']=True
-                                context['cleartext']=decode[0]
+                                context['cleartext']=decode
                                 context['encodedtext']=codedtext
                                 count_falla=0 
                             else:
@@ -582,33 +577,69 @@ def cryptosystem_view(request, name=None):
                     except:
                         pass
 
-        ##VIGENERE CYPHER
+        ##VIGENERE CYPHER 
         elif name == "Vigenere":
             view = "vigenere.html"
             if request.method == "POST":
 
                 #encrypt
-                key_encrypt = request.POST.get("key_encrypt")
-                cleartext = request.POST.get("cleartext")
-                try:
-                    
-                    encode, key_encrypt = encode_vigenere(key_encrypt, cleartext, count_falla)
-                    if encode == -1:
-                        count_falla=count_falla+1
-                        context['mistake_encrypt']=True
-                        context['countfail']=count_falla
-                    else:
-                        if count_falla==2:
-                            context['failed_encrypt']=True
-                        context['key_encrypt']=key_encrypt
-                        context['encrypted']=True
-                        context['cleartext']=cleartext
-                        context['encodedtext']=encode
-                        count_falla=0
-                except:
-                    pass
+                if 'Encrypt' in request.POST:
+                    key_encrypt = request.POST.get("key_encrypt")
+                    cleartext = request.POST.get("cleartext")
+                    try:
+                        try:
+                            encode, key_encrypt = encode_vigenere(key_encrypt, cleartext, count_falla)
+                        except:
+                            encode=-1
+                        if encode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                encode, key_encrypt = encode_vigenere("", cleartext, count_falla)
+                                context['failed_encrypt']=True
+                                context['key_encrypt'] = key_encrypt
+                                context['encrypted']=True
+                                context['cleartext']=cleartext
+                                context['encodedtext']=encode
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['key_encrypt'] = key_encrypt
+                            context['encrypted']=True
+                            context['cleartext']=cleartext
+                            context['encodedtext']=encode
+                            count_falla=0
+                    except:
+                        pass
+               
 
                 #decrypt
+                
+                if 'Decrypt' in request.POST:
+                    key_decrypt = request.POST.get("key_decrypt")
+                    codedtext = request.POST.get("codedtext")
+                    try:
+                        try:
+                            decode= decode_vigenere(key_decrypt, codedtext)
+                        except:
+                            decode=-1
+                        if decode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                context['failed_decrypt']=True
+                                count_falla=0 
+                            else:
+                                context['mistake_decrypt']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['key_decrypt'] = key_decrypt
+                            context['decrypted']=True
+                            context['cleartext']=decode
+                            context['encodedtext']=codedtext
+                            count_falla=0
+                    except:
+                        pass
                 key_decrypt = request.POST.get("key_decrypt")
                 codedtext = request.POST.get("codedtext")
                 try:
