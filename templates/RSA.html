@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="cipher-title">
+    <h1>RSA CIPHER</h1>
+</div>
+
+<section id="ende">
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt</h2>
+                {% csrf_token %}
+                {% if not encrypted %}
+                    
+                {% if mistake_encrypt%}
+                <label> {{countfail}} mistakes</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label for="key_encrypt">Key (between 1 and 25):</label>
+                        <input type="text" id="key_encrypt" name="key_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="cleartext">Text to encrypt:</label><br>
+                        <textarea name="cleartext"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" name="Encrypt" value="Encrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>          
+                {% if encrypted %}
+                <div >
+                    {% if failed_encrypt %}
+                    <label>A key has been chosen for you</label>
+                    {% endif %}
+                    <label>Used key:  </label>
+                    <p>{{key_encrypt}}</p>
+                </div>
+                <div >
+                    <label>Your text:</label>
+                    <p>{{cleartext}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p align="justify">{{encodedtext}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+       
+        <section id="decrypt">
+            <form action="." method="post">
+                <h2>Decrypt</h2>
+                {% csrf_token %}
+                {% if not decrypted %}
+                    
+                {% if mistake_decrypt%}
+                <label>
+                    {{countfail}} mistakes
+                </label>
+                {% endif %}
+                
+                <div class="fields">
+                    <div class="field ">
+                        <label for="key_decrypt">Key (between 1 and 25):</label>
+                        <input type="text" id="key_decrypt" name="key_decrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="codedtext">Text to decrypt:</label><br>
+                        <textarea name="codedtext"></textarea>
+                    </div>
+                </div>
+                
+                <ul class="actions">
+                    <li><input type="submit" name="Decrypt" value="Decrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>          
+                {% if decrypted %}
+                {% if failed_decrypt %}
+                <label>This are all the posible text:</label>
+                <div >
+                    <label>Clear texts:  </label>
+                    {% for i in cleartext %}
+                    <p>{{i}}</p>
+                    {% endfor %}
+                </div>
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% else %}
+                <div >
+                    <label>Used key:  </label>
+                    <p>{{key_decrypt}}</p>
+                </div>
+                <div >
+                    <label>Clear text:  </label>
+                    <p>{{cleartext}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p>{{encodedtext}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+{% endblock content %}

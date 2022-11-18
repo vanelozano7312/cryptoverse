@@ -1618,7 +1618,16 @@ def cryptosystem_view(request, name=None):
                             context['plaintext3'] = potential_plaintexts[3]
                     except:
                         pass
+              
+        ##RSA CYPHER 
+        elif name == "RSA":
+            view = "RSA.html"
+            # if request.method == "POST": 
                 
+        ##ELGAMAL CYPHER 
+        elif name == "ElGamal":
+            view = "ElGamal.html"
+            # if request.method == "POST":
                 
     return render(request, view, context=context)
 
