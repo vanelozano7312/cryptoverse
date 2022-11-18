@@ -49,3 +49,24 @@ IMAGEN PEQUEÑA
 https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg
 
 https://i.pinimg.com/736x/ef/0f/cf/ef0fcf9c015bdd24d0c1851eb643ab2f--oscar.jpg
+
+https://pbs.twimg.com/profile_images/696818577471463424/5QeSmBBN_400x400.png
+
+
+
+######################################################################
+IMAGENES
+PEQUEÑA POCO CONTRASTE
+https://pbs.twimg.com/profile_images/696818577471463424/5QeSmBBN_400x400.png 
+PEQUEÑA ALTO CONTRASTE
+https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg 
+MEDIANA POCO CONTRASTE
+https://encolombia.com/wp-content/uploads/2021/12/Que-es-paisaje-696x398.jpg
+MEDIANA ALTO CONTRASTE
+https://m.media-amazon.com/images/I/51Kx-6iAiWL._AC_SL1000_.jpg
+GRANDE POCO CONTRASTE
+https://scontent-bog1-1.xx.fbcdn.net/v/t1.6435-9/64493240_2629297793748355_1936783878286999552_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9267fe&_nc_eui2=AeGiLonkjDAz7DWC8AD4FbGWD4R8vcLhnHMPhHy9wuGcc0EtJcOH7u_JeMJGjo1Uuv8&_nc_ohc=k_OkRcA7NcUAX_UgNMa&_nc_ht=scontent-bog1-1.xx&oh=00_AfAiiJSEWZTVhCUZjO9kQkQTjW83ugW8N5Z3kgWyl25kDg&oe=639F826D
+GRANDE ALTO CONTRASTE
+https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/800px-Tux.svg.png
+
+######################################################################
