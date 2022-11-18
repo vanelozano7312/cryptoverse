@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="cipher-title">
+    <h1>Rabin Cryptosystem</h1>
+</div>
+
+<div class="cipher-title">
+    <h2>WARNING: As this cryptosystem uses probable primes it is possible for the encryption method to fail when the key is not provided</h2>
+</div>
+
+<!-- TEXT -->
+<section id="ende">
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt text</h2>
+                {% csrf_token %}
+                {% if not encrypted %}
+
+                {% if mistake_encrypt %}
+                <label> {{countfail}} Mistakes. Invalid key</label>
+                {% endif %}
+                
+                {% if failed_encrypt %}
+                <label> A random key has been chosen for you: {{key_encrypt}}</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field">
+                        <label>Key</label>
+                        <label for="key_encrypt">Write the key, it must be an integer product of two prime numbers p and q, both congruents with 3 modulus 4</label>
+                        <input type="text" id="key_encrypt" name="key_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label>Text</label>
+                        <label for="plaintext">Write the text you want to encrypt, with characters from a-z, spaces and commas</label><br>
+                        <textarea name="plaintext"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" name="Encrypt" value="Encrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if encrypted %}
+                
+                <div >
+                    <label>Your text:</label>
+                    <p>{{plaintext}}</p>
+                </div>
+                <div >
+                    <label>Encrypted message:</label>
+                    <p>{{encoded}}</p>
+                </div>
+                <div >
+                    <label>Public-Key:</label>
+                    <p>{{key_encrypt}}</p>
+                </div>
+                {% if no_key %}
+                <div >
+                    <label>Private-key 1:</label>
+                    <p>{{p}}</p>
+                </div>
+                <div >
+                    <label>Private-key 2:</label>
+                    <p>{{q}}</p>
+                </div>
+                {% endif %}
+
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+
+        <section id="decrypt">
+            <form action="." method="post">
+                <h2>Decrypt</h2>
+                {% csrf_token %}
+                {% if not decrypted %}
+
+                {% if mistake_decrypt %}
+                <label> Invalid key or text (remember to separate the elements and just use 0's and 1's)</label>
+                {% endif %}
+
+                <div class="fields">
+                    <div class="field ">
+                        <label>Private-Key 1:</label>
+                        <label for="key1_decrypt">Write the key 1, which is p in n=p*q</label>
+                        <input type="text" id="key_decrypt" name="key1_decrypt">
+                    </div>
+                    <div class="field ">
+                        <label>Private-Key 2:</label>
+                        <label for="key2_decrypt">Write the key 2, which is q in n=p*q</label>
+                        <input type="text" id="key_decrypt" name="key2_decrypt">
+                    </div>
+                    <div class="field" >
+                        <label>Encrypted Message</label>
+                        <label for="encoded_message">Write the encrypted message(is an integer)</label><br>
+                        <textarea name="encoded_message"></textarea>
+                    </div>
+                </div>
+
+                <ul class="actions">
+                    <li><input type="submit" name="Decrypt" value="Decrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>
+                {% if decrypted %}
+                <div >
+                    <label>Potential  plaintext 1:  </label>
+                    <p>{{plaintext0}}</p>
+                </div>
+                <div >
+                    <label>Potential plaintext 2:</label>
+                    <p>{{plaintext1}}</p>
+                </div>
+                <div >
+                    <label>Potential plaintext 3:</label>
+                    <p>{{plaintext2}}</p>
+                </div>
+                <div >
+                    <label>Potential plaintext 4:</label>
+                    <p>{{plaintext3}}</p>
+                </div>
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock content %}

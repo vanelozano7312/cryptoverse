@@ -1,11 +1,10 @@
-
 {% extends "base.html" %}
 {% load static %}
 
 {% block content %}
 
 <div class="cipher-title">
-    <h1>PERMUTATION CIPHER</h1>
+    <h1>RSA CIPHER</h1>
 </div>
 
 <section id="ende">
@@ -21,11 +20,7 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="size_encrypt">Size (lower than the length of the processed text):</label>
-                        <input type="text" id="size_encrypt" name="size_encrypt">
-                    </div>
-                    <div class="field">
-                        <label for="key_encrypt">Key (between 1 and size):</label>
+                        <label for="key_encrypt">Key (between 1 and 25):</label>
                         <input type="text" id="key_encrypt" name="key_encrypt">
                     </div>
                     <div class="field" >
@@ -47,7 +42,7 @@
                     <label>A key has been chosen for you</label>
                     {% endif %}
                     <label>Used key:  </label>
-                    <p>size: {{size_encrypt}}   key: {{key_encrypt}}</p>
+                    <p>{{key_encrypt}}</p>
                 </div>
                 <div >
                     <label>Your text:</label>
@@ -55,7 +50,7 @@
                 </div>
                 <div >
                     <label>Encoded text:</label>
-                    <p>{{encodedtext}}</p>
+                    <p align="justify">{{encodedtext}}</p>
                 </div>
                 
                 <ul class="actions">
@@ -76,16 +71,14 @@
                 {% if not decrypted %}
                     
                 {% if mistake_decrypt%}
-                <label>Invalid key: {{countfail}} mistakes</label>
+                <label>
+                    {{countfail}} mistakes
+                </label>
                 {% endif %}
                 
                 <div class="fields">
-                    <div class="field">
-                        <label for="size_decrypt">Size (lower than the length of the processed text):</label>
-                        <input type="text" id="size_decrypt" name="size_decrypt">
-                    </div>
                     <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and size):</label>
+                        <label for="key_decrypt">Key (between 1 and 25):</label>
                         <input type="text" id="key_decrypt" name="key_decrypt">
                     </div>
                     <div class="field" >
@@ -105,12 +98,9 @@
             <div>          
                 {% if decrypted %}
                 {% if failed_decrypt %}
-                <div >
-                    <label>Encoded text:</label>
-                    <p>{{encodedtext}}</p>
-                </div>
                 <label>This are all the posible text:</label>
                 <div >
+                    <label>Clear texts:  </label>
                     {% for i in cleartext %}
                     <p>{{i}}</p>
                     {% endfor %}
@@ -124,7 +114,7 @@
                 {% else %}
                 <div >
                     <label>Used key:  </label>
-                    <p>size: {{size_decrypt}}   key: {{key_decrypt}}</p>
+                    <p>{{key_decrypt}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>

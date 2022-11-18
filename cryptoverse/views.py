@@ -43,3 +43,15 @@ def block_view(request, *args, **kwargs):
     HTML_STRING = render_to_string("block.html", context=context)
    
     return HttpResponse(HTML_STRING)
+
+def public_view(request, *args, **kwargs):
+    cryptosystem_qs = Cryptosystem.objects.all()
+    change_page("home")
+
+    context = {
+        "object_list" : cryptosystem_qs,
+    }
+
+    HTML_STRING = render_to_string("public.html", context=context)
+   
+    return HttpResponse(HTML_STRING)
