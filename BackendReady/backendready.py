@@ -1,7 +1,8 @@
 import random as ran
 from math import gcd as bltin_gcd
 import re
-
+from sympy import isprime
+from sympy import nextprime
 
 
 
@@ -83,6 +84,24 @@ def deconvert(list):
   return string
 
 
+def rsakeygen():
+  p = nextprime(150)
+  q = nextprime(200)
+  #n = p*q
+  phi = (p-1)*(q-1)
+  flag = True
+  while flag == True:
+    e = ran.randint(3,phi-2)
+    if bltin_gcd.gcd(e, phi) == 1:
+      flag = False
+  flag = True
+  i = 0
+  while flag == True:
+    if (i*e)%phi==1:
+      d=i
+      flag = False
+    i = i + 1
+  return p,q,e,d
 
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE CODIFICACION///////////////////
@@ -255,6 +274,29 @@ Then returns the message encrypted
   final = convert(final)
   final = deconvert(final)
   return final, tama, key
+
+
+def rsaencript(palabra,p,q,e,d,fallas):
+  n = p*q
+  phi = (p-1)*(q-1)
+  if isprime(p) == False:
+    return -1,-1,-1,-1,-1
+  if isprime(q) == False:
+    return -1,-1,-1,-1,-1  
+  if bltin_gcd.gcd(e, phi) != 1:
+    return -1,-1,-1,-1,-1  
+  if (d*e)%phi != 1:
+    return -1,-1,-1,-1,-1  
+  if fallas >= 3:
+    p,q,e,d = rsakeygen()
+  n = p*q
+  phi = (p-1)*(q-1)
+  palabra =unify(palabra)
+  palabralist = convert(palabra)
+  for i in range(len(palabralist)):
+    palabralist[i] = (palabralist[i]**e)%n
+  
+  return palabralist,p,q,e,d
 
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////
@@ -477,3 +519,12 @@ def decode_permu(string, tama, key, count_falla):
       return -1
   else:
     return -1
+
+
+def rsadecript(palabralist,p,q,e,d,fallas):
+  n = p*q
+  #phi = (p-1)*(q-1)
+  for i in range(len(palabralist)):
+    palabralist[i] = (palabralist[i]**d)%n
+  palabra = deconvert(palabralist)
+  return palabra,p,q,e,d    
