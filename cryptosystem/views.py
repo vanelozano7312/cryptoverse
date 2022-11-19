@@ -789,7 +789,11 @@ def cryptosystem_view(request, name=None):
                         key_encrypt1 = key_encrypt1.upper()
                         key_encrypt2 = key_encrypt2.upper()
                         key_encrypt3 = key_encrypt3.upper()
+                        start = time.time()
                         encode = encode_tdes_image_ecb(key_encrypt1, key_encrypt2, key_encrypt3, url)
+                        end = time.time()
+                        totalTime = end - start
+                        print("El tiempo TDES es:  ", totalTime)
                         if encode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
@@ -832,7 +836,11 @@ def cryptosystem_view(request, name=None):
                             key_decrypt_1 = key_decrypt_1.upper()
                             key_decrypt_2 = key_decrypt_2.upper()
                             key_decrypt_3 = key_decrypt_3.upper()
+                            start = time.time()
                             decode = decode_tdes_image_ecb(key_decrypt_1, key_decrypt_2, key_decrypt_3, 'static/images/clean.png')
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo decriptar EBC TDES es:  ", totalTime)
                         except:
                             decode= -1
                         if decode == -1:
@@ -856,10 +864,14 @@ def cryptosystem_view(request, name=None):
                     try:
                         try:
                             key_encrypt1 = key_encrypt1.upper()
-                            key_encrypt2 = key_encrypt2.upper()
+                            key_enScrypt2 = key_encrypt2.upper()
                             key_encrypt3 = key_encrypt3.upper()
                             iv_encrypt = iv_encrypt.upper()
+                            start = time.time()
                             encode = encode_tdes_image_cbc(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo CBC TDES es:  ", totalTime)
                         except:
                             encode=-1
                         if encode == -1:
@@ -874,7 +886,11 @@ def cryptosystem_view(request, name=None):
                                 context['key_encrypt_2'] = key_encrypt2
                                 context['key_encrypt_3'] = key_encrypt3
                                 context['iv_encrypt'] = iv_encrypt
+                                start = time.time()
                                 encode = encode_tdes_image_cbc(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                                end = time.time()
+                                totalTime = end - start
+                                print("El tiempo TDES es:  ", totalTime)
                                 context['encrypted_cbc']=True
                                 count_falla=0 
                             else:
@@ -909,7 +925,11 @@ def cryptosystem_view(request, name=None):
                             key_decrypt_2 = key_decrypt_2.upper()
                             key_decrypt_3 = key_decrypt_3.upper()
                             iv_decrypt = iv_decrypt.upper()
+                            start = time.time()
                             decode = decode_tdes_image_cbc(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo decriptar CBC TDES es:  ", totalTime)
                         except:
                             decode=-1
                         if decode == -1:
@@ -937,7 +957,11 @@ def cryptosystem_view(request, name=None):
                             key_encrypt2 = key_encrypt2.upper()
                             key_encrypt3 = key_encrypt3.upper()
                             iv_encrypt = iv_encrypt.upper()
+                            start = time.time()
                             encode = encode_tdes_image_ofb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo OFB TDES es:  ", totalTime)
                         except:
                             encode=-1
                         if encode == -1:
@@ -987,7 +1011,11 @@ def cryptosystem_view(request, name=None):
                             key_decrypt_2 = key_decrypt_2.upper()
                             key_decrypt_3 = key_decrypt_3.upper()
                             iv_decrypt = iv_decrypt.upper()
+                            start = time.time()
                             decode = decode_tdes_image_ofb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo decriptar OFB TDES es:  ", totalTime)
                         except:
                             decode=-1
                         if decode == -1:
@@ -1015,7 +1043,11 @@ def cryptosystem_view(request, name=None):
                             key_encrypt2 = key_encrypt2.upper()
                             key_encrypt3 = key_encrypt3.upper()
                             iv_encrypt = iv_encrypt.upper()
+                            start = time.time()
                             encode = encode_tdes_image_cfb(key_encrypt1, key_encrypt2, key_encrypt3, iv_encrypt, url)
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo CFB TDES es:  ", totalTime)
                         except:
                             encode=-1
                         if encode == -1:
@@ -1064,7 +1096,11 @@ def cryptosystem_view(request, name=None):
                             key_decrypt_2 = key_decrypt_2.upper()
                             key_decrypt_3 = key_decrypt_3.upper()
                             iv_decrypt = iv_decrypt.upper()
+                            start = time.time()
                             decode = decode_tdes_image_cfb(key_decrypt_1, key_decrypt_2, key_decrypt_3, iv_decrypt, 'static/images/clean.png')
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo decriptar CFB TDES es:  ", totalTime)
                         except:
                             decode=-1
                         if decode == -1:
@@ -1093,7 +1129,11 @@ def cryptosystem_view(request, name=None):
                             key_encrypt2 = key_encrypt2.upper()
                             key_encrypt3 = key_encrypt3.upper()
                             ctr_encrypt = ctr_encrypt.upper()
+                            start = time.time()
                             encode = encode_tdes_image_ctr(key_encrypt1, key_encrypt2, key_encrypt3, ctr_encrypt, url)
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo CTR TDES es:  ", totalTime)
                         except:
                             encode=-1
                         if encode == -1:
@@ -1142,7 +1182,11 @@ def cryptosystem_view(request, name=None):
                             key_decrypt_2 = key_decrypt_2.upper()
                             key_decrypt_3 = key_decrypt_3.upper()
                             ctr_decrypt = ctr_decrypt.upper()
+                            start = time.time()
                             decode = decode_tdes_image_ctr(key_decrypt_1, key_decrypt_2, key_decrypt_3, ctr_decrypt, 'static/images/clean.png')
+                            end = time.time()
+                            totalTime = end - start
+                            print("El tiempo decriptar CTR TDES es:  ", totalTime)
                         except:
                             decode=-1
                         if decode == -1:

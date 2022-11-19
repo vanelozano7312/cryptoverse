@@ -41,32 +41,72 @@ key fail: ubcedfghijkzmnoqprstavwxyz
 
 198 171 71 79 18 22 85 64 61
 
-https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/600px-Cat03.jpg
-
-https://i0.wp.com/mascooriente.co/wp-content/uploads/2020/02/mascooriente_schnauzer-miniatura.jpg?fit=520%2C355&ssl=1
-
-IMAGEN PEQUEÑA
-https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg
-
-https://i.pinimg.com/736x/ef/0f/cf/ef0fcf9c015bdd24d0c1851eb643ab2f--oscar.jpg
-
-https://pbs.twimg.com/profile_images/696818577471463424/5QeSmBBN_400x400.png
-
-
-
 ######################################################################
 IMAGENES
-PEQUEÑA POCO CONTRASTE
+PEQUEÑA MUCHO RUIDO
 https://pbs.twimg.com/profile_images/696818577471463424/5QeSmBBN_400x400.png 
-PEQUEÑA ALTO CONTRASTE
+PEQUEÑA POCO RUIDO
 https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg 
-MEDIANA POCO CONTRASTE
-https://encolombia.com/wp-content/uploads/2021/12/Que-es-paisaje-696x398.jpg
-MEDIANA ALTO CONTRASTE
+MEDIANA MUCHO RUIDO
+https://artegogallery.com/image/cache/catalog/the-andoma-cliff-onega-aleksandrovskii-aleksandr-135-950x750.jpg
+MEDIANA POCO RUIDO
 https://m.media-amazon.com/images/I/51Kx-6iAiWL._AC_SL1000_.jpg
-GRANDE POCO CONTRASTE
+GRANDE MUCHO RUIDO
 https://scontent-bog1-1.xx.fbcdn.net/v/t1.6435-9/64493240_2629297793748355_1936783878286999552_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9267fe&_nc_eui2=AeGiLonkjDAz7DWC8AD4FbGWD4R8vcLhnHMPhHy9wuGcc0EtJcOH7u_JeMJGjo1Uuv8&_nc_ohc=k_OkRcA7NcUAX_UgNMa&_nc_ht=scontent-bog1-1.xx&oh=00_AfAiiJSEWZTVhCUZjO9kQkQTjW83ugW8N5Z3kgWyl25kDg&oe=639F826D
-GRANDE ALTO CONTRASTE
+GRANDE POCO RUIDO
 https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/800px-Tux.svg.png
 
 ######################################################################
+TDES
+    ENCRYPT IN ECB MODE
+    KEY 1
+    3F43ADE98BCCB25C
+    KEY 2
+    8E9042F479208A0E
+    KEY 3
+    65288ACEEBBDDB89
+
+    ENCRYPT IN CBC MODE
+    KEY 1
+    07D6526FCB339DEA
+    KEY 2
+    C4B55B01A35C0A13
+    KEY 3
+    C0DF67CE7578CF6C
+    INITIALIZATION VECTOR
+    9D24F5255A13F4C5
+
+    EBCRYPT IN OFB MODE
+    KEY 1
+
+    KEY 2
+
+    KEY 3
+
+    INITIALIZATION VECTOR
+
+    ENCRYPT IN CFB MODE
+    KEY 1
+    
+    KEY 2
+
+    KEY 3
+
+    INITIALIZATION VECTOR
+
+    ENCRYPT IN CTR MODE
+    KEY 1
+    
+    KEY 2
+
+    KEY 3
+
+    COUNTER
+
+
+Hill
+
+AES
+
+RSA
+
