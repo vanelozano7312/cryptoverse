@@ -52,9 +52,9 @@ https://artegogallery.com/image/cache/catalog/the-andoma-cliff-onega-aleksandrov
 MEDIANA POCO RUIDO
 https://m.media-amazon.com/images/I/51Kx-6iAiWL._AC_SL1000_.jpg
 GRANDE MUCHO RUIDO
-https://scontent-bog1-1.xx.fbcdn.net/v/t1.6435-9/64493240_2629297793748355_1936783878286999552_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9267fe&_nc_eui2=AeGiLonkjDAz7DWC8AD4FbGWD4R8vcLhnHMPhHy9wuGcc0EtJcOH7u_JeMJGjo1Uuv8&_nc_ohc=k_OkRcA7NcUAX_UgNMa&_nc_ht=scontent-bog1-1.xx&oh=00_AfAiiJSEWZTVhCUZjO9kQkQTjW83ugW8N5Z3kgWyl25kDg&oe=639F826D
+https://upload.wikimedia.org/wikipedia/commons/2/22/Kinkaku-ji%2C_Kyoto%2C_Japan%2C_2004.jpg
 GRANDE POCO RUIDO
-https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/800px-Tux.svg.png
+https://media.kasperskydaily.com/wp-content/uploads/sites/87/2020/09/10130345/threats-targeting-linux-featured.jpg
 
 ######################################################################
 TDES
@@ -66,7 +66,7 @@ TDES
     KEY 3
     65288ACEEBBDDB89
 
-    ENCRYPT IN CBC MODE
+    ENCRYPT IN CBC OFB CFB MODE
     KEY 1
     07D6526FCB339DEA
     KEY 2
@@ -75,24 +75,6 @@ TDES
     C0DF67CE7578CF6C
     INITIALIZATION VECTOR
     9D24F5255A13F4C5
-
-    EBCRYPT IN OFB MODE
-    KEY 1
-
-    KEY 2
-
-    KEY 3
-
-    INITIALIZATION VECTOR
-
-    ENCRYPT IN CFB MODE
-    KEY 1
-    
-    KEY 2
-
-    KEY 3
-
-    INITIALIZATION VECTOR
 
     ENCRYPT IN CTR MODE
     KEY 1
