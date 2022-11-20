@@ -503,7 +503,11 @@ def cryptosystem_view(request, name=None):
                     if key_encrypt_list == -1:
                         context['mistake_encrypt']=True
                     else:
+                        start = time.time()
                         encode = encode_hill_image(key_encrypt_list, url)
+                        end = time.time()
+                        totalTime = end - start
+                        print("el tiempo encode hill es:  ", totalTime)
                     if encode == -1:
                         context['mistake_encrypt']=True
                     else:
