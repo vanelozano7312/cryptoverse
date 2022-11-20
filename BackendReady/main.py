@@ -1,5 +1,5 @@
 import random as ran
-from math import gcd as bltin_gcd
+from math import gcd 
 import re
 from sympy import isprime
 from sympy import nextprime
@@ -80,7 +80,7 @@ def rsakeygen():
   flag = True
   while flag == True:
     e = ran.randint(3,phi-2)
-    if bltin_gcd.gcd(e, phi) == 1:
+    if gcd(e, phi) == 1:
       flag = False
   flag = True
   i = 0
@@ -274,15 +274,15 @@ def encode_permu(string, tama, key, count_falla):
 
     
 def rsaencript(palabra,p,q,e,d,fallas):
-  if fallas >= 3:
+  if fallas > 2:
     p,q,e,d = rsakeygen()
   n = p*q
   phi = (p-1)*(q-1)
   if isprime(p) == False:
     return -1,-1,-1,-1,-1
   if isprime(q) == False:
-    return -1,-1,-1,-1,-1  
-  if bltin_gcd.gcd(e, phi) != 1:
+    return -1,-1,-1,-1,-1 
+  if gcd(e, phi) != 1:
     return -1,-1,-1,-1,-1  
   if (d*e)%phi != 1:
     return -1,-1,-1,-1,-1  
@@ -292,6 +292,9 @@ def rsaencript(palabra,p,q,e,d,fallas):
     palabralist[i] = (palabralist[i]**e)%n
   
   return palabralist,p,q,e,d
+
+# print(rsaencript("estamos", 151, 211, 26801, 23201, 0))
+# print(rsaencript("estamos", 1, 1, 1, 1, 3))
 
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////

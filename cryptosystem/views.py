@@ -1680,12 +1680,15 @@ def cryptosystem_view(request, name=None):
                             e_encrypt = int(e_encrypt)
                             d_encrypt = int(d_encrypt)
                             encode, p_encrypt, q_encrypt, e_encrypt, d_encrypt = rsaencript(cleartext,p_encrypt,q_encrypt,e_encrypt,d_encrypt,count_falla)
+                            
                         except:
                             encode=-1
                         if encode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
+                                print("aaaaa")
                                 encode, p_encrypt, q_encrypt, e_encrypt, d_encrypt = rsaencript(cleartext,1, 1, 1, 1,count_falla)
+                                print("aaaaasssssssssss")
                                 context['failed_encrypt']=True
                                 context['p_encrypt'] = p_encrypt
                                 context['q_encrypt'] = q_encrypt
