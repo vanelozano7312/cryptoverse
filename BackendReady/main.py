@@ -274,6 +274,8 @@ def encode_permu(string, tama, key, count_falla):
 
     
 def rsaencript(palabra,p,q,e,d,fallas):
+  if fallas >= 3:
+    p,q,e,d = rsakeygen()
   n = p*q
   phi = (p-1)*(q-1)
   if isprime(p) == False:
@@ -284,10 +286,6 @@ def rsaencript(palabra,p,q,e,d,fallas):
     return -1,-1,-1,-1,-1  
   if (d*e)%phi != 1:
     return -1,-1,-1,-1,-1  
-  if fallas >= 3:
-    p,q,e,d = rsakeygen()
-  n = p*q
-  phi = (p-1)*(q-1)
   palabra =unify(palabra)
   palabralist = convert(palabra)
   for i in range(len(palabralist)):

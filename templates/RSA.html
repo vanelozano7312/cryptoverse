@@ -20,8 +20,20 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="key_encrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_encrypt" name="key_encrypt">
+                        <label for="key_encrypt">Key P (prime):</label>
+                        <input type="text" id="p_encrypt" name="p_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="key_encrypt">Key Q (prime):</label>
+                        <input type="text" id="q_encrypt" name="q_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="key_encrypt">Key E (A relative prime of Phi(n) between 3 and Phi(n)-2, where Phi(n)=(p-1)*(q-1) ):</label>
+                        <input type="text" id="e_encrypt" name="e_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="key_encrypt">Key D (Inverse of E modulus Phi(n)):</label>
+                        <input type="text" id="d_encrypt" name="d_encrypt">
                     </div>
                     <div class="field" >
                         <label for="cleartext">Text to encrypt:</label><br>
@@ -39,10 +51,13 @@
                 {% if encrypted %}
                 <div >
                     {% if failed_encrypt %}
-                    <label>A key has been chosen for you</label>
+                    <label>The keys have been chosen for you</label>
                     {% endif %}
-                    <label>Used key:  </label>
-                    <p>{{key_encrypt}}</p>
+                    <label>Used keys:  </label>
+                    <p>P: {{p_encrypt}}</p>
+                    <p>Q: {{q_encrypt}}</p>
+                    <p>E: {{e_encrypt}}</p>
+                    <p>D: {{d_encrypt}}</p>
                 </div>
                 <div >
                     <label>Your text:</label>
@@ -72,14 +87,22 @@
                     
                 {% if mistake_decrypt%}
                 <label>
-                    {{countfail}} mistakes
+                    Invalid key
                 </label>
                 {% endif %}
                 
                 <div class="fields">
-                    <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_decrypt" name="key_decrypt">
+                    <div class="field">
+                        <label for="key_decrypt">Key P (prime):</label>
+                        <input type="text" id="p_decrypt" name="p_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="key_decrypt">Key Q (prime):</label>
+                        <input type="text" id="q_decrypt" name="q_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="key_decrypt">Key D (Inverse of E modulus Phi(n) where Phi(n)=(p-1)*(q-1)):</label>
+                        <input type="text" id="d_decrypt" name="d_decrypt">
                     </div>
                     <div class="field" >
                         <label for="codedtext">Text to decrypt:</label><br>
@@ -97,24 +120,12 @@
             </form>
             <div>          
                 {% if decrypted %}
-                {% if failed_decrypt %}
-                <label>This are all the posible text:</label>
+                
                 <div >
-                    <label>Clear texts:  </label>
-                    {% for i in cleartext %}
-                    <p>{{i}}</p>
-                    {% endfor %}
-                </div>
-                <ul class="actions">
-                    <form action="." method="get">
-                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
-                    </form>
-
-                </ul>
-                {% else %}
-                <div >
-                    <label>Used key:  </label>
-                    <p>{{key_decrypt}}</p>
+                    <label>Used keys:  </label>
+                    <p>P: {{p_decrypt}}</p>
+                    <p>Q: {{q_decrypt}}</p>
+                    <p>D: {{d_decrypt}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>
@@ -131,7 +142,6 @@
                     </form>
 
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>

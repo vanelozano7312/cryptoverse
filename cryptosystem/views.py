@@ -1670,7 +1670,86 @@ def cryptosystem_view(request, name=None):
         ##RSA CYPHER 
         elif name == "RSA":
             view = "RSA.html"
-            # if request.method == "POST": 
+            if request.method == "POST": 
+                if 'Encrypt' in request.POST:
+                    p_encrypt = request.POST.get("p_encrypt")
+                    q_encrypt = request.POST.get("q_encrypt")
+                    e_encrypt = request.POST.get("e_encrypt")
+                    d_encrypt = request.POST.get("d_encrypt")
+                    cleartext = request.POST.get("cleartext")
+                    try:
+                        try:
+                            p_encrypt = int(p_encrypt)
+                            q_encrypt = int(q_encrypt)
+                            e_encrypt = int(e_encrypt)
+                            d_encrypt = int(d_encrypt)
+                            encode, p_encrypt, q_encrypt, e_encrypt, d_encrypt = rsaencript(cleartext,p_encrypt,q_encrypt,e_encrypt,d_encrypt,count_falla)
+                        except:
+                            encode=-1
+                        if encode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                encode, p_encrypt, q_encrypt, e_encrypt, d_encrypt = rsaencript(cleartext,1, 1, 1, 1,count_falla)
+                                context['failed_encrypt']=True
+                                context['p_encrypt'] = p_encrypt
+                                context['q_encrypt'] = q_encrypt
+                                context['e_encrypt'] = e_encrypt
+                                context['d_encrypt'] = d_encrypt
+                                context['encrypted']=True
+                                context['cleartext']=cleartext
+                                context['encodedtext']=encode
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['p_encrypt'] = p_encrypt
+                            context['q_encrypt'] = q_encrypt
+                            context['e_encrypt'] = e_encrypt
+                            context['d_encrypt'] = d_encrypt
+                            context['encrypted']=True
+                            context['cleartext']=cleartext
+                            context['encodedtext']=encode
+                            count_falla=0
+                    except:
+                        pass
+                
+                if 'Decrypt' in request.POST:
+                    p_encrypt = request.POST.get("p_encrypt")
+                    q_encrypt = request.POST.get("q_encrypt")
+                    d_encrypt = request.POST.get("d_encrypt")
+                    codedtext = request.POST.get("codedtext")
+                    try:
+                        try:
+                            p_decrypt = int(p_decrypt)
+                            q_decrypt = int(q_decrypt)
+                            d_decrypt = int(d_decrypt)
+                            decode = rsadecript(codedtext,p_decrypt,q_decrypt,1,d_decrypt,count_falla)
+                        except:
+                            decode=-1
+                        if decode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                
+                                # context['failed_decrypt']=True
+                                # context['key_decrypt'] = key_decrypt
+                                # context['decrypted']=True
+                                # context['cleartext']=decode
+                                # context['encodedtext']=codedtext
+                                count_falla=0 
+                            else:
+                                context['mistake_decrypt']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['p_decrypt'] = p_decrypt
+                            context['q_decrypt'] = q_decrypt
+                            context['d_decrypt'] = d_decrypt
+                            context['decrypted']=True
+                            context['cleartext']=decode
+                            context['encodedtext']=codedtext
+                            count_falla=0
+                    except:
+                        pass
                 
         ##ELGAMAL CYPHER 
         elif name == "ElGamal":
