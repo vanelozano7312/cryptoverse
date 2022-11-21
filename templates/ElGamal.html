@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="cipher-title">
-    <h1>ElGamal </h1>
+    <h1>ElGamal-Logarithmic</h1>
 </div>
 
 <section id="ende">
@@ -20,15 +20,15 @@
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="p_encrypt">Key P ():</label>
+                        <label for="p_encrypt">Key P (prime number):</label>
                         <input type="text" id="p_encrypt" name="p_encrypt">
                     </div>
                     <div class="field">
-                        <label for="g_encrypt">Key G ()):</label>
+                        <label for="g_encrypt">Key G (integer in Z_p)):</label>
                         <input type="text" id="g_encrypt" name="g_encrypt">
                     </div>
                     <div class="field">
-                        <label for="h_encrypt">Key H ():</label>
+                        <label for="h_encrypt">Key H (Public integer h = g^a mod p  ):</label>
                         <input type="text" id="h_encrypt" name="h_encrypt">
                     </div>
                     <div class="field" >
@@ -91,11 +91,11 @@
                 
                 <div class="fields">
                     <div class="field">
-                        <label for="p_decrypt">Key P ():</label>
+                        <label for="p_decrypt">Key P (prime number):</label>
                         <input type="text" id="p_decrypt" name="p_decrypt">
                     </div>
                     <div class="field">
-                        <label for="a_decrypt">Key A ():</label>
+                        <label for="a_decrypt">Key A (Integer, private key):</label>
                         <input type="text" id="a_decrypt" name="a_decrypt">
                     </div>
                     <div class="field">
@@ -122,6 +122,151 @@
                 <div >
                     <label>Used key:  </label>
                     <p>P: {{p_decrypt}}     A: {{a_decrypt}}     S1: {{s_decrypt}}</p>
+                </div>
+                <div >
+                    <label>Clear text:  </label>
+                    <p>{{cleartext}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p>{{encodedtext}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
+                    </form>
+
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+
+<div class="cipher-title">
+    <h1>ElGamal- elliptic curve cryptography (ECC)</h1>
+</div>
+
+<section id="ende">
+    <div class="inner">
+        <section id="encrypt">
+            <form action="." method="post">
+                <h2>Encrypt</h2>
+                {% csrf_token %}
+                {% if not encrypted_ecc %}
+                    
+                {% if mistake_encrypt_ecc%}
+                <label> {{countfail}} mistakes</label>
+                {% endif %}
+                <div class="fields">
+                    <div class="field">
+                        <label for="x_encrypt">Public Key x:</label>
+                        <input type="text" id="x_encrypt" name="x_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="y_encrypt">Public Key y:</label>
+                        <input type="text" id="y_encrypt" name="y_encrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="cleartext">Text to encrypt:</label><br>
+                        <textarea name="cleartext"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" name="Encrypt_ecc" value="Encrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>          
+                {% if encrypted_ecc %}
+                <div >
+                    {% if failed_encrypt_ecc %}
+                    <label>The keys have been chosen for you</label>
+                    <p>Private key A: {{a_encrypt}}</p>
+                    {% endif %}
+                    <label>Used keys:  </label>
+                    <p>X: {{x_encrypt}} </p> 
+                    <p>Y: {{y_encrypt}} </p>
+                </div>
+                <div >
+                    <label>S1:</label>
+                    <p>{{key1_encrypt}}</p>
+                    <p>{{key2_encrypt}}</p>
+                </div>
+                <div >
+                    <label>Your text:</label>
+                    <p>{{cleartext}}</p>
+                </div>
+                <div >
+                    <label>Encoded text:</label>
+                    <p align="justify">{{encodedtext}}</p>
+                </div>
+                
+                <ul class="actions">
+                    <form action="." method="get">
+                        <button  type="submit" name="encrypt_again" value="encrypt">Encrypt again</button>
+                    </form>
+
+                </ul>
+
+                {% endif %}
+            </div>
+        </section>
+       
+        <section id="decrypt">
+            <form action="." method="post">
+                <h2>Decrypt</h2>
+                {% csrf_token %}
+                {% if not decrypted_ecc %}
+                    
+                {% if mistake_decrypt_ecc%}
+                <label>
+                    Invalid key
+                </label>
+                {% endif %}
+                
+                <div class="fields">
+                    <div class="field">
+                        <label for="a_decrypt">A :</label>
+                        <input type="text" id="a_decrypt" name="a_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="x_decrypt">S1 x:</label>
+                        <input type="text" id="x_decrypt" name="x_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="y_decrypt">S1 y :</label>
+                        <input type="text" id="y_decrypt" name="y_decrypt">
+                    </div>
+                    <div class="field" >
+                        <label for="codedtext">Text to decrypt (list of coordinates):</label><br>
+                        <textarea name="codedtext"></textarea>
+                    </div>
+                </div>
+                
+                <ul class="actions">
+                    <li><input type="submit" name="Decrypt_ecc" value="Decrypt" class="primary" /></li>
+                    <li><input type="reset" value="Clear" /></li>
+                    <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
+                </ul>
+
+                {% endif %}
+            </form>
+            <div>          
+                {% if decrypted_ecc %}
+                
+                <div >
+                    <label>Used keys:  </label>
+                    <p>Private key A: {{a_decrypt}}</p>
+                </div>
+                <div >
+                    <label>S1:</label>
+                    <p>{{x_decrypt}}</p>
+                    <p>{{y_decrypt}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>
