@@ -1,7 +1,8 @@
 import random as ran
-from math import gcd as bltin_gcd
+from math import gcd 
 import re
-
+from sympy import isprime
+from sympy import nextprime
 
 #///////////////////////////////////////////////////////////////
 #//////////////////////FUNCIONES GENERALES///////////////////
@@ -71,7 +72,24 @@ def strtomat(string, m):
     return result
 
 
-
+def rsakeygen():
+  p = nextprime(150)
+  q = nextprime(200)
+  #n = p*q
+  phi = (p-1)*(q-1)
+  flag = True
+  while flag == True:
+    e = ran.randint(3,phi-2)
+    if gcd(e, phi) == 1:
+      flag = False
+  flag = True
+  i = 0
+  while flag == True:
+    if (i*e)%phi==1:
+      d=i
+      flag = False
+    i = i + 1
+  return p,q,e,d
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE CODIFICACION///////////////////
 #////////////////////////////////////////////////////////////////
@@ -255,6 +273,29 @@ def encode_permu(string, tama, key, count_falla):
   return final, tama, key
 
     
+def rsaencript(palabra,p,q,e,d,fallas):
+  if fallas > 2:
+    p,q,e,d = rsakeygen()
+  n = p*q
+  phi = (p-1)*(q-1)
+  if isprime(p) == False:
+    return -1,-1,-1,-1,-1
+  if isprime(q) == False:
+    return -1,-1,-1,-1,-1 
+  if gcd(e, phi) != 1:
+    return -1,-1,-1,-1,-1  
+  if (d*e)%phi != 1:
+    return -1,-1,-1,-1,-1  
+  palabra =unify(palabra)
+  palabralist = convert(palabra)
+  for i in range(len(palabralist)):
+    palabralist[i] = (palabralist[i]**e)%n
+  
+  return palabralist,p,q,e,d
+
+# print(rsaencript("estamos", 151, 211, 26801, 23201, 0))
+# print(rsaencript("estamos", 1, 1, 1, 1, 3))
+
 #///////////////////////////////////////////////////////////////
 #//////////////////////METODOS DE DECODIFICACION///////////////////
 #////////////////////////////////////////////////////////////////
@@ -464,4 +505,11 @@ def analisis_afin(string):
         ti = first_two[y]
         first_two = [ei,ti]
         return ares, bres, first_two, dic
-  
+
+def rsadecript(palabralist,p,q,e,d,fallas):
+  n = p*q
+  #phi = (p-1)*(q-1)
+  for i in range(len(palabralist)):
+    palabralist[i] = (palabralist[i]**d)%n
+  palabra = deconvert(palabralist)
+  return palabra,p,q,e,d    
