@@ -216,14 +216,52 @@ def elgamal_ecc_e(text,pub_k_x,pub_k_y,count_fallas):
     """
     Description
     -----------
+    Encrypts a clear text given the coordinates of a public key
+    over the elliptic curve NIST P-256.
 
+    When input from user is incorrect 3 times, for example to give a coordinate outside the curve,
+    the function will randomly assume a private key 'a' and the corresponding public key coordinates.
+    
     Parameters
     ----------
+    text: string
+        Clear text to encrypt
+    pub_k_x: int
+        Coordinate in x of the public key
+    pub_k_y: int
+        Coordinate in y of the public key
+    count_fallas: int
+        Count of bad input from user
 
     Returns
     -------
-
+    (S1.pointQ.x,S1.pointQ.y): Tuple of int
+        Part of the encrypted message 'S1' corresponding to the public counterpart of the
+        ephemeral key 'k'
+    S2: List of tuples of int
+        List where every tuple corresponds to the coordinates of every encrypyed letter of the message
+    pub_k.pointQ.x: int
+        Coordinate in x of the public key used to encrypt
+    pub_k.pointQ.y: int
+        Coordinate in y of the public key used to encrypt
+    a: int
+        Private key used to generate the public key to encrypt if needed to randomize.
+        If the user gave correct parameters and the function didn't randomly generate 
+        returns (-1)
     """
+
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+
+    #To generate randomly:
+    #Generate private key a:                random.randint(2,pow(10,50))
+    #Generate public key in the curve:      ECC.construct(curve = 'P-256', d = a).public_key()
+
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+
     a = -1
     if count_fallas >= 3:
         a = random.randint(2,pow(10,50))
@@ -248,13 +286,25 @@ def elgamal_ecc_d(s1_x,s1_y,s2,a):
     """
     Description
     -----------
+    Given the x and y coordinates of S1 and a list of coordinates S2 product of an elgamal ECC and the 
+    private key 'a' returns the clear decrypted text.
 
     Parameters
     ----------
+    s1_x: int
+        x coordinate of S1
+    s1_y: int
+        y coordinate of S1
+    s2: List of integer tuples
+        List of coordinates being every coordinate an encrypted letter
+    a: int 
+        Private key
 
     Returns
     -------
-
+    text: string
+        Clear decrypted text.
+        (-1) if the parameters are out of bounds    
     """
     try:
         S1 = ECC.construct(curve = 'P-256', point_x = s1_x, point_y = s1_y)
