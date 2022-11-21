@@ -1,7 +1,9 @@
 import random
 from math import pow
 from sympy import randprime as rand_prime
+from sympy import isprime as isprime
 from math import gcd as bltin_gcd
+from Crypto.PublicKey import ECC
 
 def prim_roots(p):
     """
@@ -31,6 +33,17 @@ def prim_roots(p):
         if o == (p - 1):
             return r
         o = 1
+
+def is_prime_root(r,p):
+    o = 1
+    k = power(r,o,p)
+    while k > 1:
+        o = o + 1
+        k = (k * r) % p
+    if o == (p - 1):
+        return True
+    return False
+
 
 def power(a, b, c):
     """
@@ -66,7 +79,7 @@ def power(a, b, c):
 #Para generar automaticamente un primo aleatorio se usa rand_prime().
 #Lo mejor es generar uno tan grande como se pueda, puede ser en el intervalo [2^24,2^26].
 
-def elgamal_enc(text,p,g,h):
+def elgamal_enc(text,p,g,h,count_fallas):
     """
     Description
     -----------
@@ -77,24 +90,41 @@ def elgamal_enc(text,p,g,h):
     Because you must return an integer for every character 
     in the text the S2 variable is a list of integers.
 
+    When user inputs invalid parameters 3 times the function will generate
+    these automatically.
+
     Parameters
     ----------
     text: string
         Text to encrypt
-    p: int
-        Public prime
-    g: int
-        Element of Z_p
+    p: int 
+        Public prime                    (p is prime)                
+    g: int                          
+        Element of Z_p                  (g < p)
     h: int
-        Public integer h = g^a mod p
+        Public integer h = g^a mod p    (h < p)
+    count_fallas: int
+        User mistake counter
 
     Returns
     -------
+    If parameters where invalid and (count_fallas < 3)
+    (-1,-1,-1,-1,-1,-1) will be returned
+
     S1: int
         Integer corresponding to g^k mod p
     S2: list of int
         List of integers c*(h^k mod p), each corresponding 
         to a character 'c' of 'text' 
+    p: int
+        Prime 'p' upon which the algorithm ran
+    g: int
+        Element of Z_p upon which the algorithm ran
+    h: int
+        Element of Z_p 'h = g^a mod p'
+    a: int
+        Private key 'a' randomly generated to compute 'h', 
+        (-1) if no data was generated randomly
     """
     
     #/////////////////////////////////////////////////////////////
@@ -111,15 +141,33 @@ def elgamal_enc(text,p,g,h):
     #/////////////////////////////////////////////////////////////
     #/////////////////////////////////////////////////////////////
 
-    S2 = []
-    k = random.randint(2,p)
+    pi = p
+    gi = g
+    a = -1
+    hi = h
 
-    S1 = power(g,k,p)
+    if count_fallas>=3:
+        pi = rand_prime(pow(2,24),pow(2,26))
+        gi = prim_roots(pi)
+        a = random.randint(2,2^10)
+        hi = power(gi,a,pi)
+
+    if not isprime(pi):
+        return -1,-1,-1,-1,-1,-1
+    if gi >= pi:
+        return -1,-1,-1,-1,-1,-1
+    if h >= pi:
+        return -1,-1,-1,-1,-1,-1
+
+    S2 = []
+    k = random.randint(2,pi)
+
+    S1 = power(gi,k,pi)
 
     for i in range(len(text)):
-        S2.append(ord(text[i])*power(h,k,p))
+        S2.append(ord(text[i])*power(hi,k,pi))
 
-    return S1,S2
+    return S1,S2,pi,gi,a,hi
 
      
 
@@ -130,23 +178,31 @@ def elgamal_dec(text,s1,a,p):
     Given an encripted list, an integer that encrypts the ephemeral key used, the public prime 'p' 
     and the private key 'a', decrypts the list into the original text.
 
+    If the given parameters are invalid it returns (-1)
+
     Parameters
     ----------
     text: list of integers
         List of encrypted characters
     s1: int
-        The integer pair of the list
+        The integer pair of the list    (s1 < p1)
     a: int
         Private key
-    p: int 
+    p: int                              (p is prime) 
         Public key prime number
 
     Returns
     -------
     dec: string
         Decrypyted text
+        (-1) if parameters where invalid
 
     """
+    if not isprime(p):
+        return -1
+    if s1 >= p:
+        return -1
+
     dec = []
 
     s = power(s1,a,p)
@@ -156,7 +212,7 @@ def elgamal_dec(text,s1,a,p):
 
     return ''.join(dec)
 
-def elGamalECCE():
+def elgamal_ecce():
     """
     Description
     -----------
@@ -170,7 +226,7 @@ def elGamalECCE():
     """
 
 
-def elGamalECCD():
+def elgamal_eccd():
     """
     Description
     -----------
@@ -183,22 +239,29 @@ def elGamalECCD():
 
     """
 
-msg = "encryption"
+a = 15
+pr_key = ECC.construct(curve='P-256',d=a)
+pub_key = pr_key.public_key()
+
+k=  8
+M = 12
+kP= ECC.construct(curve='P-256',d=k).public_key()
+M = ECC.construct(curve='P-256',d=M).pointQ
+C = k * pub_key.pointQ + M
+
+S = a*kP.pointQ
+
+d_M = C + (-S) 
+print(d_M == M)
+for i in range(1,25):
+    if ECC.construct(curve='P-256',d=i).pointQ==d_M:
+        print("esta es")
+        print(i)
+        break
 
 p = rand_prime(pow(2,24),pow(2,26))
-print(p)
-
 g = prim_roots(p)
-print(g)
+a = random.randint(2,2^10)
+h = power(g,a,p)
 
-a = random.randint(2,pow(2,10))
-print(a)
-
-A = power(g,a,p)
-print(A)
-
-enc = elgamal_enc(msg,p,g,A)
-s1 = enc[0]
-s2 = enc[1]
-print(s2)
-print(elgamal_dec(s2,s1,a,p))
+print(elgamal_enc('askjfhaskjf',p,g,h,1))
