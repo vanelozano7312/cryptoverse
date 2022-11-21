@@ -12,6 +12,7 @@ from BackendReady.TDES import *
 from BackendReady.AES import *
 from BackendReady.GammaPentagonal import *
 from BackendReady.Rabin import *
+from BackendReady.ElGamal import *
 import codecs
 # from .forms import HillImageForm
 from django.core.files.storage import FileSystemStorage
@@ -1690,9 +1691,7 @@ def cryptosystem_view(request, name=None):
                         if encode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
-                                print("aaaaa")
                                 encode, p_encrypt, q_encrypt, e_encrypt, d_encrypt = rsaencript(cleartext,1, 1, 1, 1,count_falla)
-                                print("aaaaasssssssssss")
                                 context['failed_encrypt']=True
                                 context['p_encrypt'] = p_encrypt
                                 context['q_encrypt'] = q_encrypt
@@ -1718,16 +1717,17 @@ def cryptosystem_view(request, name=None):
                         pass
                 
                 if 'Decrypt' in request.POST:
-                    p_encrypt = request.POST.get("p_encrypt")
-                    q_encrypt = request.POST.get("q_encrypt")
-                    d_encrypt = request.POST.get("d_encrypt")
+                    p_decrypt = request.POST.get("p_decrypt")
+                    q_decrypt = request.POST.get("q_decrypt")
+                    d_decrypt = request.POST.get("d_decrypt")
                     codedtext = request.POST.get("codedtext")
                     try:
                         try:
                             p_decrypt = int(p_decrypt)
                             q_decrypt = int(q_decrypt)
                             d_decrypt = int(d_decrypt)
-                            decode = rsadecript(codedtext,p_decrypt,q_decrypt,1,d_decrypt,count_falla)
+                            codedtext_list = str_to_list(codedtext)
+                            decode, p_decrypt, q_decrypt, d_decrypt  = rsadecript(codedtext_list,p_decrypt,q_decrypt,d_decrypt,count_falla)
                         except:
                             decode=-1
                         if decode == -1:
@@ -1757,7 +1757,87 @@ def cryptosystem_view(request, name=None):
         ##ELGAMAL CYPHER 
         elif name == "ElGamal":
             view = "ElGamal.html"
-            # if request.method == "POST":
+            if request.method == "POST":
+                
+                if 'Encrypt_log' in request.POST:
+                    p_encrypt = request.POST.get("p_encrypt")
+                    g_encrypt = request.POST.get("g_encrypt")
+                    h_encrypt = request.POST.get("h_encrypt")
+                    cleartext = request.POST.get("cleartext")
+                    try:
+                        try:
+                            p_encrypt = int(p_encrypt)
+                            g_encrypt = int(g_encrypt)
+                            h_encrypt = int(h_encrypt)
+                            key_encrypt, encode, p_encrypt, g_encrypt, a_encrypt, h_encrypt = elgamal_enc(cleartext, p_encrypt, g_encrypt, h_encrypt, count_falla)
+                        except:
+                            encode=-1
+                        if encode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt, encode, p_encrypt, g_encrypt, a_encrypt, h_encrypt = elgamal_enc(cleartext, 1, 1, 1, count_falla)                        
+                                context['failed_encrypt_log']=True
+                                context['key_encrypt'] = key_encrypt
+                                context['p_encrypt'] = p_encrypt
+                                context['g_encrypt'] = g_encrypt
+                                context['a_encrypt'] = a_encrypt
+                                context['h_encrypt'] = h_encrypt
+                                context['encrypted_log']=True
+                                context['cleartext']=cleartext
+                                context['encodedtext']=encode
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_log']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['key_encrypt'] = key_encrypt
+                            context['p_encrypt'] = p_encrypt
+                            context['g_encrypt'] = g_encrypt
+                            context['h_encrypt'] = h_encrypt
+                            context['encrypted_log']=True
+                            context['cleartext']=cleartext
+                            context['encodedtext']=encode
+                            count_falla=0
+                    except:
+                        pass
+                
+                if 'Decrypt_log' in request.POST:
+                    p_decrypt = request.POST.get("p_decrypt")
+                    a_decrypt = request.POST.get("a_decrypt")
+                    s_decrypt = request.POST.get("s_decrypt")
+                    codedtext = request.POST.get("codedtext")
+                    try:
+                        try:
+                            p_decrypt = int(p_decrypt)
+                            a_decrypt = int(a_decrypt)
+                            s_decrypt = int(s_decrypt)
+                            codedtext_list = str_to_list(codedtext)
+                            decode = elgamal_dec(codedtext_list, s_decrypt, a_decrypt, p_decrypt)
+                        except:
+                            decode=-1
+                        if decode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                
+                                # context['failed_decrypt']=True
+                                # context['key_decrypt'] = key_decrypt
+                                # context['decrypted']=True
+                                # context['cleartext']=decode
+                                # context['encodedtext']=codedtext
+                                count_falla=0 
+                            else:
+                                context['mistake_decrypt_log']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['p_decrypt'] = p_decrypt
+                            context['a_decrypt'] = a_decrypt
+                            context['s_decrypt'] = s_decrypt
+                            context['decrypted_log']=True
+                            context['cleartext']=decode
+                            context['encodedtext']=codedtext
+                            count_falla=0
+                    except:
+                        pass
                 
     return render(request, view, context=context)
 

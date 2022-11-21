@@ -41,6 +41,11 @@ key fail: ubcedfghijkzmnoqprstavwxyz
 
 198 171 71 79 18 22 85 64 61
 
+------ElGamal-------
+p: 42004813
+g: 7597416
+h: 28025900
+
 ######################################################################
 IMAGENES
 PEQUEÑA MUCHO RUIDO

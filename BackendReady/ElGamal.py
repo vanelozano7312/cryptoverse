@@ -259,9 +259,23 @@ for i in range(1,25):
         print(i)
         break
 
-p = rand_prime(pow(2,24),pow(2,26))
-g = prim_roots(p)
-a = random.randint(2,2^10)
-h = power(g,a,p)
+# p = rand_prime(pow(2,24),pow(2,26))
+# g = prim_roots(p)
+# a = random.randint(2,2^10)
+# h = power(g,a,p)
+# print(p, g, a, h)
+# print(elgamal_enc('askjfhaskjf',p,g,h,1))
 
-print(elgamal_enc('askjfhaskjf',p,g,h,1))
+# p = 42004813
+# g = 7597416
+# a = random.randint(2,2^10)
+# h = 28025900
+
+# print(elgamal_enc('askjfhaskjf', p, g, h, 0))
+
+# p=39577913
+# a=5
+# s1=15151015
+# text="[500024720, 533680230, 519256440, 466369210]"
+# text = str_to_list(text)
+# print(elgamal_dec(text, s1, a, p))

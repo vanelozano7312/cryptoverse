@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="cipher-title">
-    <h1>ElGamal CIPHER</h1>
+    <h1>ElGamal </h1>
 </div>
 
 <section id="ende">
@@ -13,15 +13,23 @@
             <form action="." method="post">
                 <h2>Encrypt</h2>
                 {% csrf_token %}
-                {% if not encrypted %}
+                {% if not encrypted_log %}
                     
-                {% if mistake_encrypt%}
+                {% if mistake_encrypt_log%}
                 <label> {{countfail}} mistakes</label>
                 {% endif %}
                 <div class="fields">
                     <div class="field">
-                        <label for="key_encrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_encrypt" name="key_encrypt">
+                        <label for="p_encrypt">Key P ():</label>
+                        <input type="text" id="p_encrypt" name="p_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="g_encrypt">Key G ()):</label>
+                        <input type="text" id="g_encrypt" name="g_encrypt">
+                    </div>
+                    <div class="field">
+                        <label for="h_encrypt">Key H ():</label>
+                        <input type="text" id="h_encrypt" name="h_encrypt">
                     </div>
                     <div class="field" >
                         <label for="cleartext">Text to encrypt:</label><br>
@@ -29,19 +37,24 @@
                     </div>
                 </div>
                 <ul class="actions">
-                    <li><input type="submit" name="Encrypt" value="Encrypt" class="primary" /></li>
+                    <li><input type="submit" name="Encrypt_log" value="Encrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                 </ul>
 
                 {% endif %}
             </form>
             <div>          
-                {% if encrypted %}
+                {% if encrypted_log %}
                 <div >
-                    {% if failed_encrypt %}
-                    <label>A key has been chosen for you</label>
+                    {% if failed_encrypt_log %}
+                    <label>The keys have been chosen for you</label>
+                    <p>Private key A: {{a_encrypt}}</p>
                     {% endif %}
-                    <label>Used key:  </label>
+                    <label>Used keys:  </label>
+                    <p>P: {{p_encrypt}}     G: {{g_encrypt}}     H: {{h_encrypt}}</p>
+                </div>
+                <div >
+                    <label>S1:</label>
                     <p>{{key_encrypt}}</p>
                 </div>
                 <div >
@@ -68,27 +81,35 @@
             <form action="." method="post">
                 <h2>Decrypt</h2>
                 {% csrf_token %}
-                {% if not decrypted %}
+                {% if not decrypted_log %}
                     
-                {% if mistake_decrypt%}
+                {% if mistake_decrypt_log%}
                 <label>
-                    {{countfail}} mistakes
+                    Invalid key
                 </label>
                 {% endif %}
                 
                 <div class="fields">
-                    <div class="field ">
-                        <label for="key_decrypt">Key (between 1 and 25):</label>
-                        <input type="text" id="key_decrypt" name="key_decrypt">
+                    <div class="field">
+                        <label for="p_decrypt">Key P ():</label>
+                        <input type="text" id="p_decrypt" name="p_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="a_decrypt">Key A ():</label>
+                        <input type="text" id="a_decrypt" name="a_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="s_decrypt">S1 :</label>
+                        <input type="text" id="s_decrypt" name="s_decrypt">
                     </div>
                     <div class="field" >
-                        <label for="codedtext">Text to decrypt:</label><br>
+                        <label for="codedtext">Text to decrypt (list of integers):</label><br>
                         <textarea name="codedtext"></textarea>
                     </div>
                 </div>
                 
                 <ul class="actions">
-                    <li><input type="submit" name="Decrypt" value="Decrypt" class="primary" /></li>
+                    <li><input type="submit" name="Decrypt_log" value="Decrypt" class="primary" /></li>
                     <li><input type="reset" value="Clear" /></li>
                     <!-- <li><input type="submit" value="I don't know the key" class="primary" /></li> -->
                 </ul>
@@ -96,25 +117,11 @@
                 {% endif %}
             </form>
             <div>          
-                {% if decrypted %}
-                {% if failed_decrypt %}
-                <label>This are all the posible text:</label>
-                <div >
-                    <label>Clear texts:  </label>
-                    {% for i in cleartext %}
-                    <p>{{i}}</p>
-                    {% endfor %}
-                </div>
-                <ul class="actions">
-                    <form action="." method="get">
-                        <button  type="submit" name="decrypt_again" value="decrypt">Decrypt again</button>
-                    </form>
-
-                </ul>
-                {% else %}
+                {% if decrypted_log %}
+                
                 <div >
                     <label>Used key:  </label>
-                    <p>{{key_decrypt}}</p>
+                    <p>P: {{p_decrypt}}     A: {{a_decrypt}}     S1: {{s_decrypt}}</p>
                 </div>
                 <div >
                     <label>Clear text:  </label>
@@ -131,7 +138,6 @@
                     </form>
 
                 </ul>
-                {% endif %}
                 {% endif %}
             </div>
         </section>

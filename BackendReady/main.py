@@ -7,13 +7,28 @@ from sympy import nextprime
 #///////////////////////////////////////////////////////////////
 #//////////////////////FUNCIONES GENERALES///////////////////
 #////////////////////////////////////////////////////////////////
+
+#Convierte un string en una lista de enteros
+def str_to_list(string):
+  try:
+    string = string.replace("]", '')
+    string = string.replace("[", '')
+    string = string.split(", ")
+    lista=[]
+    for i in string:
+      lista.append(int(i))
+    return lista      
+  except:
+    return -1
+  
+# print(str_to_list("[1, 2, 3, 4, 5, 1234567, 1234567, 23456, 098]"))
+
 def rela_primes():
   lista = []
   for i in range(26): 
-    if bltin_gcd(26, i) == 1:
+    if gcd(26, i) == 1:
       lista.append(i)
   return lista 
-
 
 
 def inver_primes():
@@ -506,10 +521,10 @@ def analisis_afin(string):
         first_two = [ei,ti]
         return ares, bres, first_two, dic
 
-def rsadecript(palabralist,p,q,e,d,fallas):
+def rsadecript(palabralist,p,q,d,fallas):
   n = p*q
   #phi = (p-1)*(q-1)
   for i in range(len(palabralist)):
     palabralist[i] = (palabralist[i]**d)%n
   palabra = deconvert(palabralist)
-  return palabra,p,q,e,d    
+  return palabra,p,q,d    
