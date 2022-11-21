@@ -1,8 +1,57 @@
 import random
 from math import pow
+from sympy import randprime as rand_prime
+from math import gcd as bltin_gcd
 
-# Modular exponentiation
+def prim_roots(p):
+    """
+    Description
+    -----------
+    Given a prime number p finds a 
+    random primitive root modulo p.
+
+    Parameters
+    ----------
+    p: int
+        Prime number p
+
+    Returns
+    -------
+    r: int
+        Random primitive root modulo p
+
+    """
+    o = 1
+    while True:
+        r = random.randint(2,p)
+        k = power(r, o, p)
+        while (k > 1):
+            o = o + 1
+            k = (k * r) % p
+        if o == (p - 1):
+            return r
+        o = 1
+
 def power(a, b, c):
+    """
+    Description
+    -----------
+    Computes a^b mod c
+
+    Parameters
+    ----------
+    a: int
+        Base
+    b: int
+        Exponent
+    c: int
+        Modulo
+
+    Returns
+    -------
+    (x % c): int
+        a^b mod n
+    """
     x = 1
     y = a
 
@@ -13,6 +62,9 @@ def power(a, b, c):
         b = int(b / 2)
 
     return x % c
+
+#Para generar automaticamente un primo aleatorio se usa rand_prime().
+#Lo mejor es generar uno tan grande como se pueda, puede ser en el intervalo [2^24,2^26].
 
 def elgamal_enc(text,p,g,h):
     """
@@ -44,6 +96,21 @@ def elgamal_enc(text,p,g,h):
         List of integers c*(h^k mod p), each corresponding 
         to a character 'c' of 'text' 
     """
+    
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+
+    #To generate randomly:
+    #Generate public p:             rand_prime(pow(2,24),pow(2,26))
+    #Generate public g:             prim_roots(p)
+    #Generate private a:            random.randint(2,2^10)
+    #Generate public h:             power(g,a,p)
+
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+    #/////////////////////////////////////////////////////////////
+
     S2 = []
     k = random.randint(2,p)
 
@@ -60,12 +127,24 @@ def elgamal_dec(text,s1,a,p):
     """
     Description
     -----------
+    Given an encripted list, an integer that encrypts the ephemeral key used, the public prime 'p' 
+    and the private key 'a', decrypts the list into the original text.
 
     Parameters
     ----------
+    text: list of integers
+        List of encrypted characters
+    s1: int
+        The integer pair of the list
+    a: int
+        Private key
+    p: int 
+        Public key prime number
 
     Returns
     -------
+    dec: string
+        Decrypyted text
 
     """
     dec = []
@@ -75,7 +154,7 @@ def elgamal_dec(text,s1,a,p):
     for i in range(0,len(text)):
         dec.append(chr(int(text[i]/s)))
 
-    return dec
+    return ''.join(dec)
 
 def elGamalECCE():
     """
@@ -106,15 +185,19 @@ def elGamalECCD():
 
 msg = "encryption"
 
-p = 29
+p = rand_prime(pow(2,24),pow(2,26))
+print(p)
 
-g = 15
+g = prim_roots(p)
+print(g)
 
-a = 3
+a = random.randint(2,pow(2,10))
+print(a)
 
 A = power(g,a,p)
+print(A)
 
-enc = elgamal_enc(msg,29,15,A)
+enc = elgamal_enc(msg,p,g,A)
 s1 = enc[0]
 s2 = enc[1]
 print(s2)
