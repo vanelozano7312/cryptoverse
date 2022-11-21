@@ -212,7 +212,7 @@ def elgamal_dec(text,s1,a,p):
 
     return ''.join(dec)
 
-def elgamal_ecce():
+def elgamal_ecc_e(text,pub_k_x,pub_k_y,count_fallas):
     """
     Description
     -----------
@@ -224,9 +224,27 @@ def elgamal_ecce():
     -------
 
     """
+    a = -1
+    if count_fallas >= 3:
+        a = random.randint(2,pow(10,50))
+        pub_k = ECC.construct(curve = 'P-256', d = a).public_key()
+    else:
+        try:
+            pub_k = ECC.construct(curve = 'P-256', point_x = pub_k_x, point_y = pub_k_y)
+        except ValueError:
+            return -1,-1,-1,-1
+
+    S2 = []
+    k = random.randint(2,pow(10,50))
+    S1 = ECC.construct(curve = 'P-256', d = k).public_key()
+    for i in range(len(text)):
+        S2.append(k * pub_k.pointQ + ECC.construct(curve = 'P-256', d = ord(text[i])).pointQ)
+        S2[i] = (int(S2[i].x),int(S2[i].y))
+
+    return (S1.pointQ.x,S1.pointQ.y),S2,pub_k.pointQ.x,pub_k.pointQ.y,a
 
 
-def elgamal_eccd():
+def elgamal_ecc_d(s1_x,s1_y,s2,a):
     """
     Description
     -----------
@@ -238,12 +256,36 @@ def elgamal_eccd():
     -------
 
     """
+    try:
+        S1 = ECC.construct(curve = 'P-256', point_x = s1_x, point_y = s1_y)
+    except ValueError:
+        return -1
+
+    text = []
+
+    S = a*S1.pointQ
+    for i in range(len(s2)):
+        try:
+            C = ECC.construct(curve = 'P-256', point_x = s2[i][0], point_y = s2[i][1]).pointQ
+        except ValueError:
+            return -1
+        text.append(C + (-S))
+    for i in range(len(text)):
+        for j in range(97,123):
+            if ECC.construct(curve = 'P-256', d = j).pointQ == text[i]:
+                text[i] = chr(j)
+                break
+        if type(text[i]) != type(''):
+            text[i] = ' '
+    
+    return ''.join(text)
+
 
 a = 15
 pr_key = ECC.construct(curve='P-256',d=a)
 pub_key = pr_key.public_key()
 
-k=  8
+k=  12984129847129
 M = 12
 kP= ECC.construct(curve='P-256',d=k).public_key()
 M = ECC.construct(curve='P-256',d=M).pointQ
