@@ -1216,7 +1216,11 @@ def cryptosystem_view(request, name=None):
                     url = request.POST.get("url")
                     try:
                         key_encrypt = codecs.decode(key_encrypt_hex, 'hex_codec')
+                        start = time.time()
                         encode = encode_aes_image_ecb(key_encrypt, url)
+                        end = time.time()
+                        totalTime = end - start
+                        print("el tiempo encode aes ecb es:  ", totalTime)
                         if encode == -1:
                             count_falla=count_falla+1
                             if count_falla>=3:
@@ -1271,7 +1275,11 @@ def cryptosystem_view(request, name=None):
                             iv_encrypt = codecs.decode(iv_encrypt_hex, 'hex_codec')
                         else:
                             iv_encrypt = None
+                        start = time.time()
                         iv_encrypt = encode_aes_image_cbc(key_encrypt, url, iv_encrypt)
+                        end = time.time()
+                        totalTime = end - start
+                        print("el tiempo encode aes cbc es:  ", totalTime)
                         if iv_encrypt == -1:
                             context['mistake_encrypt_cbc']=True
                             count_falla=count_falla+1
@@ -1334,7 +1342,11 @@ def cryptosystem_view(request, name=None):
                             iv_encrypt = codecs.decode(iv_encrypt_hex, 'hex_codec')
                         else:
                             iv_encrypt = None
+                        start = time.time()
                         iv_encrypt = encode_aes_image_ofb(key_encrypt, url, iv_encrypt)
+                        end = time.time()
+                        totalTime = end - start
+                        print("el tiempo encode aes ofb es:  ", totalTime)
                         if iv_encrypt == -1:
                             context['mistake_encrypt_ofb']=True
                             count_falla=count_falla+1
@@ -1397,7 +1409,11 @@ def cryptosystem_view(request, name=None):
                             iv_encrypt = codecs.decode(iv_encrypt_hex, 'hex_codec')
                         else:
                             iv_encrypt = None
+                        start = time.time()
                         iv_encrypt = encode_aes_image_cfb(key_encrypt, url, iv_encrypt)
+                        end = time.time()
+                        totalTime = end - start
+                        print("el tiempo encode aes cfb es:  ", totalTime)
                         if iv_encrypt == -1:
                             context['mistake_encrypt_cfb']=True
                             count_falla=count_falla+1
@@ -1461,7 +1477,11 @@ def cryptosystem_view(request, name=None):
                             nonce_encrypt = codecs.decode(nonce_encrypt_hex, 'hex_codec')
                         else:
                             nonce_encrypt = None
+                        start = time.time()
                         nonce_encrypt = encode_aes_image_ctr(key_encrypt, url, nonce_encrypt)
+                        end = time.time()
+                        totalTime = end - start
+                        print("el tiempo encode aes ctr es:  ", totalTime)
                         if nonce_encrypt == -1:
                             context['mistake_encrypt_ctr']=True
                             count_falla=count_falla+1
