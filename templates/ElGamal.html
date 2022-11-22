@@ -198,6 +198,11 @@
                     <p>{{key2_encrypt}}</p>
                 </div>
                 <div >
+                    <label>S2:</label>
+                    <p>{{key21_encrypt}}</p>
+                    <p>{{key22_encrypt}}</p>
+                </div>
+                <div >
                     <label>Your text:</label>
                     <p>{{cleartext}}</p>
                 </div>
@@ -242,10 +247,18 @@
                         <label for="y_decrypt">S1 y (integer):</label>
                         <input type="text" id="y_decrypt" name="y_decrypt">
                     </div>
-                    <div class="field" >
+                    <div class="field">
+                        <label for="x2_decrypt">S2 x (integer):</label>
+                        <input type="text" id="x2_decrypt" name="x2_decrypt">
+                    </div>
+                    <div class="field">
+                        <label for="y2_decrypt">S2 y (integer):</label>
+                        <input type="text" id="y2_decrypt" name="y2_decrypt">
+                    </div>
+                    <!-- <div class="field" >
                         <label for="codedtext">Text to decrypt (list of coordinates):</label><br>
                         <textarea name="codedtext"></textarea>
-                    </div>
+                    </div> -->
                 </div>
                 
                 <ul class="actions">
@@ -269,13 +282,18 @@
                     <p>{{y_decrypt}}</p>
                 </div>
                 <div >
+                    <label>S2:</label>
+                    <p>{{x2_decrypt}}</p>
+                    <p>{{y2_decrypt}}</p>
+                </div>
+                <div >
                     <label>Clear text:  </label>
                     <p>{{cleartext}}</p>
                 </div>
-                <div >
+                <!-- <div >
                     <label>Encoded text:</label>
                     <p>{{encodedtext}}</p>
-                </div>
+                </div> -->
                 
                 <ul class="actions">
                     <form action="." method="get">

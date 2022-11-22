@@ -1877,6 +1877,8 @@ def cryptosystem_view(request, name=None):
                                 context['failed_encrypt_ecc']=True
                                 context['key1_encrypt'] = key_encrypt[0]
                                 context['key2_encrypt'] = key_encrypt[1]
+                                context['key21_encrypt'] = encode[0]
+                                context['key22_encrypt'] = encode[1]
                                 context['x_encrypt'] = x_encrypt
                                 context['y_encrypt'] = y_encrypt
                                 context['a_encrypt'] = a_encrypt
@@ -1888,7 +1890,10 @@ def cryptosystem_view(request, name=None):
                                 context['mistake_encrypt_ecc']=True
                                 context['countfail']=count_falla
                         else:
-                            context['key_encrypt'] = key_encrypt
+                            context['key1_encrypt'] = key_encrypt[0]
+                            context['key2_encrypt'] = key_encrypt[1]
+                            context['key21_encrypt'] = key2_encrypt[0]
+                            context['key22_encrypt'] = key2_encrypt[1]
                             context['x_encrypt'] = x_encrypt
                             context['y_encrypt'] = y_encrypt
                             context['encrypted_ecc']=True
@@ -1901,15 +1906,19 @@ def cryptosystem_view(request, name=None):
                 if 'Decrypt_ecc' in request.POST:
                     x_decrypt = request.POST.get("x_decrypt")
                     y_decrypt = request.POST.get("y_decrypt")
+                    x2_decrypt = request.POST.get("x2_decrypt")
+                    y2_decrypt = request.POST.get("y2_decrypt")
                     a_decrypt = request.POST.get("a_decrypt")
-                    codedtext = request.POST.get("codedtext")
+                    # codedtext = request.POST.get("codedtext")
                     try:
                         try:
                             x_decrypt = int(x_decrypt)
                             y_decrypt = int(y_decrypt)
+                            x2_decrypt = int(x2_decrypt)
+                            y2_decrypt = int(y2_decrypt)
                             a_decrypt = int(a_decrypt)
-                            codedtext_list = str_to_coor(codedtext)
-                            decode = elgamal_ecc_d(x_decrypt, y_decrypt, codedtext_list, a_decrypt)
+                            # codedtext_list = str_to_coor(codedtext)
+                            decode = elgamal_ecc_d(x_decrypt, y_decrypt, x2_decrypt, y2_decrypt, a_decrypt)
                         except:
                             decode=-1
                         if decode == -1:
@@ -1928,6 +1937,8 @@ def cryptosystem_view(request, name=None):
                         else:
                             context['x_decrypt'] = x_decrypt
                             context['y_decrypt'] = y_decrypt
+                            context['x2_decrypt'] = x2_decrypt
+                            context['y2_decrypt'] = y2_decrypt
                             context['a_decrypt'] = a_decrypt
                             context['decrypted_ecc']=True
                             context['cleartext']=decode
