@@ -105,8 +105,8 @@ def strtomat(string, m):
 
 
 def rsakeygen():
-  p = nextprime(ran.randint(1110000,1110000000))
-  q = nextprime(ran.randint(1110000,1110000000))
+  p = nextprime(ran.randint(1110,11100))
+  q = nextprime(ran.randint(1110,11100))
   #n = p*q
   phi = (p-1)*(q-1)
   flag = True
