@@ -1,0 +1,1 @@
+web: gunicorn cryptoverse.wsgi --log-file -
