@@ -1839,6 +1839,82 @@ def cryptosystem_view(request, name=None):
                     except:
                         pass
                 
+                if 'Encrypt_ecc' in request.POST:
+                    x_encrypt = request.POST.get("x_encrypt")
+                    y_encrypt = request.POST.get("y_encrypt")
+                    cleartext = request.POST.get("cleartext")
+                    try:
+                        try:
+                            x_encrypt = int(x_encrypt)
+                            y_encrypt = int(y_encrypt)
+                            key_encrypt, encode, x_encrypt, y_encrypt, a_encrypt = elgamal_ecc_e(cleartext, x_encrypt, y_encrypt, count_falla)
+                        except:
+                            encode=-1
+                        if encode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                key_encrypt, encode, x_encrypt, y_encrypt, a_encrypt = elgamal_ecc_e(cleartext, 1, 1, count_falla)                      
+                                context['failed_encrypt_ecc']=True
+                                context['key1_encrypt'] = key_encrypt[0]
+                                context['key2_encrypt'] = key_encrypt[1]
+                                context['x_encrypt'] = x_encrypt
+                                context['y_encrypt'] = y_encrypt
+                                context['a_encrypt'] = a_encrypt
+                                context['encrypted_ecc']=True
+                                context['cleartext']=cleartext
+                                context['encodedtext']=encode
+                                count_falla=0 
+                            else:
+                                context['mistake_encrypt_ecc']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['key_encrypt'] = key_encrypt
+                            context['x_encrypt'] = x_encrypt
+                            context['y_encrypt'] = y_encrypt
+                            context['encrypted_ecc']=True
+                            context['cleartext']=cleartext
+                            context['encodedtext']=encode
+                            count_falla=0
+                    except:
+                        pass
+                
+                if 'Decrypt_ecc' in request.POST:
+                    x_decrypt = request.POST.get("x_decrypt")
+                    y_decrypt = request.POST.get("y_decrypt")
+                    a_decrypt = request.POST.get("a_decrypt")
+                    codedtext = request.POST.get("codedtext")
+                    try:
+                        try:
+                            x_decrypt = int(x_decrypt)
+                            y_decrypt = int(y_decrypt)
+                            a_decrypt = int(a_decrypt)
+                            codedtext_list = str_to_coor(codedtext)
+                            decode = elgamal_ecc_d(x_decrypt, y_decrypt, codedtext_list, a_decrypt)
+                        except:
+                            decode=-1
+                        if decode == -1:
+                            count_falla=count_falla+1
+                            if count_falla>=3:
+                                
+                                # context['failed_decrypt']=True
+                                # context['key_decrypt'] = key_decrypt
+                                # context['decrypted']=True
+                                # context['cleartext']=decode
+                                # context['encodedtext']=codedtext
+                                count_falla=0 
+                            else:
+                                context['mistake_decrypt_ecc']=True
+                                context['countfail']=count_falla
+                        else:
+                            context['x_decrypt'] = x_decrypt
+                            context['y_decrypt'] = y_decrypt
+                            context['a_decrypt'] = a_decrypt
+                            context['decrypted_ecc']=True
+                            context['cleartext']=decode
+                            context['encodedtext']=codedtext
+                            count_falla=0
+                    except:
+                        pass
     return render(request, view, context=context)
 
   

@@ -21,7 +21,24 @@ def str_to_list(string):
   except:
     return -1
   
+#Convierte un string en una lista de coordenadas
+def str_to_coor(string):
+  try:
+    string = string.replace("]", '')
+    string = string.replace("[", '')
+    string = string.split("), (")
+    string[0] = string[0].replace("(", '')
+    string[len(string)-1] = string[len(string)-1].replace(")", '')
+    for i in range(0, len(string)):
+      string[i]=string[i].split(", ")
+      string[i][0]=int(string[i][0])
+      string[i][1]=int(string[i][1])
+    return string
+  except:
+    return -1
+  
 # print(str_to_list("[1, 2, 3, 4, 5, 1234567, 1234567, 23456, 098]"))
+print(str_to_coor("[(1, 2), (2, 3), (123456, 23456), (12, 234)]"))
 
 def rela_primes():
   lista = []

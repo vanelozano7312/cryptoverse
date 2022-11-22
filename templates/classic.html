@@ -19,10 +19,12 @@
         <ul>
             {% for x in object_list %}
                 {% if x.description != 'Block' %}
+                {% if x.description != 'public-key' %}
                 <header class="major">
                     <h3><a href='/CS/{{x.name}}/'>{{x.name}} cipher</a></h3>
                 </header>
                     <!-- <li><a href='/{{x.name}}/'>{{x.name}} cipher</a></li> -->
+                {% endif %}
                 {% endif %}
             {% endfor %}
         </ul>
